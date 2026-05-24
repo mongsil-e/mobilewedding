@@ -113,6 +113,7 @@ body {
   cursor: pointer;
   flex-shrink: 0;
   width: 72px;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -121,11 +122,14 @@ body {
   padding: 2.5px;
   border-radius: 50%;
   background: var(--ig-gradient);
+  transition: background 0.2s ease;
 }
 
-.story.viewed .story-ring,
-.profile-avatar-wrap.viewed .story-ring {
-  background: #c7c7c7;
+.story-ring.viewed,
+.story.viewed > .story-ring,
+.profile-avatar-wrap.viewed > .story-ring {
+  background: #c7c7c7 !important;
+  background-image: none !important;
 }
 
 .story-ring--lg {
@@ -181,6 +185,7 @@ body {
 
 .profile-avatar-wrap--clickable {
   cursor: pointer;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 

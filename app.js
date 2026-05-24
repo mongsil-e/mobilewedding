@@ -195,46 +195,31 @@
   const STORY_ORDER = ['hero', 'photo-1', 'photo-2', 'photo-3', 'photo-4'];
   const STORY_DURATION = 5000;
   const SWIPE_CLOSE_THRESHOLD = 80;
-  const VIEWED_STORAGE_KEY = 'younggeon_viewed';
-
-  function loadViewedState() {
-    try {
-      return JSON.parse(localStorage.getItem(VIEWED_STORAGE_KEY) || '{}');
-    } catch {
-      return {};
-    }
-  }
-
-  function saveViewedState(state) {
-    localStorage.setItem(VIEWED_STORAGE_KEY, JSON.stringify(state));
-  }
 
   function markStoryViewed(key) {
-    document.querySelector(`.story[data-story="${key}"]`)?.classList.add('viewed');
-    const state = loadViewedState();
-    state.stories = state.stories || {};
-    state.stories[key] = true;
-    saveViewedState(state);
+    const story = document.querySelector(`.story[data-story="${key}"]`);
+    const ring = story?.querySelector('.story-ring');
+    if (!story || !ring) return;
+    story.classList.add('viewed');
+    ring.classList.add('viewed');
+    void ring.offsetWidth;
   }
 
   function markProfileViewed() {
-    document.querySelector('.profile-avatar-wrap')?.classList.add('viewed');
-    const state = loadViewedState();
-    state.profile = true;
-    saveViewedState(state);
+    const wrap = document.querySelector('.profile-avatar-wrap');
+    const ring = wrap?.querySelector('.story-ring');
+    if (!wrap || !ring) return;
+    wrap.classList.add('viewed');
+    ring.classList.add('viewed');
+    void ring.offsetWidth;
   }
 
-  function applyViewedState() {
-    const state = loadViewedState();
-    if (state.profile) {
-      document.querySelector('.profile-avatar-wrap')?.classList.add('viewed');
-    }
-    Object.keys(state.stories || {}).forEach((key) => {
-      document.querySelector(`.story[data-story="${key}"]`)?.classList.add('viewed');
+  function bindTap(el, handler) {
+    el.addEventListener('pointerup', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      handler(e);
     });
   }
-
-  applyViewedState();
 
   const viewportMeta = document.getElementById('viewportMeta');
   const DEFAULT_VIEWPORT = viewportMeta?.content || '';
@@ -416,8 +401,15 @@
     showStoryAt(currentStoryIndex);
   }
 
+  function openStoryFromButton(storyEl) {
+    const key = storyEl.dataset.story;
+    if (!key) return;
+    markStoryViewed(key);
+    openStoryViewer(key);
+  }
+
   document.querySelectorAll('.story').forEach((story) => {
-    story.addEventListener('click', () => openStoryViewer(story.dataset.story));
+    bindTap(story, () => openStoryFromButton(story));
   });
 
   storyClose?.addEventListener('click', (e) => {
@@ -602,7 +594,7 @@
       markProfileViewed();
       openGalleryViewer(0, [profileImg.getAttribute('src')]);
     };
-    profileAvatarWrap.addEventListener('click', openProfilePhoto);
+    bindTap(profileAvatarWrap, openProfilePhoto);
     profileAvatarWrap.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
