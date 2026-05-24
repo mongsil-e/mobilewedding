@@ -48,6 +48,12 @@
     return String(n).padStart(2, '0');
   }
 
+  function getNow() {
+    const demo = new URLSearchParams(location.search).get('demo');
+    if (demo === 'wedding-day') return new Date(2026, 9, 4, 8, 0, 15);
+    return new Date();
+  }
+
   function startOfDay(date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
@@ -56,7 +62,7 @@
   function updateDDay() {
     const countEl = document.getElementById('ddayCount');
     const detailEl = document.getElementById('ddayCountdown');
-    const now = new Date();
+    const now = getNow();
     const today = startOfDay(now);
     const weddingDay = startOfDay(WEDDING_DAY);
     const dayDiff = Math.round((weddingDay - today) / 86400000);
