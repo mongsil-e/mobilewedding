@@ -6,7 +6,9 @@ Instagram UI 스타일의 모바일 전용 웨딩 초대장입니다.
 
 ## 라이브 사이트
 
-**https://mongsil-e.github.io/mobilewedding/**
+**https://ohmywedding.love**
+
+(기존: https://mongsil-e.github.io/mobilewedding/)
 
 ## 주요 기능
 
