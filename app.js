@@ -4,11 +4,11 @@
   const WEDDING_AT = new Date(2026, 9, 4, 10, 30, 0);
 
   const STORY_IMAGES = {
-    hero: { src: 'images/hero.jpg', caption: 'Our Wedding Day 💍' },
-    'photo-1': { src: 'images/photo-1.jpg', caption: 'Our Moment ✨' },
-    'photo-2': { src: 'images/photo-2.jpg', caption: 'Together 🤍' },
-    'photo-3': { src: 'images/photo-3.jpg', caption: 'Memory 📸' },
-    'photo-4': { src: 'images/photo-4.jpg', caption: 'Forever ♾️' },
+    hero: { src: 'images/profile/avatar.jpg', caption: 'Our Wedding Day 💍' },
+    'photo-1': { src: 'images/stories/02-moment.jpg', caption: 'Our Moment ✨' },
+    'photo-2': { src: 'images/stories/03-together.jpg', caption: 'Together 🤍' },
+    'photo-3': { src: 'images/stories/04-memory.jpg', caption: 'Memory 📸' },
+    'photo-4': { src: 'images/stories/05-forever.jpg', caption: 'Forever ♾️' },
   };
 
   // Scroll reveal
