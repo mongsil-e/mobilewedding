@@ -346,6 +346,15 @@ body {
   object-fit: cover;
 }
 
+.post-media--map {
+  aspect-ratio: auto;
+}
+
+.post-media--map img {
+  height: auto;
+  object-fit: contain;
+}
+
 .post-media.is-empty .map-empty {
   display: flex;
 }
@@ -693,6 +702,30 @@ body.gallery-open {
 
 .transport strong {
   color: var(--ig-text);
+}
+
+.transport-section {
+  margin-top: 14px;
+}
+
+.transport-section:first-of-type {
+  margin-top: 8px;
+}
+
+.transport-steps {
+  margin-top: 6px;
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
+.transport-steps li {
+  margin-top: 4px;
+}
+
+.transport-note {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .post-time {
