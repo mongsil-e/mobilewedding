@@ -365,13 +365,21 @@ body {
 }
 
 .post-media--text {
-  aspect-ratio: auto;
+  aspect-ratio: 1;
   padding: 32px 24px;
-  background: var(--ig-gradient);
+  background-color: #262626;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.42)),
+    url('images/background/invitation.jpg');
+  background-size: cover;
+  background-position: center;
   color: #fff;
   text-align: center;
   font-size: 15px;
   line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .post-signature {
