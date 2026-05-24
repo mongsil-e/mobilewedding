@@ -242,6 +242,16 @@
   let touchStartY = 0;
   let touchStartX = 0;
   let isDragging = false;
+  let suppressStoryClick = false;
+
+  function handleStoryNavigation(clientX) {
+    const ratio = clientX / window.innerWidth;
+    if (ratio < 0.5) {
+      if (currentStoryIndex > 0) showStoryAt(currentStoryIndex - 1);
+      return;
+    }
+    if (currentStoryIndex < STORY_ORDER.length - 1) showStoryAt(currentStoryIndex + 1);
+  }
 
   function buildStoryBars() {
     if (!storyBars) return;
@@ -369,7 +379,16 @@
     story.addEventListener('click', () => openStoryViewer(story.dataset.story));
   });
 
-  storyClose?.addEventListener('click', closeStoryViewer);
+  storyClose?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeStoryViewer();
+  });
+
+  viewer?.addEventListener('click', (e) => {
+    if (viewer.hidden || suppressStoryClick || isDragging) return;
+    if (e.target.closest('#storyClose')) return;
+    handleStoryNavigation(e.clientX);
+  });
 
   viewer?.addEventListener('touchstart', (e) => {
     if (viewer.hidden) return;
@@ -393,11 +412,23 @@
 
   viewer?.addEventListener('touchend', (e) => {
     if (viewer.hidden) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
+
     if (isDragging && dy >= SWIPE_CLOSE_THRESHOLD) {
       closeStoryViewer();
+      isDragging = false;
       return;
     }
+
+    if (!isDragging && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
+      suppressStoryClick = true;
+      handleStoryNavigation(e.changedTouches[0].clientX);
+      setTimeout(() => { suppressStoryClick = false; }, 400);
+      isDragging = false;
+      return;
+    }
+
     resetViewerTransform();
     if (isDragging) startStoryProgress();
     isDragging = false;

@@ -899,24 +899,24 @@ body.story-open {
 
 .story-viewer-content {
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  padding: 16px;
+  padding: 0;
   touch-action: none;
 }
 
 .story-viewer-content img,
 .story-image {
+  flex: 1;
   width: 100%;
-  max-width: 100%;
-  max-height: 75vh;
-  min-height: 240px;
+  min-height: 0;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  border-radius: 4px;
+  border-radius: 0;
   touch-action: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -925,8 +925,10 @@ body.story-open {
 }
 
 .story-viewer-content p {
+  flex-shrink: 0;
   color: #fff;
-  margin-top: 16px;
+  margin: 0;
+  padding: 10px 16px calc(12px + var(--safe-bottom));
   font-size: 14px;
   text-align: center;
   user-select: none;
