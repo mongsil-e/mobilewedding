@@ -350,6 +350,11 @@ body {
   aspect-ratio: auto;
 }
 
+.post-media--map.post-media--clickable {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
 .post-media--map img {
   height: auto;
   object-fit: contain;

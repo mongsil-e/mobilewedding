@@ -450,6 +450,8 @@
     .map((img) => img.getAttribute('src'))
     .filter(Boolean);
 
+  let activeGalleryImages = galleryImages;
+
   let galleryIndex = 0;
   let galleryDragOffset = 0;
   let galleryTouchStartX = 0;
@@ -457,15 +459,15 @@
   let galleryGesture = null;
   let galleryBlockClick = false;
 
-  function buildGalleryTrack() {
+  function buildGalleryTrack(images) {
     if (!galleryTrack) return;
-    galleryTrack.innerHTML = galleryImages.map(
+    galleryTrack.innerHTML = images.map(
       (src) => `<div class="gallery-slide"><img src="${src}" alt="" draggable="false" loading="lazy" decoding="async"></div>`
     ).join('');
   }
 
   function clampGalleryIndex(index) {
-    return Math.max(0, Math.min(index, galleryImages.length - 1));
+    return Math.max(0, Math.min(index, activeGalleryImages.length - 1));
   }
 
   function setGalleryTransform(animate) {
@@ -473,7 +475,7 @@
     galleryTrack.classList.toggle('is-dragging', !animate);
     galleryTrack.style.transform = `translateX(calc(-${galleryIndex * 100}% + ${galleryDragOffset}px))`;
     if (galleryCounter) {
-      galleryCounter.textContent = `${galleryIndex + 1} / ${galleryImages.length}`;
+      galleryCounter.textContent = `${galleryIndex + 1} / ${activeGalleryImages.length}`;
     }
   }
 
@@ -500,9 +502,10 @@
     setGalleryTransform(animate);
   }
 
-  function openGalleryViewer(index) {
-    if (!galleryViewer || !galleryImages.length) return;
-    buildGalleryTrack();
+  function openGalleryViewer(index, images = galleryImages) {
+    if (!galleryViewer || !images.length) return;
+    activeGalleryImages = images;
+    buildGalleryTrack(activeGalleryImages);
     galleryViewer.hidden = false;
     document.body.style.overflow = 'hidden';
     document.body.classList.add('gallery-open');
@@ -513,6 +516,7 @@
   }
 
   function shiftGallery(step) {
+    if (activeGalleryImages.length <= 1) return;
     showGalleryAt(galleryIndex + step);
   }
 
@@ -529,10 +533,27 @@
     });
   });
 
+  const locationMapMedia = document.querySelector('.post-media--map:not(.is-empty)');
+  const locationMapImg = locationMapMedia?.querySelector('img');
+  if (locationMapMedia && locationMapImg?.getAttribute('src')) {
+    locationMapMedia.classList.add('post-media--clickable');
+    locationMapMedia.setAttribute('role', 'button');
+    locationMapMedia.setAttribute('tabindex', '0');
+    locationMapMedia.setAttribute('aria-label', '약도 크게 보기');
+    const openLocationMap = () => openGalleryViewer(0, [locationMapImg.getAttribute('src')]);
+    locationMapMedia.addEventListener('click', openLocationMap);
+    locationMapMedia.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLocationMap();
+      }
+    });
+  }
+
   galleryClose?.addEventListener('click', closeGalleryViewer);
 
   galleryStage?.addEventListener('click', (e) => {
-    if (galleryViewer.hidden || galleryBlockClick) return;
+    if (galleryViewer.hidden || galleryBlockClick || activeGalleryImages.length <= 1) return;
     const ratio = e.clientX / window.innerWidth;
     if (ratio < 0.35) shiftGallery(-1);
     else if (ratio > 0.65) shiftGallery(1);
@@ -558,7 +579,7 @@
 
     if (galleryGesture === 'horizontal') {
       const atStart = galleryIndex === 0 && dx > 0;
-      const atEnd = galleryIndex === galleryImages.length - 1 && dx < 0;
+      const atEnd = galleryIndex === activeGalleryImages.length - 1 && dx < 0;
       galleryDragOffset = atStart || atEnd ? dx * 0.35 : dx;
       setGalleryTransform(false);
       return;
