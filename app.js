@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const WEDDING_DATE = new Date(2026, 9, 4);
+  const WEDDING_AT = new Date(2026, 9, 4, 10, 30, 0);
 
   const STORY_IMAGES = {
     hero: { src: 'images/hero.jpg', caption: 'Our Wedding Day 💍' },
@@ -24,9 +24,9 @@
     const grid = document.getElementById('calendarGrid');
     if (!grid) return;
 
-    const year = 2026;
-    const month = 9;
-    const weddingDay = 4;
+    const year = WEDDING_AT.getFullYear();
+    const month = WEDDING_AT.getMonth();
+    const weddingDay = WEDDING_AT.getDate();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -43,20 +43,49 @@
     grid.innerHTML = html;
   }
 
-  // D-Day
+  function pad(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  // D-Day (실시간 갱신)
   function updateDDay() {
-    const el = document.getElementById('ddayCount');
-    if (!el) return;
+    const countEl = document.getElementById('ddayCount');
+    const detailEl = document.getElementById('ddayCountdown');
+    const now = new Date();
+    const diffMs = WEDDING_AT - now;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const target = new Date(WEDDING_DATE);
-    target.setHours(0, 0, 0, 0);
-    const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+    if (diffMs > 0) {
+      const days = Math.floor(diffMs / 86400000);
+      const hours = Math.floor((diffMs % 86400000) / 3600000);
+      const mins = Math.floor((diffMs % 3600000) / 60000);
+      const secs = Math.floor((diffMs % 60000) / 1000);
 
-    if (diff > 0) el.textContent = `D-${diff}`;
-    else if (diff === 0) el.textContent = 'Today';
-    else el.textContent = `D+${Math.abs(diff)}`;
+      if (countEl) countEl.textContent = days > 0 ? `D-${days}` : 'Today';
+      if (detailEl) {
+        detailEl.textContent = days > 0
+          ? `${days}일 ${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`
+          : `${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`;
+      }
+      return;
+    }
+
+    const pastMs = Math.abs(diffMs);
+    const days = Math.floor(pastMs / 86400000);
+
+    if (countEl) countEl.textContent = days > 0 ? `D+${days}` : 'Today';
+    if (detailEl) {
+      detailEl.textContent = days > 0
+        ? `결혼식 후 ${days}일`
+        : '오늘은 결혼식 날입니다 💍';
+    }
+  }
+
+  function startDDayTimer() {
+    updateDDay();
+    setInterval(updateDDay, 1000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) updateDDay();
+    });
   }
 
   // Toast
@@ -165,5 +194,5 @@
   });
 
   buildCalendar();
-  updateDDay();
+  startDDayTimer();
 })();

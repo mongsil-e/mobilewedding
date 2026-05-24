@@ -401,6 +401,15 @@ body {
   color: var(--ig-text-secondary);
 }
 
+.card-countdown {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ig-link);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Calendar ── */
 .calendar-header {
   display: grid;
