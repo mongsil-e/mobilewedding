@@ -1,63 +1,96 @@
 # 사진 넣는 방법
 
-아래 폴더에 **jpg** 파일을 넣고 git push 하면 사이트에 반영됩니다.
+아래 폴더에 **jpg** 또는 **png** 파일을 넣고 git push 하면 사이트에 반영됩니다.  
+파일명을 바꿨다면 `index.html`·`app.js`의 경로도 함께 수정하세요.
 
 ---
 
-## `profile/avatar.jpg`
+## `profile/`
 
-**대표 커플 사진** — 가장 많이 쓰이는 사진입니다.
-
-| 적용 위치 |
-|-----------|
-| 프로필 큰 원형 사진 |
-| 모든 게시물 왼쪽 작은 프로필 |
-| 하단 탭 맨 오른쪽 아이콘 |
-| 스토리 맨 왼쪽 **Our Day** |
-
-> 권장: 1:1 정사각형, 얼굴/상반신이 잘 보이는 사진
-
----
-
-## `stories/` — 상단 스토리 동그라미 (탭하면 크게)
-
-| 파일 | 스토리 이름 | 설명 |
-|------|-------------|------|
-| `02-moment.jpg` | Moment | 두 번째 동그라미 |
-| `03-together.jpg` | Together | 세 번째 동그라미 |
-| `04-memory.jpg` | Memory | 네 번째 동그라미 |
-| `05-forever.jpg` | Forever | 다섯 번째 동그라미 |
-
-> Our Day는 `profile/avatar.jpg`와 같은 사진을 사용합니다.
-
----
-
-## `gallery/` — 갤러리 그리드 4칸
-
-```
-┌──────┬──────┐
-│ 01   │  02  │
-├──────┼──────┤
-│ 03   │  04  │
-└──────┴──────┘
-```
-
-| 파일 | 위치 |
+| 파일 | 용도 |
 |------|------|
-| `01.jpg` | 왼쪽 위 |
-| `02.jpg` | 오른쪽 위 |
-| `03.jpg` | 왼쪽 아래 |
-| `04.jpg` | 오른쪽 아래 |
+| `mochung-full.jpg` | 프로필 큰 원형 사진, 탭 시 전체화면 확대 |
+| `mochung.jpg` | 게시물·하단 탭 등 작은 아바타 |
 
-> 권장: 1:1 정사각형
+> 권장: 1:1 정사각형. 큰 사진은 1448px 이하로 압축해 두면 로딩이 빠릅니다.
 
 ---
 
-## `location/map.jpg`
+## `stories/`
 
-**오시는 길** 섹션에 표시되는 약도 또는 식장 사진
+스토리 뷰어에 쓰이는 원본 사진입니다.
 
-> 권장: 가로형 (16:9 또는 4:3), 네이버/카카오맵 캡처 또는 식장 전경
+| 파일 | 스토리 이름 |
+|------|-------------|
+| `ourday.jpg` | Our Day |
+| `moment.jpg` | Moment |
+| `together.jpg` | Together |
+| `memory.jpg` | Memory |
+| `foever.jpg` | Forever |
+
+### `stories/thumbs/`
+
+상단 스토리 동그라미 썸네일. 원본과 같은 이름으로 `thumbs/`에 넣습니다.
+
+| 파일 | 스토리 |
+|------|--------|
+| `ourday.jpg` | Our Day |
+| `moment.jpg` | Moment |
+| `together.jpg` | Together |
+| `memory.jpg` | Memory |
+| `foever.jpg` | Forever |
+
+> 썸네일은 작은 정사각형(약 200px)이면 충분합니다.
+
+---
+
+## `gallery/`
+
+갤러리 그리드 6칸. `index.html`의 `profile-grid`에 연결된 파일명과 일치해야 합니다.
+
+현재 사용 중:
+
+- `DSCF0614 복사.jpg`
+- `DSCF0668 복사.jpg`
+- `DSCF2591 복사.jpg`
+- `DSCF3804.jpg`
+- `DSCF3860 복사.jpg`
+- `7725.jpg`
+
+> 권장: 1:1 정사각형, 장변 1200px 이하
+
+---
+
+## `location/`
+
+| 파일 | 용도 |
+|------|------|
+| `map_20230602_131012.jpg` | 오시는 길 약도 (탭 시 전체화면 확대) |
+
+> 권장: 가로형 (16:9 또는 4:3)
+
+---
+
+## `background/`
+
+| 파일 | 용도 |
+|------|------|
+| `invitation.jpg` | 초대 게시물 배경 (CSS에서 사용) |
+
+---
+
+## `icons/`
+
+| 파일 | 용도 |
+|------|------|
+| `navermap.png` | 네이버 지도 버튼 아이콘 |
+| `kakaomap.png` | 카카오맵 버튼 아이콘 |
+
+Google Play 앱 아이콘을 다시 받으려면:
+
+```bash
+python scripts/fetch_map_icons.py
+```
 
 ---
 
@@ -66,17 +99,23 @@
 ```
 images/
 ├── profile/
-│   └── avatar.jpg      ← 대표 사진
+│   ├── mochung-full.jpg
+│   └── mochung.jpg
 ├── stories/
-│   ├── 02-moment.jpg
-│   ├── 03-together.jpg
-│   ├── 04-memory.jpg
-│   └── 05-forever.jpg
+│   ├── ourday.jpg
+│   ├── moment.jpg
+│   ├── together.jpg
+│   ├── memory.jpg
+│   ├── foever.jpg
+│   └── thumbs/
+│       └── (위와 동일한 5개 썸네일)
 ├── gallery/
-│   ├── 01.jpg
-│   ├── 02.jpg
-│   ├── 03.jpg
-│   └── 04.jpg
-└── location/
-    └── map.jpg         ← 약도
+│   └── (6장)
+├── location/
+│   └── map_20230602_131012.jpg
+├── background/
+│   └── invitation.jpg
+└── icons/
+    ├── navermap.png
+    └── kakaomap.png
 ```
