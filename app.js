@@ -1,7 +1,8 @@
 (function () {
   'use strict';
 
-  const WEDDING_AT = new Date(2026, 9, 4, 10, 30, 0);
+  const WEDDING_DAY = new Date(2026, 9, 4);
+  const CEREMONY_AT = new Date(2026, 9, 4, 10, 30, 0);
 
   const STORY_IMAGES = {
     hero: { src: 'images/profile/avatar.jpg', caption: 'Our Wedding Day 💍' },
@@ -24,9 +25,9 @@
     const grid = document.getElementById('calendarGrid');
     if (!grid) return;
 
-    const year = WEDDING_AT.getFullYear();
-    const month = WEDDING_AT.getMonth();
-    const weddingDay = WEDDING_AT.getDate();
+    const year = WEDDING_DAY.getFullYear();
+    const month = WEDDING_DAY.getMonth();
+    const weddingDay = WEDDING_DAY.getDate();
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -47,37 +48,53 @@
     return String(n).padStart(2, '0');
   }
 
-  // D-Day (실시간 갱신)
+  function startOfDay(date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  // D-Day: 날짜는 00시 기준, 당일만 예식까지 시·분·초 카운트다운
   function updateDDay() {
     const countEl = document.getElementById('ddayCount');
     const detailEl = document.getElementById('ddayCountdown');
     const now = new Date();
-    const diffMs = WEDDING_AT - now;
+    const today = startOfDay(now);
+    const weddingDay = startOfDay(WEDDING_DAY);
+    const dayDiff = Math.round((weddingDay - today) / 86400000);
 
-    if (diffMs > 0) {
-      const days = Math.floor(diffMs / 86400000);
-      const hours = Math.floor((diffMs % 86400000) / 3600000);
-      const mins = Math.floor((diffMs % 3600000) / 60000);
-      const secs = Math.floor((diffMs % 60000) / 1000);
+    if (dayDiff > 0) {
+      const untilCeremony = CEREMONY_AT - now;
+      const days = Math.floor(untilCeremony / 86400000);
+      const hours = Math.floor((untilCeremony % 86400000) / 3600000);
+      const mins = Math.floor((untilCeremony % 3600000) / 60000);
+      const secs = Math.floor((untilCeremony % 60000) / 1000);
 
-      if (countEl) countEl.textContent = days > 0 ? `D-${days}` : 'Today';
+      if (countEl) countEl.textContent = `D-${dayDiff}`;
       if (detailEl) {
-        detailEl.textContent = days > 0
-          ? `${days}일 ${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`
-          : `${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`;
+        detailEl.textContent = `${days}일 ${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`;
       }
       return;
     }
 
-    const pastMs = Math.abs(diffMs);
-    const days = Math.floor(pastMs / 86400000);
+    if (dayDiff === 0) {
+      const untilCeremony = CEREMONY_AT - now;
 
-    if (countEl) countEl.textContent = days > 0 ? `D+${days}` : 'Today';
-    if (detailEl) {
-      detailEl.textContent = days > 0
-        ? `결혼식 후 ${days}일`
-        : '오늘은 결혼식 날입니다 💍';
+      if (countEl) countEl.textContent = 'D-Day';
+      if (detailEl) {
+        if (untilCeremony > 0) {
+          const hours = Math.floor(untilCeremony / 3600000);
+          const mins = Math.floor((untilCeremony % 3600000) / 60000);
+          const secs = Math.floor((untilCeremony % 60000) / 1000);
+          detailEl.textContent = `${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`;
+        } else {
+          detailEl.textContent = '오늘은 결혼식 날입니다 💍';
+        }
+      }
+      return;
     }
+
+    const daysPast = Math.abs(dayDiff);
+    if (countEl) countEl.textContent = `D+${daysPast}`;
+    if (detailEl) detailEl.textContent = `결혼식 후 ${daysPast}일`;
   }
 
   function startDDayTimer() {

@@ -38,4 +38,4 @@ git push origin main
 ## 내용 수정
 
 - `index.html` — 이름, 날짜, 예식장, 계좌번호
-- `app.js` — `WEDDING_AT` 결혼 일시
+- `app.js` — `WEDDING_DAY`, `CEREMONY_AT` 결혼 일시
