@@ -721,6 +721,8 @@ body.gallery-open {
   text-decoration: none;
   color: var(--ig-text);
   white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 

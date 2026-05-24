@@ -685,6 +685,17 @@
     if (e.key === 'ArrowRight') shiftGallery(1);
   });
 
+  const transportToggle = document.getElementById('transportToggle');
+  const transportPanel = document.getElementById('transportPanel');
+  if (transportToggle && transportPanel) {
+    bindTap(transportToggle, () => {
+      const open = transportPanel.hidden;
+      transportPanel.hidden = !open;
+      transportToggle.setAttribute('aria-expanded', String(open));
+      transportToggle.classList.toggle('is-active', open);
+    });
+  }
+
   buildCalendar();
   startDDayTimer();
   document.addEventListener('visibilitychange', () => {
