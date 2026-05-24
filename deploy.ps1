@@ -30,5 +30,5 @@ gh api repos/mongsil-e/mobilewedding/pages -X POST -f build_type=workflow 2>$nul
 
 Write-Host ""
 Write-Host "배포 완료!" -ForegroundColor Green
-Write-Host "사이트 URL: https://mongsil-e.github.io/mobilewedding/" -ForegroundColor Green
+Write-Host "사이트 URL: https://ohmywedding.love" -ForegroundColor Green
 Write-Host "Actions 확인: https://github.com/mongsil-e/mobilewedding/actions" -ForegroundColor Gray
