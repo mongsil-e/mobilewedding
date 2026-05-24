@@ -48,10 +48,27 @@
     return String(n).padStart(2, '0');
   }
 
+  let ddayTimerId = null;
+  let demoAnchor = null;
+
   function getNow() {
     const demo = new URLSearchParams(location.search).get('demo');
-    if (demo === 'wedding-day') return new Date(2026, 9, 4, 8, 0, 15);
+    if (demo === 'wedding-day') {
+      if (!demoAnchor) {
+        demoAnchor = {
+          real: Date.now(),
+          sim: new Date(2026, 9, 4, 8, 0, 15).getTime(),
+        };
+      }
+      return new Date(demoAnchor.sim + (Date.now() - demoAnchor.real));
+    }
     return new Date();
+  }
+
+  function setCountdownText(text) {
+    document.querySelectorAll('#ddayLive, #ddayCountdown').forEach((el) => {
+      if (el) el.textContent = text;
+    });
   }
 
   function startOfDay(date) {
@@ -61,7 +78,6 @@
   // D-Day: 날짜는 00시 기준, 당일만 예식까지 시·분·초 카운트다운
   function updateDDay() {
     const countEl = document.getElementById('ddayCount');
-    const detailEl = document.getElementById('ddayCountdown');
     const now = getNow();
     const today = startOfDay(now);
     const weddingDay = startOfDay(WEDDING_DAY);
@@ -75,9 +91,7 @@
       const secs = Math.floor((untilCeremony % 60000) / 1000);
 
       if (countEl) countEl.textContent = `D-${dayDiff}`;
-      if (detailEl) {
-        detailEl.textContent = `${days}일 ${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`;
-      }
+      setCountdownText(`${days}일 ${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`);
       return;
     }
 
@@ -85,30 +99,26 @@
       const untilCeremony = CEREMONY_AT - now;
 
       if (countEl) countEl.textContent = 'D-Day';
-      if (detailEl) {
-        if (untilCeremony > 0) {
-          const hours = Math.floor(untilCeremony / 3600000);
-          const mins = Math.floor((untilCeremony % 3600000) / 60000);
-          const secs = Math.floor((untilCeremony % 60000) / 1000);
-          detailEl.textContent = `${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`;
-        } else {
-          detailEl.textContent = '오늘은 결혼식 날입니다 💍';
-        }
+      if (untilCeremony > 0) {
+        const hours = Math.floor(untilCeremony / 3600000);
+        const mins = Math.floor((untilCeremony % 3600000) / 60000);
+        const secs = Math.floor((untilCeremony % 60000) / 1000);
+        setCountdownText(`${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`);
+      } else {
+        setCountdownText('오늘은 결혼식 날입니다 💍');
       }
       return;
     }
 
     const daysPast = Math.abs(dayDiff);
     if (countEl) countEl.textContent = `D+${daysPast}`;
-    if (detailEl) detailEl.textContent = `결혼식 후 ${daysPast}일`;
+    setCountdownText(`결혼식 후 ${daysPast}일`);
   }
 
   function startDDayTimer() {
+    if (ddayTimerId) clearInterval(ddayTimerId);
     updateDDay();
-    setInterval(updateDDay, 1000);
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) updateDDay();
-    });
+    ddayTimerId = setInterval(updateDDay, 1000);
   }
 
   // Toast
@@ -127,7 +137,7 @@
     const data = {
       title: '영건 ♥ 지혜 결혼식에 초대합니다',
       text: '2026년 10월 4일, 저희 결혼식에 초대합니다.',
-      url: window.location.href,
+      url: location.origin + location.pathname,
     };
     if (navigator.share) {
       try {
@@ -218,4 +228,8 @@
 
   buildCalendar();
   startDDayTimer();
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) updateDDay();
+  });
+  window.addEventListener('pageshow', () => startDDayTimer());
 })();

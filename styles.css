@@ -198,6 +198,14 @@ body {
   color: var(--ig-text);
 }
 
+.profile-countdown {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ig-link);
+  font-variant-numeric: tabular-nums;
+}
+
 .profile-actions {
   display: flex;
   gap: 8px;
