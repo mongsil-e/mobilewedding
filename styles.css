@@ -601,48 +601,35 @@ body {
   margin-bottom: 16px;
 }
 
-.account-tabs {
+.account-list {
   display: flex;
-  border: 1px solid var(--ig-border);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-
-.account-tab {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background: var(--ig-surface);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ig-text-secondary);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.account-tab.active {
-  background: var(--ig-link);
-  color: #fff;
-}
-
-.account-panel {
-  display: none;
-}
-
-.account-panel.active {
-  display: block;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .account-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
   padding: 14px 16px;
   background: var(--ig-surface);
   border: 1px solid var(--ig-border);
   border-radius: 8px;
+}
+
+.account-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ig-link);
+  white-space: nowrap;
+}
+
+.account-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .account-bank {
@@ -655,7 +642,6 @@ body {
   display: block;
   font-size: 16px;
   font-weight: 600;
-  margin: 2px 0;
   font-variant-numeric: tabular-nums;
 }
 
@@ -675,6 +661,7 @@ body {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
 }
 

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const WEDDING_DATE = new Date(2026, 5, 14);
+  const WEDDING_DATE = new Date(2026, 9, 4);
 
   const STORY_IMAGES = {
     hero: { src: 'images/hero.jpg', caption: 'Our Wedding Day 💍' },
@@ -25,8 +25,8 @@
     if (!grid) return;
 
     const year = 2026;
-    const month = 5;
-    const weddingDay = 14;
+    const month = 9;
+    const weddingDay = 4;
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -73,8 +73,8 @@
   // Share
   async function shareInvitation() {
     const data = {
-      title: '민수 ♥ 지은 결혼식에 초대합니다',
-      text: '2026년 6월 14일, 저희 결혼식에 초대합니다.',
+      title: '영건 ♥ 지혜 결혼식에 초대합니다',
+      text: '2026년 10월 4일, 저희 결혼식에 초대합니다.',
       url: window.location.href,
     };
     if (navigator.share) {
@@ -113,20 +113,6 @@
         heart.setAttribute('fill', liked ? '#ed4956' : 'none');
         heart.setAttribute('stroke', liked ? '#ed4956' : 'currentColor');
       }
-    });
-  });
-
-  // Account tabs
-  document.querySelectorAll('.account-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.account-tab').forEach((t) => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      document.querySelectorAll('.account-panel').forEach((p) => p.classList.remove('active'));
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-      document.getElementById(`panel-${tab.dataset.tab}`)?.classList.add('active');
     });
   });
 
