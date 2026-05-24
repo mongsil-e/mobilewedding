@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="viewport" id="viewportMeta" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <div class="app">
@@ -345,18 +345,29 @@
     </nav>
   </div>
 
+  <!-- Gallery Viewer -->
+  <div class="gallery-viewer" id="galleryViewer" hidden>
+    <div class="gallery-header">
+      <span class="gallery-counter" id="galleryCounter">1 / 6</span>
+      <button class="gallery-close" id="galleryClose" aria-label="닫기">✕</button>
+    </div>
+    <div class="gallery-stage" id="galleryStage">
+      <div class="gallery-track" id="galleryTrack"></div>
+    </div>
+  </div>
+
   <!-- Story Viewer -->
   <div class="story-viewer" id="storyViewer" hidden>
     <div class="story-viewer-bars" id="storyBars" aria-hidden="true"></div>
     <button class="story-close" id="storyClose" aria-label="닫기">✕</button>
     <div class="story-viewer-content" id="storyViewerContent">
-      <img id="storyImage" src="" alt="" draggable="false">
+      <div id="storyImage" class="story-image" role="img" aria-hidden="true"></div>
       <p id="storyCaption"></p>
     </div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

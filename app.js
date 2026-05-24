@@ -196,9 +196,43 @@
   const STORY_DURATION = 5000;
   const SWIPE_CLOSE_THRESHOLD = 80;
 
+  const viewportMeta = document.getElementById('viewportMeta');
+  const DEFAULT_VIEWPORT = viewportMeta?.content || '';
+  let zoomLockCount = 0;
+  let storyBarFills = [];
+
+  function onPinchTouchMove(e) {
+    if (e.touches.length > 1) e.preventDefault();
+  }
+
+  function onGesture(e) {
+    e.preventDefault();
+  }
+
+  function enableZoomLock() {
+    zoomLockCount += 1;
+    if (zoomLockCount > 1) return;
+    if (viewportMeta) {
+      viewportMeta.content = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no';
+    }
+    document.addEventListener('touchmove', onPinchTouchMove, { passive: false });
+    document.addEventListener('gesturestart', onGesture, { passive: false });
+    document.addEventListener('gesturechange', onGesture, { passive: false });
+    document.addEventListener('gestureend', onGesture, { passive: false });
+  }
+
+  function disableZoomLock() {
+    zoomLockCount = Math.max(0, zoomLockCount - 1);
+    if (zoomLockCount > 0) return;
+    if (viewportMeta) viewportMeta.content = DEFAULT_VIEWPORT;
+    document.removeEventListener('touchmove', onPinchTouchMove);
+    document.removeEventListener('gesturestart', onGesture);
+    document.removeEventListener('gesturechange', onGesture);
+    document.removeEventListener('gestureend', onGesture);
+  }
+
   const viewer = document.getElementById('storyViewer');
   const storyBars = document.getElementById('storyBars');
-  const storyViewerContent = document.getElementById('storyViewerContent');
   const storyImg = document.getElementById('storyImage');
   const storyCaption = document.getElementById('storyCaption');
   const storyClose = document.getElementById('storyClose');
@@ -214,18 +248,38 @@
     storyBars.innerHTML = STORY_ORDER.map(
       () => '<div class="story-bar"><span class="story-bar-fill"></span></div>'
     ).join('');
+    storyBarFills = [...storyBars.querySelectorAll('.story-bar-fill')];
   }
 
   function updateStoryBars(index, progress) {
-    document.querySelectorAll('.story-bar-fill').forEach((fill, i) => {
-      if (i < index) {
-        fill.style.transform = 'scaleX(1)';
-      } else if (i === index) {
-        fill.style.transform = `scaleX(${progress})`;
-      } else {
-        fill.style.transform = 'scaleX(0)';
-      }
+    const pct = `${Math.max(0, Math.min(progress, 1)) * 100}%`;
+    storyBarFills.forEach((fill, i) => {
+      if (i < index) fill.style.width = '100%';
+      else if (i === index) fill.style.width = pct;
+      else fill.style.width = '0%';
     });
+  }
+
+  function loadStoryImage(src) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => resolve(src);
+      img.onerror = reject;
+      img.src = src;
+    });
+  }
+
+  function clearStoryImage() {
+    if (!storyImg) return;
+    storyImg.style.display = 'none';
+    storyImg.style.backgroundImage = '';
+  }
+
+  function setStoryImage(src) {
+    if (!storyImg) return;
+    storyImg.style.backgroundImage = `url("${src}")`;
+    storyImg.style.display = 'block';
   }
 
   function cancelStoryProgress() {
@@ -247,8 +301,9 @@
     viewer.hidden = true;
     document.body.style.overflow = '';
     document.body.classList.remove('story-open');
+    disableZoomLock();
     resetViewerTransform();
-    if (storyImg) storyImg.src = '';
+    clearStoryImage();
   }
 
   function startStoryProgress() {
@@ -279,20 +334,23 @@
     const data = STORY_IMAGES[key];
     if (!data || !viewer) return;
 
+    cancelStoryProgress();
     updateStoryBars(index, 0);
     storyCaption.textContent = data.caption;
-    storyImg.style.display = 'none';
-    storyImg.onerror = () => {
-      storyImg.style.display = 'none';
-      storyCaption.textContent = `${data.caption} (사진을 추가해 주세요)`;
-      startStoryProgress();
-    };
-    storyImg.onload = () => {
-      storyImg.style.display = 'block';
-      startStoryProgress();
-    };
-    storyImg.src = data.src;
-    if (storyImg.complete) storyImg.onload();
+    clearStoryImage();
+
+    loadStoryImage(data.src)
+      .then((src) => {
+        if (currentStoryIndex !== index || viewer.hidden) return;
+        setStoryImage(src);
+        startStoryProgress();
+      })
+      .catch(() => {
+        if (currentStoryIndex !== index || viewer.hidden) return;
+        clearStoryImage();
+        storyCaption.textContent = `${data.caption} (사진을 추가해 주세요)`;
+        startStoryProgress();
+      });
   }
 
   function openStoryViewer(startKey) {
@@ -302,6 +360,7 @@
     viewer.hidden = false;
     document.body.style.overflow = 'hidden';
     document.body.classList.add('story-open');
+    enableZoomLock();
     resetViewerTransform();
     showStoryAt(currentStoryIndex);
   }
@@ -348,6 +407,178 @@
     if (viewer.hidden || e.deltaY <= 0) return;
     closeStoryViewer();
   }, { passive: true });
+
+  // Gallery viewer
+  const galleryViewer = document.getElementById('galleryViewer');
+  const galleryTrack = document.getElementById('galleryTrack');
+  const galleryStage = document.getElementById('galleryStage');
+  const galleryCounter = document.getElementById('galleryCounter');
+  const galleryClose = document.getElementById('galleryClose');
+
+  const galleryImages = [...document.querySelectorAll('.profile-grid .grid-item:not(.empty) img')]
+    .map((img) => img.getAttribute('src'))
+    .filter(Boolean);
+
+  let galleryIndex = 0;
+  let galleryDragOffset = 0;
+  let galleryTouchStartX = 0;
+  let galleryTouchStartY = 0;
+  let galleryGesture = null;
+  let galleryBlockClick = false;
+
+  function buildGalleryTrack() {
+    if (!galleryTrack) return;
+    galleryTrack.innerHTML = galleryImages.map(
+      (src) => `<div class="gallery-slide"><img src="${src}" alt="" draggable="false" loading="lazy" decoding="async"></div>`
+    ).join('');
+  }
+
+  function clampGalleryIndex(index) {
+    return Math.max(0, Math.min(index, galleryImages.length - 1));
+  }
+
+  function setGalleryTransform(animate) {
+    if (!galleryTrack) return;
+    galleryTrack.classList.toggle('is-dragging', !animate);
+    galleryTrack.style.transform = `translateX(calc(-${galleryIndex * 100}% + ${galleryDragOffset}px))`;
+    if (galleryCounter) {
+      galleryCounter.textContent = `${galleryIndex + 1} / ${galleryImages.length}`;
+    }
+  }
+
+  function resetGalleryTransform() {
+    if (!galleryViewer) return;
+    galleryViewer.style.transform = '';
+    galleryViewer.style.opacity = '';
+  }
+
+  function closeGalleryViewer() {
+    if (!galleryViewer) return;
+    galleryViewer.hidden = true;
+    document.body.style.overflow = '';
+    document.body.classList.remove('gallery-open');
+    disableZoomLock();
+    resetGalleryTransform();
+    galleryDragOffset = 0;
+    galleryGesture = null;
+  }
+
+  function showGalleryAt(index, animate = true) {
+    galleryIndex = clampGalleryIndex(index);
+    galleryDragOffset = 0;
+    setGalleryTransform(animate);
+  }
+
+  function openGalleryViewer(index) {
+    if (!galleryViewer || !galleryImages.length) return;
+    buildGalleryTrack();
+    galleryViewer.hidden = false;
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('gallery-open');
+    enableZoomLock();
+    resetGalleryTransform();
+    showGalleryAt(index, false);
+    requestAnimationFrame(() => setGalleryTransform(true));
+  }
+
+  function shiftGallery(step) {
+    showGalleryAt(galleryIndex + step);
+  }
+
+  document.querySelectorAll('.profile-grid .grid-item:not(.empty)').forEach((item, index) => {
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('aria-label', `사진 ${index + 1} 보기`);
+    item.addEventListener('click', () => openGalleryViewer(index));
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openGalleryViewer(index);
+      }
+    });
+  });
+
+  galleryClose?.addEventListener('click', closeGalleryViewer);
+
+  galleryStage?.addEventListener('click', (e) => {
+    if (galleryViewer.hidden || galleryBlockClick) return;
+    const ratio = e.clientX / window.innerWidth;
+    if (ratio < 0.35) shiftGallery(-1);
+    else if (ratio > 0.65) shiftGallery(1);
+  });
+
+  galleryViewer?.addEventListener('touchstart', (e) => {
+    if (galleryViewer.hidden) return;
+    galleryTouchStartX = e.touches[0].clientX;
+    galleryTouchStartY = e.touches[0].clientY;
+    galleryGesture = null;
+    galleryDragOffset = 0;
+  }, { passive: true });
+
+  galleryViewer?.addEventListener('touchmove', (e) => {
+    if (galleryViewer.hidden) return;
+    const dx = e.touches[0].clientX - galleryTouchStartX;
+    const dy = e.touches[0].clientY - galleryTouchStartY;
+
+    if (!galleryGesture) {
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) galleryGesture = 'horizontal';
+      else if (dy > 8 && Math.abs(dy) > Math.abs(dx)) galleryGesture = 'vertical';
+    }
+
+    if (galleryGesture === 'horizontal') {
+      const atStart = galleryIndex === 0 && dx > 0;
+      const atEnd = galleryIndex === galleryImages.length - 1 && dx < 0;
+      galleryDragOffset = atStart || atEnd ? dx * 0.35 : dx;
+      setGalleryTransform(false);
+      return;
+    }
+
+    if (galleryGesture === 'vertical' && dy > 0) {
+      galleryViewer.style.transform = `translateY(${dy}px)`;
+      galleryViewer.style.opacity = String(Math.max(0.35, 1 - dy / 280));
+    }
+  }, { passive: true });
+
+  galleryViewer?.addEventListener('touchend', (e) => {
+    if (galleryViewer.hidden) return;
+    const dx = e.changedTouches[0].clientX - galleryTouchStartX;
+    const dy = e.changedTouches[0].clientY - galleryTouchStartY;
+
+    if (galleryGesture === 'horizontal') {
+      if (dx <= -60) shiftGallery(1);
+      else if (dx >= 60) shiftGallery(-1);
+      else showGalleryAt(galleryIndex);
+      galleryBlockClick = true;
+      setTimeout(() => { galleryBlockClick = false; }, 300);
+      galleryGesture = null;
+      return;
+    }
+
+    if (galleryGesture === 'vertical' && dy >= SWIPE_CLOSE_THRESHOLD) {
+      closeGalleryViewer();
+      return;
+    }
+
+    resetGalleryTransform();
+    galleryGesture = null;
+  }, { passive: true });
+
+  galleryViewer?.addEventListener('wheel', (e) => {
+    if (galleryViewer.hidden) return;
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      if (e.deltaX > 0) shiftGallery(1);
+      else shiftGallery(-1);
+      return;
+    }
+    if (e.deltaY > 0) closeGalleryViewer();
+  }, { passive: true });
+
+  document.addEventListener('keydown', (e) => {
+    if (galleryViewer?.hidden) return;
+    if (e.key === 'Escape') closeGalleryViewer();
+    if (e.key === 'ArrowLeft') shiftGallery(-1);
+    if (e.key === 'ArrowRight') shiftGallery(1);
+  });
 
   buildCalendar();
   startDDayTimer();
