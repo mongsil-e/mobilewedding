@@ -1,0 +1,856 @@
+/* Instagram-style Mobile Wedding Invitation */
+
+:root {
+  --ig-bg: #fafafa;
+  --ig-surface: #ffffff;
+  --ig-text: #262626;
+  --ig-text-secondary: #8e8e8e;
+  --ig-border: #dbdbdb;
+  --ig-link: #0095f6;
+  --ig-like: #ed4956;
+  --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --header-h: 44px;
+  --tabbar-h: 50px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--ig-bg);
+  color: var(--ig-text);
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: 430px;
+  margin: 0 auto;
+  background: var(--ig-bg);
+  min-height: 100dvh;
+  padding-bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 8px);
+}
+
+/* ── Header ── */
+.ig-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(var(--header-h) + var(--safe-top));
+  padding: var(--safe-top) 16px 0;
+  background: var(--ig-surface);
+  border-bottom: 1px solid var(--ig-border);
+}
+
+.ig-logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.ig-icon-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--ig-text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Stories ── */
+.stories {
+  background: var(--ig-surface);
+  border-bottom: 1px solid var(--ig-border);
+  padding: 12px 0;
+}
+
+.stories-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 0 16px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.stories-track::-webkit-scrollbar {
+  display: none;
+}
+
+.story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  width: 72px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.story-ring {
+  display: flex;
+  padding: 2.5px;
+  border-radius: 50%;
+  background: var(--ig-gradient);
+}
+
+.story-ring--lg {
+  padding: 3px;
+}
+
+.story-thumb {
+  display: block;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2.5px solid var(--ig-surface);
+  background: #efefef;
+}
+
+.story-thumb--lg {
+  width: 86px;
+  height: 86px;
+}
+
+.story-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.story-thumb.empty {
+  background: linear-gradient(135deg, #efefef, #dbdbdb);
+}
+
+.story-label {
+  font-size: 11px;
+  color: var(--ig-text);
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Profile ── */
+.profile {
+  background: var(--ig-surface);
+  padding: 16px;
+  border-bottom: 1px solid var(--ig-border);
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.profile-stats {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.stat span {
+  font-size: 12px;
+  color: var(--ig-text-secondary);
+}
+
+.profile-info {
+  margin-top: 12px;
+}
+
+.profile-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-bio {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ig-text);
+}
+
+.profile-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-follow,
+.btn-message {
+  flex: 1;
+  text-align: center;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-follow {
+  background: var(--ig-link);
+  color: #fff;
+}
+
+.btn-message {
+  background: transparent;
+  color: var(--ig-text);
+  border: 1px solid var(--ig-border);
+}
+
+.profile-highlights {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.profile-highlights::-webkit-scrollbar {
+  display: none;
+}
+
+.highlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--ig-text);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.highlight-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid var(--ig-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ig-bg);
+}
+
+.highlight-icon {
+  font-size: 24px;
+}
+
+/* ── Posts ── */
+.post {
+  background: var(--ig-surface);
+  border-bottom: 1px solid var(--ig-border);
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.post.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.post-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #efefef;
+  flex-shrink: 0;
+}
+
+.post-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-username {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.post-location {
+  display: block;
+  font-size: 12px;
+  color: var(--ig-text-secondary);
+  line-height: 1.2;
+}
+
+.post-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #efefef;
+  overflow: hidden;
+}
+
+.post-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-media.is-empty .map-empty {
+  display: flex;
+}
+
+.post-media.is-empty img {
+  display: none;
+}
+
+.map-empty {
+  display: none;
+  position: absolute;
+  inset: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--ig-text-secondary);
+  font-size: 13px;
+}
+
+.post-media--text {
+  aspect-ratio: auto;
+  padding: 32px 24px;
+  background: var(--ig-gradient);
+  color: #fff;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.post-signature {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 13px;
+  line-height: 1.8;
+  opacity: 0.92;
+}
+
+.post-signature span {
+  display: block;
+}
+
+.post-media--card {
+  aspect-ratio: auto;
+  padding: 24px 20px;
+  background: var(--ig-bg);
+}
+
+.post-media--gift {
+  padding: 20px 16px;
+}
+
+.card-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.card-footer {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--ig-text-secondary);
+}
+
+/* ── Calendar ── */
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ig-text-secondary);
+  margin-bottom: 6px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border-radius: 50%;
+}
+
+.calendar-day.empty { visibility: hidden; }
+.calendar-day.sunday { color: var(--ig-like); }
+.calendar-day.saturday { color: var(--ig-link); }
+
+.calendar-day.wedding-day {
+  background: var(--ig-gradient);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Profile Grid ── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.grid-item {
+  position: relative;
+  aspect-ratio: 1;
+  background: #efefef;
+  overflow: hidden;
+  margin: 0;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grid-item.empty span {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ig-text-secondary);
+  font-size: 13px;
+  background: #efefef;
+}
+
+.grid-item.empty img {
+  display: none;
+}
+
+.grid-item--placeholder span {
+  font-size: 24px;
+  color: var(--ig-border);
+}
+
+/* ── Post Actions ── */
+.post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 0;
+}
+
+.post-actions-left {
+  display: flex;
+  gap: 14px;
+}
+
+.ig-action {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ig-text);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease;
+}
+
+.ig-action:active {
+  transform: scale(0.9);
+}
+
+.like-btn.liked .icon-heart {
+  fill: var(--ig-like);
+  stroke: var(--ig-like);
+  animation: heartPop 0.3s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.post-likes,
+.post-caption,
+.post-time {
+  padding: 0 12px;
+}
+
+.post-likes {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.post-caption {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.post-body {
+  padding: 8px 12px 0;
+}
+
+.post-body .post-caption {
+  padding: 0;
+}
+
+.link-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  padding: 0 12px 8px;
+}
+
+.link-action {
+  color: var(--ig-link);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.transport {
+  padding: 0 12px 8px;
+  font-size: 13px;
+  color: var(--ig-text-secondary);
+}
+
+.transport summary {
+  color: var(--ig-link);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  padding: 4px 0;
+}
+
+.transport summary::-webkit-details-marker {
+  display: none;
+}
+
+.transport p {
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.transport strong {
+  color: var(--ig-text);
+}
+
+.post-time {
+  margin-top: 4px;
+  margin-bottom: 12px;
+  font-size: 10px;
+  color: var(--ig-text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Gift / Account ── */
+.gift-desc {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ig-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.account-tabs {
+  display: flex;
+  border: 1px solid var(--ig-border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.account-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: var(--ig-surface);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ig-text-secondary);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.account-tab.active {
+  background: var(--ig-link);
+  color: #fff;
+}
+
+.account-panel {
+  display: none;
+}
+
+.account-panel.active {
+  display: block;
+}
+
+.account-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--ig-surface);
+  border: 1px solid var(--ig-border);
+  border-radius: 8px;
+}
+
+.account-bank {
+  display: block;
+  font-size: 12px;
+  color: var(--ig-text-secondary);
+}
+
+.account-number {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.account-holder {
+  display: block;
+  font-size: 12px;
+  color: var(--ig-text-secondary);
+}
+
+.btn-copy {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--ig-link);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-copy:active {
+  opacity: 0.8;
+}
+
+/* ── Footer ── */
+.ig-footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 12px;
+  color: var(--ig-text-secondary);
+}
+
+/* ── Tab Bar ── */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  height: calc(var(--tabbar-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--ig-surface);
+  border-top: 1px solid var(--ig-border);
+  z-index: 100;
+}
+
+.tabbar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--ig-text);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabbar-item.active {
+  color: var(--ig-text);
+}
+
+.tabbar-add svg {
+  stroke-width: 1.5;
+}
+
+.tabbar-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--ig-border);
+  background: #efefef;
+}
+
+.tabbar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Story Viewer ── */
+.story-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-viewer[hidden] {
+  display: none;
+}
+
+.story-viewer-bar {
+  padding: calc(8px + var(--safe-top)) 8px 0;
+}
+
+.story-viewer-bar span {
+  display: block;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-viewer-bar span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  animation: storyProgress 5s linear forwards;
+}
+
+@keyframes storyProgress {
+  from { transform: scaleX(0); transform-origin: left; }
+  to { transform: scaleX(1); transform-origin: left; }
+}
+
+.story-close {
+  position: absolute;
+  top: calc(12px + var(--safe-top));
+  right: 12px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1;
+  padding: 8px;
+}
+
+.story-viewer-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.story-viewer-content img {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.story-viewer-content p {
+  color: #fff;
+  margin-top: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 16px);
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: rgba(38, 38, 38, 0.92);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 300;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .post {
+    opacity: 1;
+    transform: none;
+  }
+}
