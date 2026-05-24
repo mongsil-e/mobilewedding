@@ -123,6 +123,11 @@ body {
   background: var(--ig-gradient);
 }
 
+.story.viewed .story-ring,
+.profile-avatar-wrap.viewed .story-ring {
+  background: #c7c7c7;
+}
+
 .story-ring--lg {
   padding: 3px;
 }
@@ -172,6 +177,11 @@ body {
   display: flex;
   align-items: center;
   gap: 28px;
+}
+
+.profile-avatar-wrap--clickable {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .profile-stats {

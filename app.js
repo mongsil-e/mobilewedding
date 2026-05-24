@@ -195,6 +195,46 @@
   const STORY_ORDER = ['hero', 'photo-1', 'photo-2', 'photo-3', 'photo-4'];
   const STORY_DURATION = 5000;
   const SWIPE_CLOSE_THRESHOLD = 80;
+  const VIEWED_STORAGE_KEY = 'younggeon_viewed';
+
+  function loadViewedState() {
+    try {
+      return JSON.parse(localStorage.getItem(VIEWED_STORAGE_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function saveViewedState(state) {
+    localStorage.setItem(VIEWED_STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function markStoryViewed(key) {
+    document.querySelector(`.story[data-story="${key}"]`)?.classList.add('viewed');
+    const state = loadViewedState();
+    state.stories = state.stories || {};
+    state.stories[key] = true;
+    saveViewedState(state);
+  }
+
+  function markProfileViewed() {
+    document.querySelector('.profile-avatar-wrap')?.classList.add('viewed');
+    const state = loadViewedState();
+    state.profile = true;
+    saveViewedState(state);
+  }
+
+  function applyViewedState() {
+    const state = loadViewedState();
+    if (state.profile) {
+      document.querySelector('.profile-avatar-wrap')?.classList.add('viewed');
+    }
+    Object.keys(state.stories || {}).forEach((key) => {
+      document.querySelector(`.story[data-story="${key}"]`)?.classList.add('viewed');
+    });
+  }
+
+  applyViewedState();
 
   const viewportMeta = document.getElementById('viewportMeta');
   const DEFAULT_VIEWPORT = viewportMeta?.content || '';
@@ -344,6 +384,7 @@
     const data = STORY_IMAGES[key];
     if (!data || !viewer) return;
 
+    markStoryViewed(key);
     cancelStoryProgress();
     updateStoryBars(index, 0);
     storyCaption.textContent = data.caption;
@@ -546,6 +587,26 @@
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         openLocationMap();
+      }
+    });
+  }
+
+  const profileAvatarWrap = document.querySelector('.profile-avatar-wrap');
+  const profileImg = profileAvatarWrap?.querySelector('img');
+  if (profileAvatarWrap && profileImg?.getAttribute('src')) {
+    profileAvatarWrap.classList.add('profile-avatar-wrap--clickable');
+    profileAvatarWrap.setAttribute('role', 'button');
+    profileAvatarWrap.setAttribute('tabindex', '0');
+    profileAvatarWrap.setAttribute('aria-label', '프로필 사진 크게 보기');
+    const openProfilePhoto = () => {
+      markProfileViewed();
+      openGalleryViewer(0, [profileImg.getAttribute('src')]);
+    };
+    profileAvatarWrap.addEventListener('click', openProfilePhoto);
+    profileAvatarWrap.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openProfilePhoto();
       }
     });
   }
