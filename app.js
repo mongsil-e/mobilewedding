@@ -5,11 +5,11 @@
   const CEREMONY_AT = new Date(2026, 9, 4, 10, 30, 0);
 
   const STORY_IMAGES = {
-    hero: { src: 'images/profile/avatar.jpg', caption: 'Our Wedding Day 💍' },
-    'photo-1': { src: 'images/stories/02-moment.jpg', caption: 'Our Moment ✨' },
-    'photo-2': { src: 'images/stories/03-together.jpg', caption: 'Together 🤍' },
-    'photo-3': { src: 'images/stories/04-memory.jpg', caption: 'Memory 📸' },
-    'photo-4': { src: 'images/stories/05-forever.jpg', caption: 'Forever ♾️' },
+    hero: { src: 'images/stories/ourday.jpg', caption: 'Our Wedding Day 💍' },
+    'photo-1': { src: 'images/stories/moment.jpg', caption: 'Our Moment ✨' },
+    'photo-2': { src: 'images/stories/together.jpg', caption: 'Together 🤍' },
+    'photo-3': { src: 'images/stories/memory.jpg', caption: 'Memory 📸' },
+    'photo-4': { src: 'images/stories/foever.jpg', caption: 'Forever ♾️' },
   };
 
   // Scroll reveal
@@ -66,9 +66,8 @@
   }
 
   function setCountdownText(text) {
-    document.querySelectorAll('#ddayLive, #ddayCountdown').forEach((el) => {
-      if (el) el.textContent = text;
-    });
+    const el = document.getElementById('ddayCountdown');
+    if (el) el.textContent = text;
   }
 
   function startOfDay(date) {

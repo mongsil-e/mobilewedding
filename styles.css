@@ -10,6 +10,7 @@
   --ig-like: #ed4956;
   --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-script: "Pacifico", cursive;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --header-h: 44px;
@@ -49,9 +50,9 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   height: calc(var(--header-h) + var(--safe-top));
   padding: var(--safe-top) 16px 0;
   background: var(--ig-surface);
@@ -59,9 +60,18 @@ body {
 }
 
 .ig-logo {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  grid-column: 2;
+  font-family: var(--font-script);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--ig-text);
+}
+
+.ig-header .ig-icon-btn {
+  grid-column: 3;
+  justify-self: end;
 }
 
 .ig-icon-btn {
@@ -196,14 +206,6 @@ body {
   font-size: 14px;
   line-height: 1.5;
   color: var(--ig-text);
-}
-
-.profile-countdown {
-  margin-top: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ig-link);
-  font-variant-numeric: tabular-nums;
 }
 
 .profile-actions {
