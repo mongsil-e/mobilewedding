@@ -836,90 +836,82 @@ body.gallery-open {
   text-align: center;
   font-size: 13px;
   color: var(--ig-text-secondary);
-  line-height: 1.6;
-  margin-bottom: 18px;
+  line-height: 1.65;
+  margin-bottom: 20px;
 }
 
 .account-groups {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
+}
+
+.account-group-card {
+  background: var(--ig-surface);
+  border: 1px solid #ececec;
+  border-radius: 14px;
+  overflow: hidden;
 }
 
 .account-group-title {
-  margin: 0 0 10px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ig-text);
-  letter-spacing: -0.01em;
-}
-
-.account-rows {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--ig-border);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--ig-bg);
-}
-
-.account-row {
-  padding: 14px 16px;
-}
-
-.account-row + .account-row {
-  border-top: 1px solid var(--ig-border);
-}
-
-.account-row-top {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.account-role {
+  margin: 0;
+  padding: 11px 16px;
   font-size: 11px;
   font-weight: 600;
-  color: var(--ig-link);
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: rgba(0, 149, 246, 0.08);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ig-text-secondary);
+  background: #f7f7f7;
+  border-bottom: 1px solid #ececec;
 }
 
-.account-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ig-text);
+.account-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.account-row-bottom {
+.account-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 13px 16px;
 }
 
-.account-details {
+.account-item + .account-item {
+  border-top: 1px solid #f0f0f0;
+}
+
+.account-item-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   min-width: 0;
 }
 
-.account-bank {
-  display: block;
-  font-size: 12px;
-  color: var(--ig-text-secondary);
+.account-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ig-text);
+  letter-spacing: -0.02em;
 }
 
-.account-number {
-  display: block;
-  font-size: 15px;
-  font-weight: 600;
+.account-item-name em {
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ig-text-secondary);
+  margin-left: 4px;
+}
+
+.account-item-line {
+  font-size: 13px;
+  color: var(--ig-text-secondary);
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-  word-break: break-all;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
 }
 
 .btn-copy {
@@ -937,8 +929,23 @@ body.gallery-open {
   -webkit-tap-highlight-color: transparent;
 }
 
+.btn-copy--ghost {
+  padding: 6px 11px;
+  border: 1px solid #dbdbdb;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ig-text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .btn-copy:active {
   opacity: 0.8;
+}
+
+.btn-copy--ghost:active {
+  background: #f5f5f5;
+  opacity: 1;
 }
 
 /* ── Footer ── */
