@@ -843,27 +843,65 @@ body.gallery-open {
 .account-groups {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-.account-group-card {
+.account-panel {
   background: var(--ig-surface);
   border: 1px solid #ececec;
   border-radius: 14px;
   overflow: hidden;
 }
 
-.account-group-title {
-  margin: 0;
-  padding: 11px 16px;
-  font-size: 11px;
+.account-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  list-style: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-align: center;
+  color: var(--ig-text);
+  background: var(--ig-surface);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.account-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.account-panel[open] .account-toggle {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.account-toggle-label.when-open {
+  display: none;
+}
+
+.account-panel[open] .account-toggle-label.when-closed {
+  display: none;
+}
+
+.account-panel[open] .account-toggle-label.when-open {
+  display: inline;
+}
+
+.account-toggle-icon {
+  flex-shrink: 0;
   color: var(--ig-text-secondary);
-  background: #f7f7f7;
-  border-bottom: 1px solid #ececec;
+  transition: transform 0.2s ease;
+}
+
+.account-panel[open] .account-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.account-panel-body {
+  background: var(--ig-surface);
 }
 
 .account-list {

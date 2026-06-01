@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="styles.css?v=17">
 </head>
 <body>
   <div class="app">
@@ -345,9 +345,17 @@
       <div class="post-media post-media--card post-media--gift">
         <p class="gift-desc">축하의 마음만으로도 충분합니다.<br>부득이하게 전달하시려면 아래 계좌를 이용해 주세요.</p>
         <div class="account-groups">
-          <section class="account-group">
-            <div class="account-group-card">
-              <h3 class="account-group-title">신랑측</h3>
+          <details class="account-panel">
+            <summary class="account-toggle">
+              <span class="account-toggle-text">
+                <span class="account-toggle-label when-closed">신랑측 계좌번호 보기</span>
+                <span class="account-toggle-label when-open">신랑측 계좌번호 닫기</span>
+              </span>
+              <svg class="account-toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="account-panel-body">
               <ul class="account-list">
                 <li class="account-item">
                   <div class="account-item-info">
@@ -372,10 +380,18 @@
                 </li>
               </ul>
             </div>
-          </section>
-          <section class="account-group">
-            <div class="account-group-card">
-              <h3 class="account-group-title">신부측</h3>
+          </details>
+          <details class="account-panel">
+            <summary class="account-toggle">
+              <span class="account-toggle-text">
+                <span class="account-toggle-label when-closed">신부측 계좌번호 보기</span>
+                <span class="account-toggle-label when-open">신부측 계좌번호 닫기</span>
+              </span>
+              <svg class="account-toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="account-panel-body">
               <ul class="account-list">
                 <li class="account-item">
                   <div class="account-item-info">
@@ -393,7 +409,7 @@
                 </li>
               </ul>
             </div>
-          </section>
+          </details>
         </div>
       </div>
       <div class="post-actions">
