@@ -957,10 +957,12 @@ body.gallery-open {
 }
 
 .account-item-line {
-  font-size: 12px;
-  line-height: 1.35;
-  color: var(--ig-text-secondary);
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--ig-text);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }
 
 .btn-copy {
