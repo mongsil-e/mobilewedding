@@ -1,141 +1,394 @@
+/* ══════════════════════════════════════════════════
+   Young Geon ♥ Ji Hye — interaction engine
+   ══════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
   const WEDDING_DAY = new Date(2026, 9, 4);
   const CEREMONY_AT = new Date(2026, 9, 4, 10, 30, 0);
 
-  const STORY_IMAGES = {
-    hero: { src: 'images/stories/ourday.jpg', caption: 'Our Wedding Day 💍' },
-    'photo-1': { src: 'images/stories/moment.jpg', caption: 'Our Moment ✨' },
-    'photo-2': { src: 'images/stories/together.jpg', caption: 'Together 🤍' },
-    'photo-3': { src: 'images/stories/memory.jpg', caption: 'Memory 📸' },
-    'photo-4': { src: 'images/stories/foever.jpg', caption: 'Forever ♾️' },
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const pad = (n) => String(n).padStart(2, '0');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const vibrate = (pattern) => {
+    if (navigator.vibrate) navigator.vibrate(pattern);
   };
 
-  // Scroll reveal
-  document.querySelectorAll('[data-animate]').forEach((el) => {
-    new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && el.classList.add('visible')),
-      { threshold: 0.1 }
-    ).observe(el);
-  });
-
-  // Calendar
-  function buildCalendar() {
-    const grid = document.getElementById('calendarGrid');
-    if (!grid) return;
-
-    const year = WEDDING_DAY.getFullYear();
-    const month = WEDDING_DAY.getMonth();
-    const weddingDay = WEDDING_DAY.getDate();
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    let html = '';
-    for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day empty"></div>';
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dow = (firstDay + day - 1) % 7;
-      let cls = 'calendar-day';
-      if (dow === 0) cls += ' sunday';
-      if (dow === 6) cls += ' saturday';
-      if (day === weddingDay) cls += ' wedding-day';
-      html += `<div class="${cls}">${day}</div>`;
-    }
-    grid.innerHTML = html;
-  }
-
-  function pad(n) {
-    return String(n).padStart(2, '0');
-  }
-
-  let ddayTimerId = null;
+  /* ── demo clock (?demo=wedding-day) ─────────────── */
   let demoAnchor = null;
-
   function getNow() {
-    const demo = new URLSearchParams(location.search).get('demo');
-    if (demo === 'wedding-day') {
+    if (new URLSearchParams(location.search).get('demo') === 'wedding-day') {
       if (!demoAnchor) {
-        demoAnchor = {
-          real: Date.now(),
-          sim: new Date(2026, 9, 4, 8, 0, 15).getTime(),
-        };
+        demoAnchor = { real: Date.now(), sim: new Date(2026, 9, 4, 8, 0, 15).getTime() };
       }
       return new Date(demoAnchor.sim + (Date.now() - demoAnchor.real));
     }
     return new Date();
   }
 
-  function setCountdownText(text) {
-    const el = document.getElementById('ddayCountdown');
-    if (el) el.textContent = text;
-  }
-
-  function startOfDay(date) {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  }
-
-  // D-Day: 날짜는 00시 기준, 당일만 예식까지 시·분·초 카운트다운
-  function updateDDay() {
-    const countEl = document.getElementById('ddayCount');
-    const now = getNow();
-    const today = startOfDay(now);
-    const weddingDay = startOfDay(WEDDING_DAY);
-    const dayDiff = Math.round((weddingDay - today) / 86400000);
-
-    if (dayDiff > 0) {
-      const untilCeremony = CEREMONY_AT - now;
-      const days = Math.floor(untilCeremony / 86400000);
-      const hours = Math.floor((untilCeremony % 86400000) / 3600000);
-      const mins = Math.floor((untilCeremony % 3600000) / 60000);
-      const secs = Math.floor((untilCeremony % 60000) / 1000);
-
-      if (countEl) countEl.textContent = `D-${dayDiff}`;
-      setCountdownText(`${days}일 ${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`);
-      return;
-    }
-
-    if (dayDiff === 0) {
-      const untilCeremony = CEREMONY_AT - now;
-
-      if (countEl) countEl.textContent = 'D-Day';
-      if (untilCeremony > 0) {
-        const hours = Math.floor(untilCeremony / 3600000);
-        const mins = Math.floor((untilCeremony % 3600000) / 60000);
-        const secs = Math.floor((untilCeremony % 60000) / 1000);
-        setCountdownText(`${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`);
-      } else {
-        setCountdownText('오늘은 결혼식 날입니다 💍');
-      }
-      return;
-    }
-
-    const daysPast = Math.abs(dayDiff);
-    if (countEl) countEl.textContent = `D+${daysPast}`;
-    setCountdownText(`결혼식 후 ${daysPast}일`);
-  }
-
-  function startDDayTimer() {
-    if (ddayTimerId) clearInterval(ddayTimerId);
-    updateDDay();
-    ddayTimerId = setInterval(updateDDay, 1000);
-  }
-
-  // Toast
+  /* ── Toast ──────────────────────────────────────── */
   let toastTimer;
   function showToast(msg) {
-    const toast = document.getElementById('toast');
+    const toast = $('#toast');
     if (!toast) return;
     toast.textContent = msg;
     toast.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
   }
 
-  // Share
+  /* ── Petals canvas ──────────────────────────────── */
+  const petals = (() => {
+    const canvas = $('#petals');
+    if (!canvas || reducedMotion) return { start() {}, stop() {} };
+
+    const ctx = canvas.getContext('2d');
+    const COLORS = ['#f3d7d7', '#f7e4d4', '#f0cdc4', '#faeee2', '#eec9cf'];
+    let parts = [];
+    let rafId = null;
+    let dpr = 1;
+
+    function resize() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = innerWidth * dpr;
+      canvas.height = innerHeight * dpr;
+    }
+
+    function spawn(initial) {
+      const size = 5 + Math.random() * 8;
+      return {
+        x: Math.random() * innerWidth,
+        y: initial ? Math.random() * innerHeight : -20,
+        size,
+        vy: 0.35 + Math.random() * 0.7,
+        drift: 0.6 + Math.random() * 1.1,
+        phase: Math.random() * Math.PI * 2,
+        spin: Math.random() * Math.PI * 2,
+        spinV: (Math.random() - 0.5) * 0.03,
+        color: COLORS[(Math.random() * COLORS.length) | 0],
+        alpha: 0.5 + Math.random() * 0.4,
+      };
+    }
+
+    function tick(t) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      for (const p of parts) {
+        p.y += p.vy;
+        p.x += Math.sin(t / 1600 + p.phase) * p.drift * 0.4;
+        p.spin += p.spinV;
+        if (p.y > innerHeight + 24) Object.assign(p, spawn(false));
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.spin);
+        ctx.globalAlpha = p.alpha * (0.75 + 0.25 * Math.sin(t / 900 + p.phase));
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      } else if (parts.length && !rafId) {
+        rafId = requestAnimationFrame(tick);
+      }
+    });
+
+    return {
+      start() {
+        resize();
+        parts = Array.from({ length: innerWidth < 400 ? 18 : 26 }, () => spawn(true));
+        canvas.classList.add('on');
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      },
+      stop() {
+        canvas.classList.remove('on');
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      },
+    };
+  })();
+
+  /* ── Split text ─────────────────────────────────── */
+  $$('[data-split]').forEach((el) => {
+    const text = el.textContent;
+    el.textContent = '';
+    el.setAttribute('aria-label', text.trim());
+    [...text].forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.style.setProperty('--ci', i);
+      span.textContent = ch;
+      span.setAttribute('aria-hidden', 'true');
+      el.appendChild(span);
+    });
+  });
+
+  /* ── Reveal on scroll ───────────────────────────── */
+  const revealIO = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealIO.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+  );
+  $$('[data-reveal], [data-split]').forEach((el) => revealIO.observe(el));
+
+  /* ── Intro gate ─────────────────────────────────── */
+  const intro = $('#intro');
+  const introOpen = $('#introOpen');
+
+  function enter() {
+    if (!intro || intro.classList.contains('open')) return;
+    intro.classList.add('open');
+    document.body.classList.remove('locked');
+    document.body.classList.add('entered');
+    vibrate(12);
+    petals.start();
+    setTimeout(() => intro.classList.add('gone'), 1300);
+  }
+
+  introOpen?.addEventListener('click', enter);
+  /* 접근성: 인트로가 어떤 이유로든 상호작용 불가하면 6초 후 자동 입장 */
+  setTimeout(() => {
+    if (document.body.classList.contains('locked')) enter();
+  }, 6000);
+
+  /* ── Hero parallax (scroll + gyro) ──────────────── */
+  const heroMedia = $('#heroMedia');
+  if (heroMedia && !reducedMotion) {
+    let gx = 0;
+    let gy = 0;
+    let sy = 0;
+    let rafPending = false;
+
+    function apply() {
+      rafPending = false;
+      heroMedia.style.transform = `translate3d(${gx}px, ${sy * 0.28 + gy}px, 0)`;
+    }
+
+    function schedule() {
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(apply);
+      }
+    }
+
+    addEventListener('scroll', () => {
+      const y = scrollY;
+      if (y < innerHeight * 1.2) {
+        sy = y;
+        schedule();
+      }
+    }, { passive: true });
+
+    addEventListener('deviceorientation', (e) => {
+      if (e.gamma == null || e.beta == null) return;
+      gx = Math.max(-14, Math.min(14, e.gamma * 0.45));
+      gy = Math.max(-10, Math.min(10, (e.beta - 45) * 0.3));
+      schedule();
+    }, true);
+  }
+
+  /* ── Scroll progress (fallback when no scroll-timeline) ── */
+  const progressBar = $('#progressBar');
+  if (progressBar && !CSS.supports('animation-timeline: scroll()')) {
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        progressBar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  /* ── Tilt cards ─────────────────────────────────── */
+  if (!reducedMotion && matchMedia('(hover: hover)').matches) {
+    $$('[data-tilt]').forEach((card) => {
+      card.addEventListener('pointermove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(700px) rotateY(${px * 7}deg) rotateX(${py * -7}deg)`;
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+
+  /* ── Calendar ───────────────────────────────────── */
+  (function buildCalendar() {
+    const grid = $('#calendarGrid');
+    if (!grid) return;
+    const year = WEDDING_DAY.getFullYear();
+    const month = WEDDING_DAY.getMonth();
+    const target = WEDDING_DAY.getDate();
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let html = '';
+    for (let i = 0; i < firstDay; i++) html += '<div class="calendar-day"></div>';
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dow = (firstDay + day - 1) % 7;
+      let cls = 'calendar-day';
+      if (dow === 0) cls += ' sunday';
+      if (dow === 6) cls += ' saturday';
+      if (day === target) cls += ' wedding-day';
+      html += `<div class="${cls}">${day}</div>`;
+    }
+    grid.innerHTML = html;
+  })();
+
+  /* ── Odometer countdown ─────────────────────────── */
+  const odometer = (() => {
+    const groups = {};
+    $$('[data-odo]').forEach((el) => {
+      groups[el.dataset.odo] = { el, cells: [] };
+    });
+    if (!Object.keys(groups).length) return null;
+
+    function makeCell(group) {
+      const cell = document.createElement('div');
+      cell.className = 'odo-cell';
+      const reel = document.createElement('div');
+      reel.className = 'odo-reel';
+      for (let i = 0; i <= 9; i++) {
+        const d = document.createElement('span');
+        d.textContent = i;
+        reel.appendChild(d);
+      }
+      cell.appendChild(reel);
+      group.el.appendChild(cell);
+      group.cells.push({ cell, reel, value: -1 });
+    }
+
+    function setGroup(key, str) {
+      const group = groups[key];
+      if (!group) return;
+      while (group.cells.length < str.length) makeCell(group);
+      while (group.cells.length > str.length) {
+        group.cells.pop().cell.remove();
+      }
+      [...str].forEach((ch, i) => {
+        const digit = Number(ch);
+        const slot = group.cells[i];
+        if (slot.value !== digit) {
+          slot.value = digit;
+          const step = slot.reel.firstElementChild?.offsetHeight || 42;
+          slot.reel.style.transform = `translateY(${-digit * step}px)`;
+        }
+      });
+    }
+
+    return { setGroup };
+  })();
+
+  function updateCountdown() {
+    const caption = $('#ddayCaption');
+    const now = getNow();
+    const diff = CEREMONY_AT - now;
+
+    if (diff > 0) {
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+      odometer?.setGroup('d', String(days).padStart(2, '0'));
+      odometer?.setGroup('h', pad(hours));
+      odometer?.setGroup('m', pad(mins));
+      odometer?.setGroup('s', pad(secs));
+
+      const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const dayDiff = Math.round((WEDDING_DAY - startToday) / 86400000);
+      if (caption) {
+        caption.textContent = dayDiff === 0
+          ? '오늘, 저희 결혼합니다 💍'
+          : `영건 ♥ 지혜의 결혼식이 ${dayDiff}일 남았습니다`;
+      }
+      return;
+    }
+
+    odometer?.setGroup('d', '00');
+    odometer?.setGroup('h', '00');
+    odometer?.setGroup('m', '00');
+    odometer?.setGroup('s', '00');
+    if (caption) {
+      const passed = Math.floor(-diff / 86400000);
+      caption.textContent = passed < 1
+        ? '저희, 부부가 되었습니다 💍'
+        : `결혼 ${passed}일째, 잘 살고 있습니다 🤍`;
+    }
+  }
+
+  let countdownTimer = null;
+  function startCountdown() {
+    clearInterval(countdownTimer);
+    updateCountdown();
+    countdownTimer = setInterval(updateCountdown, 1000);
+  }
+  startCountdown();
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) updateCountdown();
+  });
+  addEventListener('pageshow', startCountdown);
+
+  /* ── Accordions ─────────────────────────────────── */
+  $$('[data-acc]').forEach((acc) => {
+    const head = $('.acc-head', acc);
+    head?.addEventListener('click', () => {
+      const open = acc.classList.toggle('open');
+      head.setAttribute('aria-expanded', String(open));
+      vibrate(6);
+    });
+  });
+
+  /* ── Copy buttons ───────────────────────────────── */
+  $$('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy);
+        vibrate(10);
+        if (btn.classList.contains('account-copy')) {
+          btn.classList.add('done');
+          const prev = btn.textContent;
+          btn.textContent = '완료';
+          setTimeout(() => {
+            btn.classList.remove('done');
+            btn.textContent = prev;
+          }, 1800);
+          showToast('계좌번호가 복사되었습니다');
+        } else {
+          showToast('주소가 복사되었습니다');
+        }
+      } catch {
+        showToast('복사에 실패했습니다');
+      }
+    });
+  });
+
+  /* ── Share ──────────────────────────────────────── */
   async function shareInvitation() {
     const data = {
       title: '영건 ♥ 지혜 결혼식에 초대합니다',
-      text: '2026년 10월 4일, 저희 결혼식에 초대합니다.',
+      text: '2026년 10월 4일 일요일 오전 10:30, 천안 비렌티웨딩홀에서 저희의 첫 시작을 함께해 주세요.',
       url: location.origin + location.pathname,
     };
     if (navigator.share) {
@@ -146,560 +399,237 @@
       }
     } else {
       try {
-        await navigator.clipboard.writeText(window.location.href);
-        showToast('링크가 복사되었습니다');
+        await navigator.clipboard.writeText(data.url);
+        showToast('청첩장 링크가 복사되었습니다');
       } catch {
         showToast('공유 기능을 사용할 수 없습니다');
       }
     }
   }
+  $('#shareBtn')?.addEventListener('click', shareInvitation);
 
-  ['shareHeaderBtn', 'sharePostBtn', 'shareTabBtn'].forEach((id) => {
-    const btn = document.getElementById(id);
-    if (btn) btn.addEventListener('click', shareInvitation);
+  /* ── Blessing hearts ────────────────────────────── */
+  const blessBtn = $('#blessBtn');
+  const blessCount = $('#blessCount');
+  const BLESS_KEY = 'yj-blessings';
+  let blessings = 0;
+  try {
+    blessings = parseInt(localStorage.getItem(BLESS_KEY), 10) || 0;
+  } catch { /* storage unavailable */ }
+  if (blessCount) blessCount.textContent = blessings.toLocaleString();
+
+  function burstHearts(x, y) {
+    const glyphs = ['♥', '♡', '❤', '💛'];
+    for (let i = 0; i < 7; i++) {
+      const h = document.createElement('span');
+      h.className = 'float-heart';
+      h.textContent = glyphs[(Math.random() * glyphs.length) | 0];
+      h.style.left = `${x + (Math.random() - 0.5) * 40}px`;
+      h.style.top = `${y - 10}px`;
+      h.style.setProperty('--fh-x', `${(Math.random() - 0.5) * 120}px`);
+      h.style.setProperty('--fh-r', `${(Math.random() - 0.5) * 70}deg`);
+      h.style.setProperty('--fh-size', `${14 + Math.random() * 14}px`);
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 1700);
+    }
+  }
+
+  blessBtn?.addEventListener('click', (e) => {
+    blessings += 1;
+    if (blessCount) blessCount.textContent = blessings.toLocaleString();
+    try { localStorage.setItem(BLESS_KEY, String(blessings)); } catch { /* ignore */ }
+    const r = blessBtn.getBoundingClientRect();
+    burstHearts(e.clientX || r.left + r.width / 2, e.clientY || r.top);
+    vibrate([8, 40, 8]);
   });
 
-  // Like buttons
-  document.querySelectorAll('.like-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.classList.toggle('liked');
-      const post = btn.closest('.post');
-      const countEl = post?.querySelector('.like-count');
-      if (!countEl) return;
-      const base = parseInt(countEl.textContent.replace(/,/g, ''), 10);
-      const liked = btn.classList.contains('liked');
-      countEl.textContent = (liked ? base + 1 : base - 1).toLocaleString();
-      const heart = btn.querySelector('.icon-heart');
-      if (heart) {
-        heart.setAttribute('fill', liked ? '#ed4956' : 'none');
-        heart.setAttribute('stroke', liked ? '#ed4956' : 'currentColor');
-      }
-    });
-  });
-
-  // Copy account
-  document.querySelectorAll('.btn-copy').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(btn.dataset.copy);
-        btn.textContent = '완료';
-        showToast('계좌번호가 복사되었습니다');
-        setTimeout(() => { btn.textContent = '복사'; }, 2000);
-      } catch {
-        showToast('복사에 실패했습니다');
-      }
-    });
-  });
-
-  // Story viewer
-  const STORY_ORDER = ['hero', 'photo-1', 'photo-2', 'photo-3', 'photo-4'];
-  const STORY_DURATION = 5000;
-  const SWIPE_CLOSE_THRESHOLD = 80;
-
-  function markStoryViewed(key) {
-    const story = document.querySelector(`.story[data-story="${key}"]`);
-    const ring = story?.querySelector('.story-ring');
-    if (!story || !ring) return;
-    story.classList.add('viewed');
-    ring.classList.add('viewed');
-    void ring.offsetWidth;
-  }
-
-  function markProfileViewed() {
-    const wrap = document.querySelector('.profile-avatar-wrap');
-    const ring = wrap?.querySelector('.story-ring');
-    if (!wrap || !ring) return;
-    wrap.classList.add('viewed');
-    ring.classList.add('viewed');
-    void ring.offsetWidth;
-  }
-
-  function bindTap(el, handler) {
-    el.addEventListener('pointerup', (e) => {
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      handler(e);
-    });
-  }
-
-  const viewportMeta = document.getElementById('viewportMeta');
-  const DEFAULT_VIEWPORT = viewportMeta?.content || '';
-  let zoomLockCount = 0;
-  let storyBarFills = [];
-
-  function onPinchTouchMove(e) {
-    if (e.touches.length > 1) e.preventDefault();
-  }
-
-  function onGesture(e) {
-    e.preventDefault();
-  }
-
-  function enableZoomLock() {
-    zoomLockCount += 1;
-    if (zoomLockCount > 1) return;
-    if (viewportMeta) {
-      viewportMeta.content = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no';
-    }
-    document.addEventListener('touchmove', onPinchTouchMove, { passive: false });
-    document.addEventListener('gesturestart', onGesture, { passive: false });
-    document.addEventListener('gesturechange', onGesture, { passive: false });
-    document.addEventListener('gestureend', onGesture, { passive: false });
-  }
-
-  function disableZoomLock() {
-    zoomLockCount = Math.max(0, zoomLockCount - 1);
-    if (zoomLockCount > 0) return;
-    if (viewportMeta) viewportMeta.content = DEFAULT_VIEWPORT;
-    document.removeEventListener('touchmove', onPinchTouchMove);
-    document.removeEventListener('gesturestart', onGesture);
-    document.removeEventListener('gesturechange', onGesture);
-    document.removeEventListener('gestureend', onGesture);
-  }
-
-  const viewer = document.getElementById('storyViewer');
-  const storyBars = document.getElementById('storyBars');
-  const storyImg = document.getElementById('storyImage');
-  const storyCaption = document.getElementById('storyCaption');
-  const storyClose = document.getElementById('storyClose');
-
-  let currentStoryIndex = 0;
-  let progressAnimId = null;
-  let touchStartY = 0;
-  let touchStartX = 0;
-  let isDragging = false;
-  let suppressStoryClick = false;
-
-  function handleStoryNavigation(clientX) {
-    const ratio = clientX / window.innerWidth;
-    if (ratio < 0.5) {
-      if (currentStoryIndex > 0) showStoryAt(currentStoryIndex - 1);
-      return;
-    }
-    if (currentStoryIndex < STORY_ORDER.length - 1) showStoryAt(currentStoryIndex + 1);
-  }
-
-  function buildStoryBars() {
-    if (!storyBars) return;
-    storyBars.innerHTML = STORY_ORDER.map(
-      () => '<div class="story-bar"><span class="story-bar-fill"></span></div>'
-    ).join('');
-    storyBarFills = [...storyBars.querySelectorAll('.story-bar-fill')];
-  }
-
-  function updateStoryBars(index, progress) {
-    const pct = `${Math.max(0, Math.min(progress, 1)) * 100}%`;
-    storyBarFills.forEach((fill, i) => {
-      if (i < index) fill.style.width = '100%';
-      else if (i === index) fill.style.width = pct;
-      else fill.style.width = '0%';
-    });
-  }
-
-  function loadStoryImage(src) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.decoding = 'async';
-      img.onload = () => resolve(src);
-      img.onerror = reject;
-      img.src = src;
-    });
-  }
-
-  function clearStoryImage() {
-    if (!storyImg) return;
-    storyImg.style.display = 'none';
-    storyImg.style.backgroundImage = '';
-  }
-
-  function setStoryImage(src) {
-    if (!storyImg) return;
-    storyImg.style.backgroundImage = `url("${src}")`;
-    storyImg.style.display = 'block';
-  }
-
-  function cancelStoryProgress() {
-    if (progressAnimId) {
-      cancelAnimationFrame(progressAnimId);
-      progressAnimId = null;
-    }
-  }
-
-  function resetViewerTransform() {
-    if (!viewer) return;
-    viewer.style.transform = '';
-    viewer.style.opacity = '';
-  }
-
-  function closeStoryViewer() {
-    cancelStoryProgress();
-    if (!viewer) return;
-    viewer.hidden = true;
-    document.body.style.overflow = '';
-    document.body.classList.remove('story-open');
-    disableZoomLock();
-    resetViewerTransform();
-    clearStoryImage();
-  }
-
-  function startStoryProgress() {
-    cancelStoryProgress();
-    const start = performance.now();
-
-    function tick(now) {
-      const progress = Math.min((now - start) / STORY_DURATION, 1);
-      updateStoryBars(currentStoryIndex, progress);
-      if (progress < 1) {
-        progressAnimId = requestAnimationFrame(tick);
-        return;
-      }
-      showStoryAt(currentStoryIndex + 1);
-    }
-
-    progressAnimId = requestAnimationFrame(tick);
-  }
-
-  function showStoryAt(index) {
-    if (index >= STORY_ORDER.length) {
-      closeStoryViewer();
-      return;
-    }
-
-    currentStoryIndex = index;
-    const key = STORY_ORDER[index];
-    const data = STORY_IMAGES[key];
-    if (!data || !viewer) return;
-
-    markStoryViewed(key);
-    cancelStoryProgress();
-    updateStoryBars(index, 0);
-    storyCaption.textContent = data.caption;
-    clearStoryImage();
-
-    loadStoryImage(data.src)
-      .then((src) => {
-        if (currentStoryIndex !== index || viewer.hidden) return;
-        setStoryImage(src);
-        startStoryProgress();
-      })
-      .catch(() => {
-        if (currentStoryIndex !== index || viewer.hidden) return;
-        clearStoryImage();
-        storyCaption.textContent = `${data.caption} (사진을 추가해 주세요)`;
-        startStoryProgress();
-      });
-  }
-
-  function openStoryViewer(startKey) {
-    if (!viewer) return;
-    buildStoryBars();
-    currentStoryIndex = Math.max(0, STORY_ORDER.indexOf(startKey));
-    viewer.hidden = false;
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('story-open');
-    enableZoomLock();
-    resetViewerTransform();
-    showStoryAt(currentStoryIndex);
-  }
-
-  function openStoryFromButton(storyEl) {
-    const key = storyEl.dataset.story;
-    if (!key) return;
-    markStoryViewed(key);
-    openStoryViewer(key);
-  }
-
-  document.querySelectorAll('.story').forEach((story) => {
-    bindTap(story, () => openStoryFromButton(story));
-  });
-
-  storyClose?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    closeStoryViewer();
-  });
-
-  viewer?.addEventListener('click', (e) => {
-    if (viewer.hidden || suppressStoryClick || isDragging) return;
-    if (e.target.closest('#storyClose')) return;
-    handleStoryNavigation(e.clientX);
-  });
-
-  viewer?.addEventListener('touchstart', (e) => {
-    if (viewer.hidden) return;
-    touchStartY = e.touches[0].clientY;
-    touchStartX = e.touches[0].clientX;
-    isDragging = false;
-  }, { passive: true });
-
-  viewer?.addEventListener('touchmove', (e) => {
-    if (viewer.hidden) return;
-    const dy = e.touches[0].clientY - touchStartY;
-    const dx = e.touches[0].clientX - touchStartX;
-    if (!isDragging && Math.abs(dy) > Math.abs(dx) && dy > 8) {
-      isDragging = true;
-      cancelStoryProgress();
-    }
-    if (!isDragging || dy <= 0) return;
-    viewer.style.transform = `translateY(${dy}px)`;
-    viewer.style.opacity = String(Math.max(0.35, 1 - dy / 280));
-  }, { passive: true });
-
-  viewer?.addEventListener('touchend', (e) => {
-    if (viewer.hidden) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-
-    if (isDragging && dy >= SWIPE_CLOSE_THRESHOLD) {
-      closeStoryViewer();
-      isDragging = false;
-      return;
-    }
-
-    if (!isDragging && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
-      suppressStoryClick = true;
-      handleStoryNavigation(e.changedTouches[0].clientX);
-      setTimeout(() => { suppressStoryClick = false; }, 400);
-      isDragging = false;
-      return;
-    }
-
-    resetViewerTransform();
-    if (isDragging) startStoryProgress();
-    isDragging = false;
-  }, { passive: true });
-
-  viewer?.addEventListener('wheel', (e) => {
-    if (viewer.hidden || e.deltaY <= 0) return;
-    closeStoryViewer();
-  }, { passive: true });
-
-  // Gallery viewer
-  const galleryViewer = document.getElementById('galleryViewer');
-  const galleryTrack = document.getElementById('galleryTrack');
-  const galleryStage = document.getElementById('galleryStage');
-  const galleryCounter = document.getElementById('galleryCounter');
-  const galleryClose = document.getElementById('galleryClose');
-
-  const galleryImages = [...document.querySelectorAll('.profile-grid .grid-item:not(.empty) img')]
-    .map((img) => img.getAttribute('src'))
+  /* ── Dock active state ──────────────────────────── */
+  const dockItems = $$('[data-dock]');
+  const dockSections = dockItems
+    .map((item) => document.getElementById(item.dataset.dock))
     .filter(Boolean);
 
-  let activeGalleryImages = galleryImages;
-
-  let galleryIndex = 0;
-  let galleryDragOffset = 0;
-  let galleryTouchStartX = 0;
-  let galleryTouchStartY = 0;
-  let galleryGesture = null;
-  let galleryBlockClick = false;
-
-  function buildGalleryTrack(images) {
-    if (!galleryTrack) return;
-    galleryTrack.innerHTML = images.map(
-      (src) => `<div class="gallery-slide"><img src="${src}" alt="" draggable="false" loading="lazy" decoding="async"></div>`
-    ).join('');
+  if (dockSections.length) {
+    const dockIO = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          dockItems.forEach((item) =>
+            item.classList.toggle('is-active', item.dataset.dock === entry.target.id)
+          );
+        });
+      },
+      { rootMargin: '-38% 0px -55% 0px' }
+    );
+    dockSections.forEach((sec) => dockIO.observe(sec));
   }
 
-  function clampGalleryIndex(index) {
-    return Math.max(0, Math.min(index, activeGalleryImages.length - 1));
+  /* ── Lightbox ───────────────────────────────────── */
+  const lightbox = $('#lightbox');
+  const lbTrack = $('#lightboxTrack');
+  const lbCounter = $('#lightboxCounter');
+  const lbStage = $('#lightboxStage');
+
+  const lbGroups = {};
+  $$('[data-lightbox]').forEach((fig) => {
+    const img = $('img', fig);
+    const src = img?.getAttribute('src');
+    if (!src) return;
+    const groupName = fig.dataset.lightbox;
+    lbGroups[groupName] ??= [];
+    const index = lbGroups[groupName].push(src) - 1;
+
+    fig.setAttribute('role', 'button');
+    fig.setAttribute('tabindex', '0');
+    fig.setAttribute('aria-label', `${img.alt || '사진'} 크게 보기`);
+    fig.addEventListener('click', () => openLightbox(groupName, index));
+    fig.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(groupName, index);
+      }
+    });
+  });
+
+  let lbImages = [];
+  let lbIndex = 0;
+  let lbZoomed = false;
+  let lastTapAt = 0;
+
+  function lbRender(animate = true) {
+    if (!lbTrack) return;
+    lbTrack.classList.toggle('dragging', !animate);
+    lbTrack.style.transform = `translateX(${-lbIndex * 100}%)`;
+    if (lbCounter) lbCounter.textContent = `${lbIndex + 1} / ${lbImages.length}`;
   }
 
-  function setGalleryTransform(animate) {
-    if (!galleryTrack) return;
-    galleryTrack.classList.toggle('is-dragging', !animate);
-    galleryTrack.style.transform = `translateX(calc(-${galleryIndex * 100}% + ${galleryDragOffset}px))`;
-    if (galleryCounter) {
-      galleryCounter.textContent = `${galleryIndex + 1} / ${activeGalleryImages.length}`;
-    }
+  function lbResetZoom() {
+    lbZoomed = false;
+    $$('.lightbox-slide img', lbTrack).forEach((img) => {
+      img.style.transform = '';
+    });
   }
 
-  function resetGalleryTransform() {
-    if (!galleryViewer) return;
-    galleryViewer.style.transform = '';
-    galleryViewer.style.opacity = '';
-  }
-
-  function closeGalleryViewer() {
-    if (!galleryViewer) return;
-    galleryViewer.hidden = true;
-    document.body.style.overflow = '';
-    document.body.classList.remove('gallery-open');
-    disableZoomLock();
-    resetGalleryTransform();
-    galleryDragOffset = 0;
-    galleryGesture = null;
-  }
-
-  function showGalleryAt(index, animate = true) {
-    galleryIndex = clampGalleryIndex(index);
-    galleryDragOffset = 0;
-    setGalleryTransform(animate);
-  }
-
-  function openGalleryViewer(index, images = galleryImages) {
-    if (!galleryViewer || !images.length) return;
-    activeGalleryImages = images;
-    buildGalleryTrack(activeGalleryImages);
-    galleryViewer.hidden = false;
+  function openLightbox(groupName, index) {
+    if (!lightbox || !lbTrack) return;
+    lbImages = lbGroups[groupName] || [];
+    if (!lbImages.length) return;
+    lbTrack.innerHTML = lbImages
+      .map((src) => `<div class="lightbox-slide"><img src="${src}" alt="" draggable="false" decoding="async"></div>`)
+      .join('');
+    lbIndex = Math.max(0, Math.min(index, lbImages.length - 1));
+    lbZoomed = false;
+    lightbox.hidden = false;
     document.body.style.overflow = 'hidden';
-    document.body.classList.add('gallery-open');
-    enableZoomLock();
-    resetGalleryTransform();
-    showGalleryAt(index, false);
-    requestAnimationFrame(() => setGalleryTransform(true));
+    lbRender(false);
+    requestAnimationFrame(() => lbRender(true));
   }
 
-  function shiftGallery(step) {
-    if (activeGalleryImages.length <= 1) return;
-    showGalleryAt(galleryIndex + step);
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.hidden = true;
+    lightbox.style.transform = '';
+    lightbox.style.opacity = '';
+    document.body.style.overflow = '';
+    lbResetZoom();
   }
 
-  document.querySelectorAll('.profile-grid .grid-item:not(.empty)').forEach((item, index) => {
-    item.setAttribute('role', 'button');
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('aria-label', `사진 ${index + 1} 보기`);
-    item.addEventListener('click', () => openGalleryViewer(index));
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openGalleryViewer(index);
+  $('#lightboxClose')?.addEventListener('click', closeLightbox);
+
+  /* swipe / vertical-dismiss / double-tap zoom */
+  let tx0 = 0;
+  let ty0 = 0;
+  let gesture = null;
+  let dragX = 0;
+
+  lbStage?.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    tx0 = e.touches[0].clientX;
+    ty0 = e.touches[0].clientY;
+    gesture = null;
+    dragX = 0;
+  }, { passive: true });
+
+  lbStage?.addEventListener('touchmove', (e) => {
+    if (lbZoomed || e.touches.length !== 1) return;
+    const dx = e.touches[0].clientX - tx0;
+    const dy = e.touches[0].clientY - ty0;
+
+    if (!gesture) {
+      if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) gesture = 'h';
+      else if (dy > 10 && Math.abs(dy) > Math.abs(dx)) gesture = 'v';
+    }
+
+    if (gesture === 'h') {
+      const edge = (lbIndex === 0 && dx > 0) || (lbIndex === lbImages.length - 1 && dx < 0);
+      dragX = edge ? dx * 0.3 : dx;
+      lbTrack.classList.add('dragging');
+      lbTrack.style.transform = `translateX(calc(${-lbIndex * 100}% + ${dragX}px))`;
+    } else if (gesture === 'v' && dy > 0) {
+      lightbox.style.transform = `translateY(${dy}px)`;
+      lightbox.style.opacity = String(Math.max(0.4, 1 - dy / 300));
+    }
+  }, { passive: true });
+
+  lbStage?.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - tx0;
+    const dy = e.changedTouches[0].clientY - ty0;
+
+    if (gesture === 'h') {
+      if (dx <= -55 && lbIndex < lbImages.length - 1) lbIndex += 1;
+      else if (dx >= 55 && lbIndex > 0) lbIndex -= 1;
+      lbRender(true);
+      gesture = null;
+      return;
+    }
+
+    if (gesture === 'v') {
+      if (dy >= 90) {
+        closeLightbox();
+      } else {
+        lightbox.style.transform = '';
+        lightbox.style.opacity = '';
       }
-    });
+      gesture = null;
+      return;
+    }
+
+    /* tap: double-tap to zoom */
+    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) {
+      const now = Date.now();
+      if (now - lastTapAt < 320) {
+        const img = $$('.lightbox-slide img', lbTrack)[lbIndex];
+        if (img) {
+          lbZoomed = !lbZoomed;
+          if (lbZoomed) {
+            const r = img.getBoundingClientRect();
+            const ox = ((e.changedTouches[0].clientX - r.left) / r.width - 0.5) * -100;
+            const oy = ((e.changedTouches[0].clientY - r.top) / r.height - 0.5) * -100;
+            img.style.transform = `scale(2.2) translate(${ox / 2.2}px, ${oy / 2.2}px)`;
+          } else {
+            img.style.transform = '';
+          }
+        }
+        lastTapAt = 0;
+      } else {
+        lastTapAt = now;
+      }
+    }
+  }, { passive: true });
+
+  /* desktop conveniences */
+  lbStage?.addEventListener('click', (e) => {
+    if (lightbox.hidden || 'ontouchstart' in window) return;
+    const ratio = e.clientX / innerWidth;
+    if (ratio < 0.35 && lbIndex > 0) lbIndex -= 1;
+    else if (ratio > 0.65 && lbIndex < lbImages.length - 1) lbIndex += 1;
+    lbRender(true);
   });
-
-  const locationMapMedia = document.querySelector('.post-media--map:not(.is-empty)');
-  const locationMapImg = locationMapMedia?.querySelector('img');
-  if (locationMapMedia && locationMapImg?.getAttribute('src')) {
-    locationMapMedia.classList.add('post-media--clickable');
-    locationMapMedia.setAttribute('role', 'button');
-    locationMapMedia.setAttribute('tabindex', '0');
-    locationMapMedia.setAttribute('aria-label', '약도 크게 보기');
-    const openLocationMap = () => openGalleryViewer(0, [locationMapImg.getAttribute('src')]);
-    locationMapMedia.addEventListener('click', openLocationMap);
-    locationMapMedia.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openLocationMap();
-      }
-    });
-  }
-
-  const profileAvatarWrap = document.querySelector('.profile-avatar-wrap');
-  const profileImg = profileAvatarWrap?.querySelector('img');
-  if (profileAvatarWrap && profileImg?.getAttribute('src')) {
-    profileAvatarWrap.classList.add('profile-avatar-wrap--clickable');
-    profileAvatarWrap.setAttribute('role', 'button');
-    profileAvatarWrap.setAttribute('tabindex', '0');
-    profileAvatarWrap.setAttribute('aria-label', '프로필 사진 크게 보기');
-    const openProfilePhoto = () => {
-      markProfileViewed();
-      openGalleryViewer(0, [profileImg.getAttribute('src')]);
-    };
-    bindTap(profileAvatarWrap, openProfilePhoto);
-    profileAvatarWrap.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openProfilePhoto();
-      }
-    });
-  }
-
-  galleryClose?.addEventListener('click', closeGalleryViewer);
-
-  galleryStage?.addEventListener('click', (e) => {
-    if (galleryViewer.hidden || galleryBlockClick || activeGalleryImages.length <= 1) return;
-    const ratio = e.clientX / window.innerWidth;
-    if (ratio < 0.35) shiftGallery(-1);
-    else if (ratio > 0.65) shiftGallery(1);
-  });
-
-  galleryViewer?.addEventListener('touchstart', (e) => {
-    if (galleryViewer.hidden) return;
-    galleryTouchStartX = e.touches[0].clientX;
-    galleryTouchStartY = e.touches[0].clientY;
-    galleryGesture = null;
-    galleryDragOffset = 0;
-  }, { passive: true });
-
-  galleryViewer?.addEventListener('touchmove', (e) => {
-    if (galleryViewer.hidden) return;
-    const dx = e.touches[0].clientX - galleryTouchStartX;
-    const dy = e.touches[0].clientY - galleryTouchStartY;
-
-    if (!galleryGesture) {
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) galleryGesture = 'horizontal';
-      else if (dy > 8 && Math.abs(dy) > Math.abs(dx)) galleryGesture = 'vertical';
-    }
-
-    if (galleryGesture === 'horizontal') {
-      const atStart = galleryIndex === 0 && dx > 0;
-      const atEnd = galleryIndex === activeGalleryImages.length - 1 && dx < 0;
-      galleryDragOffset = atStart || atEnd ? dx * 0.35 : dx;
-      setGalleryTransform(false);
-      return;
-    }
-
-    if (galleryGesture === 'vertical' && dy > 0) {
-      galleryViewer.style.transform = `translateY(${dy}px)`;
-      galleryViewer.style.opacity = String(Math.max(0.35, 1 - dy / 280));
-    }
-  }, { passive: true });
-
-  galleryViewer?.addEventListener('touchend', (e) => {
-    if (galleryViewer.hidden) return;
-    const dx = e.changedTouches[0].clientX - galleryTouchStartX;
-    const dy = e.changedTouches[0].clientY - galleryTouchStartY;
-
-    if (galleryGesture === 'horizontal') {
-      if (dx <= -60) shiftGallery(1);
-      else if (dx >= 60) shiftGallery(-1);
-      else showGalleryAt(galleryIndex);
-      galleryBlockClick = true;
-      setTimeout(() => { galleryBlockClick = false; }, 300);
-      galleryGesture = null;
-      return;
-    }
-
-    if (galleryGesture === 'vertical' && dy >= SWIPE_CLOSE_THRESHOLD) {
-      closeGalleryViewer();
-      return;
-    }
-
-    resetGalleryTransform();
-    galleryGesture = null;
-  }, { passive: true });
-
-  galleryViewer?.addEventListener('wheel', (e) => {
-    if (galleryViewer.hidden) return;
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      if (e.deltaX > 0) shiftGallery(1);
-      else shiftGallery(-1);
-      return;
-    }
-    if (e.deltaY > 0) closeGalleryViewer();
-  }, { passive: true });
 
   document.addEventListener('keydown', (e) => {
-    if (galleryViewer?.hidden) return;
-    if (e.key === 'Escape') closeGalleryViewer();
-    if (e.key === 'ArrowLeft') shiftGallery(-1);
-    if (e.key === 'ArrowRight') shiftGallery(1);
+    if (lightbox?.hidden) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft' && lbIndex > 0) { lbIndex -= 1; lbRender(true); }
+    if (e.key === 'ArrowRight' && lbIndex < lbImages.length - 1) { lbIndex += 1; lbRender(true); }
   });
-
-  const transportToggle = document.getElementById('transportToggle');
-  const transportPanel = document.getElementById('transportPanel');
-  if (transportToggle && transportPanel) {
-    bindTap(transportToggle, () => {
-      const open = transportPanel.hidden;
-      transportPanel.hidden = !open;
-      transportToggle.setAttribute('aria-expanded', String(open));
-      transportToggle.classList.toggle('is-active', open);
-    });
-  }
-
-  buildCalendar();
-  startDDayTimer();
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) updateDDay();
-  });
-  window.addEventListener('pageshow', () => startDDayTimer());
 })();
