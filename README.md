@@ -2,14 +2,7 @@
 
 Instagram UI 스타일의 모바일 전용 웨딩 초대장입니다.
 
-**허영건 ♥ 이지혜** · 2026. 10. 04 (일) AM 10:30 · 비렌티웨딩홀 4층 매그넘홀 · 천안
-
 ## 라이브 사이트
-
-**https://ohmywedding.love**
-
-(기존: https://mongsil-e.github.io/mobilewedding/)
-
 ## 주요 기능
 
 - **스토리 뷰어** — 자동 재생, 좌우 탭·스와이프, 아래로 스와이프 닫기
