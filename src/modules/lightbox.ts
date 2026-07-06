@@ -1,5 +1,4 @@
 import { $, $$ } from './dom';
-import { lenis } from './scroll';
 
 export function initLightbox() {
   const lightbox = $('#lightbox');
@@ -51,8 +50,6 @@ export function initLightbox() {
     index = Math.max(0, Math.min(at, images.length - 1));
     zoomed = false;
     lightbox!.hidden = false;
-    document.body.style.overflow = 'hidden';
-    lenis?.stop();
     render(false);
     requestAnimationFrame(() => render(true));
   }
@@ -61,8 +58,6 @@ export function initLightbox() {
     lightbox!.hidden = true;
     lightbox!.style.transform = '';
     lightbox!.style.opacity = '';
-    document.body.style.overflow = '';
-    lenis?.start();
     zoomed = false;
   }
 

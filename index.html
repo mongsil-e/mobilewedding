@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#171310">
+  <meta name="theme-color" content="#0b0a09">
   <title>영건 ♥ 지혜 · Wedding Invitation</title>
   <meta name="description" content="허영건 ♥ 이지혜 결혼식에 초대합니다. 2026. 10. 04 (일) AM 10:30 · 비렌티웨딩홀 4층 매그넘홀 · 천안">
   <meta property="og:type" content="website">
@@ -22,266 +22,279 @@
   <meta name="twitter:description" content="2026. 10. 04 (일) AM 10:30 · 비렌티웨딩홀 4층 매그넘홀 · 천안">
   <meta name="twitter:image" content="https://ohmywedding.love/images/profile/mochung-full.jpg">
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="preload" as="image" href="/images/background/invitation.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="/images/profile/mochung-full.jpg" fetchpriority="high">
 </head>
-<body class="locked">
+<body>
 
-  <!-- ── Fixed chrome ────────────────────────────── -->
-  <div class="progress" aria-hidden="true"><span id="progressFill"></span></div>
-  <div class="grain" aria-hidden="true"></div>
+  <!-- ═══ THE DEVICE ═══════════════════════════════ -->
+  <div class="device" id="device">
 
-  <button class="music" id="musicBtn" type="button" aria-pressed="false" aria-label="배경음악 켜기">
-    <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-  </button>
+    <!-- status bar -->
+    <header class="statusbar" id="statusbar">
+      <span class="sb-carrier">Y♥J</span>
+      <span class="sb-time" data-clock>--:--</span>
+      <span class="sb-right">
+        <span class="sb-dday" id="sbDday">D---</span>
+        <span class="sb-battery" aria-hidden="true"><i id="sbBatteryFill"></i></span>
+      </span>
+    </header>
 
-  <!-- ── Overlay: preloader + gate ───────────────── -->
-  <div class="veil" id="veil" role="dialog" aria-label="청첩장 열기">
-    <div class="veil-panel veil-panel--top"></div>
-    <div class="veil-panel veil-panel--bottom"></div>
-    <div class="veil-inner">
-      <div class="veil-phase veil-phase--load" id="veilLoad">
-        <p class="veil-eyebrow">WEDDING INVITATION</p>
-        <p class="veil-counter"><span id="loadCount">0</span><em>%</em></p>
-        <p class="veil-loading-label">두 사람의 이야기를 여는 중</p>
+    <!-- ── Boot ──────────────────────────────────── -->
+    <section class="boot" id="boot">
+      <p class="boot-logo">Y<span>♥</span>J</p>
+      <p class="boot-sub">wedding os</p>
+    </section>
+
+    <!-- ── Lock screen ───────────────────────────── -->
+    <section class="lock" id="lock" hidden>
+      <div class="lock-wall" aria-hidden="true"></div>
+      <canvas class="lock-petals" id="lockPetals" aria-hidden="true"></canvas>
+      <div class="lock-top">
+        <p class="lock-clock" data-clock-big>--:--</p>
+        <p class="lock-date" id="lockDate">--</p>
       </div>
-      <div class="veil-phase veil-phase--gate" id="veilGate" hidden>
-        <p class="veil-eyebrow">WEDDING INVITATION</p>
-        <div class="veil-monogram" aria-hidden="true">
-          <svg viewBox="0 0 120 120" width="112" height="112">
-            <circle id="monoRing" cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
-            <circle cx="60" cy="60" r="49" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
-            <text x="38" y="72" text-anchor="middle" class="mono-letter">Y</text>
-            <text x="60" y="66" text-anchor="middle" class="mono-amp">&amp;</text>
-            <text x="83" y="72" text-anchor="middle" class="mono-letter">J</text>
-          </svg>
-        </div>
-        <h1 class="veil-names">허영건 <span>·</span> 이지혜</h1>
-        <p class="veil-date">2026. 10. 04 SUN AM 10:30</p>
-        <button class="veil-open" id="openBtn" type="button">
-          <span class="veil-open-seal" aria-hidden="true">♥</span>
-          <span>초대장 열기</span>
+      <div class="lock-notis">
+        <button class="noti" id="notiInvite" type="button">
+          <span class="noti-icon">💌</span>
+          <span class="noti-body">
+            <span class="noti-head"><strong>청첩장</strong><em>지금</em></span>
+            <span class="noti-title">모바일 청첩장이 도착했어요</span>
+            <span class="noti-text">허영건 ♥ 이지혜 · 10월 4일 (일) AM 10:30</span>
+          </span>
+        </button>
+        <button class="noti noti--sub" id="notiCal" type="button">
+          <span class="noti-icon">📅</span>
+          <span class="noti-body">
+            <span class="noti-head"><strong>캘린더</strong><em>다가오는 일정</em></span>
+            <span class="noti-text" id="notiDdayText">결혼식 D-day</span>
+          </span>
         </button>
       </div>
-    </div>
-  </div>
-
-  <main id="top">
-
-    <!-- ── Hero (WebGL) ────────────────────────────── -->
-    <section class="hero" id="hero">
-      <div class="hero-webgl" id="heroWebgl" aria-hidden="true"></div>
-      <img class="hero-fallback" id="heroFallback" src="/images/background/invitation.jpg" alt="" decoding="async">
-      <div class="hero-veil" aria-hidden="true"></div>
-      <div class="hero-inner">
-        <p class="hero-eyebrow" data-anim="fade">THE MARRIAGE OF</p>
-        <h2 class="hero-title">
-          <span class="hero-line" data-split="hero">Young Geon</span>
-          <span class="hero-amp"><em>&amp;</em></span>
-          <span class="hero-line" data-split="hero">Ji Hye</span>
-        </h2>
-        <p class="hero-names-ko" data-anim="fade">허영건 그리고 이지혜</p>
-        <div class="hero-meta" data-anim="fade">
-          <span>2026. 10. 04 SUN</span>
-          <span class="hero-meta-divider" aria-hidden="true"></span>
-          <span>AM 10:30 · 천안 비렌티웨딩홀</span>
-        </div>
-      </div>
-      <div class="hero-scrollcue" aria-hidden="true">
-        <span class="hero-scrollcue-label">scroll</span>
-        <span class="hero-scrollcue-line"></span>
+      <div class="lock-hint" id="lockHint">
+        <span class="lock-hint-chev" aria-hidden="true">⌃</span>
+        <span>밀어서 청첩장 열기</span>
       </div>
     </section>
 
-    <!-- ── Kinetic marquee ─────────────────────────── -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track" id="marqueeTrack">
-        <span>YOUNGGEON &amp; JIHYE — OCTOBER 4TH 2026 — CHEONAN, KOREA — WE ARE GETTING MARRIED —&nbsp;</span>
-        <span>YOUNGGEON &amp; JIHYE — OCTOBER 4TH 2026 — CHEONAN, KOREA — WE ARE GETTING MARRIED —&nbsp;</span>
-      </div>
-    </div>
+    <!-- ── Home screen ───────────────────────────── -->
+    <section class="home" id="home" hidden>
+      <div class="home-wall" aria-hidden="true"></div>
 
-    <!-- ── Invitation ──────────────────────────────── -->
-    <section class="section invitation" id="invitation">
-      <p class="section-eyebrow" data-anim="fade">INVITATION</p>
-      <h3 class="section-title" data-split="lines">소중한 분들을 초대합니다</h3>
-      <figure class="invitation-quote" data-anim="fade">
-        <blockquote data-split="lines">
-          사랑은 서로를 마주 보는 것이 아니라<br>
-          같은 방향을 함께 바라보는 것이다
-        </blockquote>
-        <figcaption>— 생텍쥐페리</figcaption>
-      </figure>
-      <div class="letter" data-anim="card" data-tilt>
-        <span class="letter-corner letter-corner--tl" aria-hidden="true"></span>
-        <span class="letter-corner letter-corner--br" aria-hidden="true"></span>
-        <p class="letter-body" data-split="lines">
-          서로 다른 두 길을 걸어온<br>
-          저희 두 사람, 이제 하나의 길을<br>
-          함께 걸어가려 합니다.
-        </p>
-        <p class="letter-body" data-split="lines">
-          소중한 분들을 모시고<br>
-          저희의 첫 시작을 축복해 주시면<br>
-          더없이 행복하겠습니다.
-        </p>
-        <div class="letter-signature" data-anim="fade">
-          <p><span class="letter-parents">허연석 · 신혜연</span>의 아들 <strong>영건</strong></p>
-          <p><span class="letter-parents">이성태</span>의 딸 <strong>지혜</strong></p>
+      <div class="home-scroll">
+        <!-- d-day widget -->
+        <button class="widget widget--dday" data-open="app-calendar" type="button">
+          <span class="widget-label">OUR WEDDING DAY</span>
+          <span class="widget-main" id="widgetDday">D---</span>
+          <span class="widget-sub">2026. 10. 04 SUN AM 10:30 · 천안 비렌티웨딩홀</span>
+          <span class="widget-names">허영건 <i>♥</i> 이지혜</span>
+        </button>
+
+        <!-- music mini widget -->
+        <button class="widget widget--music" data-open="app-music" type="button">
+          <span class="widget-disc"><img src="/images/profile/mochung.jpg" alt=""></span>
+          <span class="widget-music-info">
+            <strong>우리의 오르골</strong>
+            <span>Y &amp; J · wedding os</span>
+          </span>
+          <span class="widget-music-eq" id="widgetEq" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+
+        <!-- app grid -->
+        <div class="grid">
+          <button class="icon" data-open="app-invite" type="button">
+            <span class="icon-glyph" style="--bg1:#f7e0c8;--bg2:#eec3a4">💌</span><span>초대장</span>
+          </button>
+          <button class="icon" data-open="app-messages" type="button">
+            <span class="icon-glyph" style="--bg1:#c9e8c0;--bg2:#93cf8f">💬</span><span>메시지</span>
+            <span class="icon-badge">2</span>
+          </button>
+          <button class="icon" data-open="app-photos" type="button">
+            <span class="icon-glyph" style="--bg1:#fbe3ea;--bg2:#f2b8cb">📷</span><span>사진</span>
+          </button>
+          <button class="icon" data-open="app-calendar" type="button">
+            <span class="icon-glyph icon-glyph--cal" style="--bg1:#fff;--bg2:#f3ede4"><em>OCT</em><strong>4</strong></span><span>캘린더</span>
+          </button>
+          <button class="icon" data-open="app-map" type="button">
+            <span class="icon-glyph" style="--bg1:#cfe6f7;--bg2:#a3c9ef">🗺️</span><span>지도</span>
+          </button>
+          <button class="icon" data-open="app-pay" type="button">
+            <span class="icon-glyph" style="--bg1:#ffe9b8;--bg2:#f5cf7e">💝</span><span>마음</span>
+          </button>
+          <button class="icon" data-open="app-bless" type="button">
+            <span class="icon-glyph" style="--bg1:#ffd9d4;--bg2:#f5a8a0">💖</span><span>축복</span>
+          </button>
+          <a class="icon" href="tel:0415545500">
+            <span class="icon-glyph" style="--bg1:#d7f2d8;--bg2:#9adfa4">📞</span><span>웨딩홀</span>
+          </a>
         </div>
       </div>
+
+      <!-- dock -->
+      <nav class="dock">
+        <button class="icon icon--dock" data-open="app-messages" type="button" aria-label="메시지">
+          <span class="icon-glyph" style="--bg1:#c9e8c0;--bg2:#93cf8f">💬</span>
+        </button>
+        <button class="icon icon--dock" data-open="app-photos" type="button" aria-label="사진">
+          <span class="icon-glyph" style="--bg1:#fbe3ea;--bg2:#f2b8cb">📷</span>
+        </button>
+        <button class="icon icon--dock" data-open="app-map" type="button" aria-label="지도">
+          <span class="icon-glyph" style="--bg1:#cfe6f7;--bg2:#a3c9ef">🗺️</span>
+        </button>
+        <button class="icon icon--dock" id="dockShare" type="button" aria-label="공유">
+          <span class="icon-glyph" style="--bg1:#e6dcf5;--bg2:#c3aee8">📤</span>
+        </button>
+      </nav>
     </section>
 
-    <!-- ── Couple ──────────────────────────────────── -->
-    <section class="section couple" id="couple">
-      <p class="section-eyebrow" data-anim="fade">GROOM &amp; BRIDE</p>
-      <h3 class="section-title" data-split="lines">두 사람</h3>
-      <div class="couple-cards">
-        <article class="couple-card" data-anim="card" data-tilt>
-          <div class="couple-photo" data-anim="img">
-            <img src="/images/gallery/DSCF0614 복사.jpg" alt="신랑 허영건" loading="lazy" decoding="async">
+    <!-- ── App: 초대장 (notes) ───────────────────── -->
+    <section class="app app--invite" id="app-invite" hidden>
+      <header class="app-bar">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2>초대장</h2>
+        <span class="app-bar-end"></span>
+      </header>
+      <div class="app-body">
+        <article class="note">
+          <p class="note-date">2026년 10월 4일 일요일 · 오전 10:30</p>
+          <h3 class="note-title">소중한 분들을 초대합니다</h3>
+          <blockquote class="note-quote">
+            "사랑은 서로를 마주 보는 것이 아니라<br>
+            같은 방향을 함께 바라보는 것이다"<br>
+            <small>— 생텍쥐페리</small>
+          </blockquote>
+          <p class="note-body">
+            서로 다른 두 길을 걸어온<br>
+            저희 두 사람, 이제 하나의 길을<br>
+            함께 걸어가려 합니다.
+          </p>
+          <p class="note-body">
+            소중한 분들을 모시고<br>
+            저희의 첫 시작을 축복해 주시면<br>
+            더없이 행복하겠습니다.
+          </p>
+          <div class="note-sign">
+            <p><span>허연석 · 신혜연</span>의 아들 <strong>영건</strong></p>
+            <p><span>이성태</span>의 딸 <strong>지혜</strong></p>
           </div>
-          <p class="couple-role">GROOM</p>
-          <h4 class="couple-name">허영건</h4>
-          <p class="couple-family">허연석 · 신혜연의 아들</p>
+          <div class="note-cta">
+            <button type="button" data-open="app-calendar">📅 일정 보기</button>
+            <button type="button" data-open="app-map">📍 오시는 길</button>
+          </div>
         </article>
-        <span class="couple-heart" aria-hidden="true">♥</span>
-        <article class="couple-card" data-anim="card" data-tilt>
-          <div class="couple-photo" data-anim="img">
-            <img src="/images/gallery/DSCF3860 복사.jpg" alt="신부 이지혜" loading="lazy" decoding="async">
+      </div>
+    </section>
+
+    <!-- ── App: 메시지 ───────────────────────────── -->
+    <section class="app app--messages" id="app-messages" hidden>
+      <header class="app-bar">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2><span class="chat-avatar"><img src="/images/profile/mochung.jpg" alt=""></span>영건 ♥ 지혜</h2>
+        <button class="app-bar-end chat-skip" id="chatSkip" type="button">전체 보기</button>
+      </header>
+      <div class="app-body chat" id="chatBody">
+        <p class="chat-day">2026년 10월 4일을 앞두고</p>
+        <div class="chat-stream" id="chatStream"></div>
+      </div>
+      <footer class="chat-input" aria-hidden="true">
+        <span class="chat-input-fake">축하 메시지는 예식장에서 직접 전해주세요 🤍</span>
+      </footer>
+    </section>
+
+    <!-- ── App: 사진 ─────────────────────────────── -->
+    <section class="app app--photos" id="app-photos" hidden>
+      <header class="app-bar">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2>사진</h2>
+        <span class="app-bar-end"></span>
+      </header>
+      <div class="app-body">
+        <h3 class="ph-sec">웨딩 필름 <span>5장</span></h3>
+        <div class="ph-strip">
+          <figure data-lightbox="film"><img src="/images/stories/ourday.jpg" alt="Our Day" loading="lazy"><figcaption>Our Day</figcaption></figure>
+          <figure data-lightbox="film"><img src="/images/stories/moment.jpg" alt="Moment" loading="lazy"><figcaption>Moment</figcaption></figure>
+          <figure data-lightbox="film"><img src="/images/stories/together.jpg" alt="Together" loading="lazy"><figcaption>Together</figcaption></figure>
+          <figure data-lightbox="film"><img src="/images/stories/memory.jpg" alt="Memory" loading="lazy"><figcaption>Memory</figcaption></figure>
+          <figure data-lightbox="film"><img src="/images/stories/foever.jpg" alt="Forever" loading="lazy"><figcaption>Forever</figcaption></figure>
+        </div>
+        <h3 class="ph-sec">우리의 기록 <span>6장</span></h3>
+        <div class="ph-grid">
+          <figure data-lightbox="gallery"><img src="/images/gallery/DSCF0614 복사.jpg" alt="갤러리 1" loading="lazy"></figure>
+          <figure data-lightbox="gallery"><img src="/images/gallery/DSCF0668 복사.jpg" alt="갤러리 2" loading="lazy"></figure>
+          <figure data-lightbox="gallery"><img src="/images/gallery/DSCF2591 복사.jpg" alt="갤러리 3" loading="lazy"></figure>
+          <figure data-lightbox="gallery"><img src="/images/gallery/DSCF3804.jpg" alt="갤러리 4" loading="lazy"></figure>
+          <figure data-lightbox="gallery"><img src="/images/gallery/DSCF3860 복사.jpg" alt="갤러리 5" loading="lazy"></figure>
+          <figure data-lightbox="gallery"><img src="/images/gallery/7725.jpg" alt="갤러리 6" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── App: 캘린더 ───────────────────────────── -->
+    <section class="app app--calendar" id="app-calendar" hidden>
+      <header class="app-bar">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2>캘린더</h2>
+        <span class="app-bar-end"></span>
+      </header>
+      <div class="app-body">
+        <div class="cal-card">
+          <p class="cal-month"><em>October</em> 2026</p>
+          <div class="cal-week">
+            <span class="sun">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="sat">토</span>
           </div>
-          <p class="couple-role">BRIDE</p>
-          <h4 class="couple-name">이지혜</h4>
-          <p class="couple-family">이성태의 딸</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- ── Horizontal gallery (pinned) ─────────────── -->
-    <section class="hgallery" id="gallery">
-      <div class="hgallery-pin" id="hgalleryPin">
-        <header class="hgallery-head">
-          <p class="section-eyebrow">OUR MOMENTS</p>
-          <h3 class="section-title section-title--bare">함께한 기록</h3>
-        </header>
-        <div class="hgallery-track" id="hgalleryTrack">
-          <figure class="hslide" data-lightbox="gallery">
-            <div class="hslide-img"><img src="/images/gallery/DSCF0614 복사.jpg" alt="갤러리 사진 1" loading="lazy" decoding="async"></div>
-            <figcaption><em>01</em> Our Day</figcaption>
-          </figure>
-          <figure class="hslide" data-lightbox="gallery">
-            <div class="hslide-img"><img src="/images/gallery/DSCF0668 복사.jpg" alt="갤러리 사진 2" loading="lazy" decoding="async"></div>
-            <figcaption><em>02</em> Moment</figcaption>
-          </figure>
-          <figure class="hslide" data-lightbox="gallery">
-            <div class="hslide-img"><img src="/images/gallery/DSCF2591 복사.jpg" alt="갤러리 사진 3" loading="lazy" decoding="async"></div>
-            <figcaption><em>03</em> Together</figcaption>
-          </figure>
-          <figure class="hslide" data-lightbox="gallery">
-            <div class="hslide-img"><img src="/images/gallery/DSCF3804.jpg" alt="갤러리 사진 4" loading="lazy" decoding="async"></div>
-            <figcaption><em>04</em> Promise</figcaption>
-          </figure>
-          <figure class="hslide" data-lightbox="gallery">
-            <div class="hslide-img"><img src="/images/gallery/DSCF3860 복사.jpg" alt="갤러리 사진 5" loading="lazy" decoding="async"></div>
-            <figcaption><em>05</em> Memory</figcaption>
-          </figure>
-          <figure class="hslide" data-lightbox="gallery">
-            <div class="hslide-img"><img src="/images/gallery/7725.jpg" alt="갤러리 사진 6" loading="lazy" decoding="async"></div>
-            <figcaption><em>06</em> Forever</figcaption>
-          </figure>
-          <div class="hslide hslide--end" aria-hidden="true">
-            <p class="hslide-end-script">and forever…</p>
+          <div class="cal-grid" id="calendarGrid"></div>
+        </div>
+        <div class="cal-event">
+          <span class="cal-event-dot" aria-hidden="true"></span>
+          <div class="cal-event-info">
+            <strong>영건 ♥ 지혜 결혼식</strong>
+            <span>오전 10:30 · 비렌티웨딩홀 4층 매그넘홀</span>
           </div>
         </div>
-        <div class="hgallery-bar" aria-hidden="true"><span id="hgalleryBar"></span></div>
-      </div>
-    </section>
-
-    <!-- ── Film strip ──────────────────────────────── -->
-    <section class="section moments" id="moments">
-      <p class="section-eyebrow" data-anim="fade">OUR FILM</p>
-      <h3 class="section-title" data-split="lines">우리의 순간들</h3>
-      <div class="filmstrip" data-anim="fade">
-        <figure class="film-frame" data-lightbox="film">
-          <img src="/images/stories/ourday.jpg" alt="Our Day" loading="lazy" decoding="async">
-          <figcaption>Our Day</figcaption>
-        </figure>
-        <figure class="film-frame" data-lightbox="film">
-          <img src="/images/stories/moment.jpg" alt="Moment" loading="lazy" decoding="async">
-          <figcaption>Moment</figcaption>
-        </figure>
-        <figure class="film-frame" data-lightbox="film">
-          <img src="/images/stories/together.jpg" alt="Together" loading="lazy" decoding="async">
-          <figcaption>Together</figcaption>
-        </figure>
-        <figure class="film-frame" data-lightbox="film">
-          <img src="/images/stories/memory.jpg" alt="Memory" loading="lazy" decoding="async">
-          <figcaption>Memory</figcaption>
-        </figure>
-        <figure class="film-frame" data-lightbox="film">
-          <img src="/images/stories/foever.jpg" alt="Forever" loading="lazy" decoding="async">
-          <figcaption>Forever</figcaption>
-        </figure>
-      </div>
-      <p class="filmstrip-hint" data-anim="fade" aria-hidden="true">옆으로 넘겨보세요 →</p>
-    </section>
-
-    <!-- ── Save the date ───────────────────────────── -->
-    <section class="section dday" id="dday">
-      <p class="section-eyebrow" data-anim="fade">SAVE THE DATE</p>
-      <h3 class="section-title" data-split="lines">2026년 10월 4일 일요일</h3>
-      <p class="dday-sub" data-anim="fade">오전 10시 30분 · 비렌티웨딩홀 4층 매그넘홀</p>
-
-      <div class="calendar glass" data-anim="card">
-        <p class="calendar-month"><em>October</em> 2026</p>
-        <div class="calendar-week">
-          <span class="sun">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="sat">토</span>
+        <div class="count-card">
+          <p class="count-label">우리가 부부가 되는 날까지</p>
+          <div class="odometer" aria-live="off">
+            <div class="odo-group"><div class="odo-digits" data-odo="d"></div><span class="odo-unit">DAYS</span></div>
+            <span class="odo-colon" aria-hidden="true">:</span>
+            <div class="odo-group"><div class="odo-digits" data-odo="h"></div><span class="odo-unit">HRS</span></div>
+            <span class="odo-colon" aria-hidden="true">:</span>
+            <div class="odo-group"><div class="odo-digits" data-odo="m"></div><span class="odo-unit">MIN</span></div>
+            <span class="odo-colon" aria-hidden="true">:</span>
+            <div class="odo-group"><div class="odo-digits" data-odo="s"></div><span class="odo-unit">SEC</span></div>
+          </div>
+          <p class="count-caption" id="ddayCaption" aria-live="polite">--</p>
         </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </div>
-
-      <div class="countdown glass" data-anim="card">
-        <p class="countdown-label">우리가 부부가 되는 날까지</p>
-        <div class="odometer" aria-live="off">
-          <div class="odo-group"><div class="odo-digits" data-odo="d"></div><span class="odo-unit">DAYS</span></div>
-          <span class="odo-colon" aria-hidden="true">:</span>
-          <div class="odo-group"><div class="odo-digits" data-odo="h"></div><span class="odo-unit">HRS</span></div>
-          <span class="odo-colon" aria-hidden="true">:</span>
-          <div class="odo-group"><div class="odo-digits" data-odo="m"></div><span class="odo-unit">MIN</span></div>
-          <span class="odo-colon" aria-hidden="true">:</span>
-          <div class="odo-group"><div class="odo-digits" data-odo="s"></div><span class="odo-unit">SEC</span></div>
-        </div>
-        <p class="countdown-caption" id="ddayCaption" aria-live="polite">--</p>
+        <button class="ics-btn" id="icsBtn" type="button">📲 내 캘린더에 일정 추가 (.ics)</button>
       </div>
     </section>
 
-    <!-- ── Location ────────────────────────────────── -->
-    <section class="section location" id="location">
-      <p class="section-eyebrow" data-anim="fade">LOCATION</p>
-      <h3 class="section-title" data-split="lines">오시는 길</h3>
-      <div class="venue glass" data-anim="card">
-        <p class="venue-name">비렌티웨딩홀 <span>4층 매그넘홀</span></p>
-        <p class="venue-address">충남 천안시 서북구 천안대로 1198-30</p>
-        <button class="venue-copy" type="button" data-copy="충남 천안시 서북구 천안대로 1198-30" data-copy-msg="주소가 복사되었습니다">주소 복사</button>
-      </div>
-      <figure class="map" data-anim="img" data-lightbox="map">
-        <img src="/images/location/map_20230602_131012.jpg" alt="비렌티웨딩홀 약도" loading="lazy" decoding="async">
-        <figcaption>약도를 탭하면 크게 볼 수 있어요</figcaption>
-      </figure>
-      <div class="map-links" data-anim="fade">
-        <a class="map-link" data-magnet href="https://map.naver.com/v5/search/%EB%B9%84%EB%A0%8C%ED%8B%B0%20%EC%9B%A8%EB%94%A9%ED%99%80%20%26%20%EB%B7%94%ED%8E%98" target="_blank" rel="noopener">
-          <img src="/images/icons/navermap.png" alt="" width="20" height="20" decoding="async">
-          <span>네이버 지도</span>
-        </a>
-        <a class="map-link" data-magnet href="https://map.kakao.com/?q=%EC%B6%A9%EB%82%A8+%EC%B2%9C%EC%95%88%EC%8B%9C+%EC%84%9C%EB%B6%81%EA%B5%AC+%EC%B2%9C%EC%95%88%EB%8C%80%EB%A1%9C+1198-30+%EB%B9%84%EB%A0%8C%ED%8B%B0%EC%9B%A8%EB%94%A9%ED%99%80" target="_blank" rel="noopener">
-          <img src="/images/icons/kakaomap.png" alt="" width="20" height="20" decoding="async">
-          <span>카카오맵</span>
-        </a>
-      </div>
+    <!-- ── App: 지도 ─────────────────────────────── -->
+    <section class="app app--map" id="app-map" hidden>
+      <header class="app-bar">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2>지도</h2>
+        <span class="app-bar-end"></span>
+      </header>
+      <div class="app-body">
+        <figure class="map-figure" data-lightbox="map">
+          <img src="/images/location/map_20230602_131012.jpg" alt="비렌티웨딩홀 약도" loading="lazy">
+          <figcaption>탭하면 크게 볼 수 있어요</figcaption>
+        </figure>
+        <div class="map-place">
+          <strong>비렌티웨딩홀 <span>4층 매그넘홀</span></strong>
+          <p>충남 천안시 서북구 천안대로 1198-30</p>
+          <button class="chip" type="button" data-copy="충남 천안시 서북구 천안대로 1198-30" data-copy-msg="주소가 복사되었습니다">주소 복사</button>
+        </div>
+        <div class="map-apps">
+          <a class="map-app" href="https://map.naver.com/v5/search/%EB%B9%84%EB%A0%8C%ED%8B%B0%20%EC%9B%A8%EB%94%A9%ED%99%80%20%26%20%EB%B7%94%ED%8E%98" target="_blank" rel="noopener">
+            <img src="/images/icons/navermap.png" alt="" width="20" height="20"><span>네이버 지도</span>
+          </a>
+          <a class="map-app" href="https://map.kakao.com/?q=%EC%B6%A9%EB%82%A8+%EC%B2%9C%EC%95%88%EC%8B%9C+%EC%84%9C%EB%B6%81%EA%B5%AC+%EC%B2%9C%EC%95%88%EB%8C%80%EB%A1%9C+1198-30+%EB%B9%84%EB%A0%8C%ED%8B%B0%EC%9B%A8%EB%94%A9%ED%99%80" target="_blank" rel="noopener">
+            <img src="/images/icons/kakaomap.png" alt="" width="20" height="20"><span>카카오맵</span>
+          </a>
+        </div>
 
-      <div class="transport" data-anim="fade">
         <div class="acc" data-acc>
-          <button class="acc-head" type="button" aria-expanded="false">
-            <span class="acc-icon" aria-hidden="true">🚄</span><span>KTX 이용 시</span>
+          <button class="acc-head" type="button" aria-expanded="false">🚄 KTX 이용 시
             <svg class="acc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="acc-panel"><div class="acc-body">
@@ -289,8 +302,7 @@
           </div></div>
         </div>
         <div class="acc" data-acc>
-          <button class="acc-head" type="button" aria-expanded="false">
-            <span class="acc-icon" aria-hidden="true">🚗</span><span>자가용 이용 시</span>
+          <button class="acc-head" type="button" aria-expanded="false">🚗 자가용 이용 시
             <svg class="acc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="acc-panel"><div class="acc-body">
@@ -302,8 +314,7 @@
           </div></div>
         </div>
         <div class="acc" data-acc>
-          <button class="acc-head" type="button" aria-expanded="false">
-            <span class="acc-icon" aria-hidden="true">🚌</span><span>버스 이용 시</span>
+          <button class="acc-head" type="button" aria-expanded="false">🚌 버스 이용 시
             <svg class="acc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="acc-panel"><div class="acc-body">
@@ -313,8 +324,7 @@
           </div></div>
         </div>
         <div class="acc" data-acc>
-          <button class="acc-head" type="button" aria-expanded="false">
-            <span class="acc-icon" aria-hidden="true">🚐</span><span>셔틀버스 이용 시</span>
+          <button class="acc-head" type="button" aria-expanded="false">🚐 셔틀버스 이용 시
             <svg class="acc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="acc-panel"><div class="acc-body">
@@ -328,124 +338,119 @@
       </div>
     </section>
 
-    <!-- ── Gift ────────────────────────────────────── -->
-    <section class="section gift" id="gift">
-      <p class="section-eyebrow" data-anim="fade">WITH LOVE</p>
-      <h3 class="section-title" data-split="lines">마음 전하실 곳</h3>
-      <p class="gift-desc" data-anim="fade">축하해 주시는 마음만으로도 충분합니다.<br>부득이하게 전하실 경우 아래 계좌를 이용해 주세요.</p>
+    <!-- ── App: 마음 전하기 (pay) ─────────────────── -->
+    <section class="app app--pay" id="app-pay" hidden>
+      <header class="app-bar">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2>마음 전하기</h2>
+        <span class="app-bar-end"></span>
+      </header>
+      <div class="app-body">
+        <p class="pay-desc">축하해 주시는 마음만으로도 충분합니다.<br>부득이하게 전하실 경우 이용해 주세요.</p>
 
-      <div class="gift-groups" data-anim="fade">
-        <div class="acc acc--gift" data-acc>
-          <button class="acc-head" type="button" aria-expanded="false">
-            <span class="acc-side acc-side--groom">신랑측</span><span>계좌번호 보기</span>
-            <svg class="acc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="acc-panel"><div class="acc-body">
-            <ul class="account-list">
-              <li class="account">
-                <div class="account-info">
-                  <span class="account-name">허영건 <em>신랑</em></span>
-                  <span class="account-number">하나은행 600-910424-57107</span>
-                </div>
-                <button type="button" class="account-copy" data-copy="600-910424-57107" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
-              </li>
-              <li class="account">
-                <div class="account-info">
-                  <span class="account-name">허연석 <em>아버지</em></span>
-                  <span class="account-number">농협 501-0175-2155-771</span>
-                </div>
-                <button type="button" class="account-copy" data-copy="50101752155771" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
-              </li>
-              <li class="account">
-                <div class="account-info">
-                  <span class="account-name">신혜연 <em>어머니</em></span>
-                  <span class="account-number">농협 175-3205-1031-728</span>
-                </div>
-                <button type="button" class="account-copy" data-copy="17532051031728" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
-              </li>
-            </ul>
-          </div></div>
+        <div class="pay-group">
+          <p class="pay-side pay-side--groom">신랑측</p>
+          <ul class="pay-list">
+            <li class="pay-card">
+              <div class="pay-info">
+                <span class="pay-name">허영건 <em>신랑</em></span>
+                <span class="pay-acct">하나은행 600-910424-57107</span>
+              </div>
+              <button class="pay-copy" type="button" data-copy="600-910424-57107" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
+            </li>
+            <li class="pay-card">
+              <div class="pay-info">
+                <span class="pay-name">허연석 <em>아버지</em></span>
+                <span class="pay-acct">농협 501-0175-2155-771</span>
+              </div>
+              <button class="pay-copy" type="button" data-copy="50101752155771" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
+            </li>
+            <li class="pay-card">
+              <div class="pay-info">
+                <span class="pay-name">신혜연 <em>어머니</em></span>
+                <span class="pay-acct">농협 175-3205-1031-728</span>
+              </div>
+              <button class="pay-copy" type="button" data-copy="17532051031728" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
+            </li>
+          </ul>
         </div>
 
-        <div class="acc acc--gift" data-acc>
-          <button class="acc-head" type="button" aria-expanded="false">
-            <span class="acc-side acc-side--bride">신부측</span><span>계좌번호 보기</span>
-            <svg class="acc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="acc-panel"><div class="acc-body">
-            <ul class="account-list">
-              <li class="account">
-                <div class="account-info">
-                  <span class="account-name">이지혜 <em>신부</em></span>
-                  <span class="account-number">신한은행 110-500-110589</span>
-                </div>
-                <button type="button" class="account-copy" data-copy="110-500-110589" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
-              </li>
-              <li class="account">
-                <div class="account-info">
-                  <span class="account-name">이성태 <em>아버지</em></span>
-                  <span class="account-number">농협 737-0705-2082-631</span>
-                </div>
-                <button type="button" class="account-copy" data-copy="73707052082631" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
-              </li>
-            </ul>
-          </div></div>
+        <div class="pay-group">
+          <p class="pay-side pay-side--bride">신부측</p>
+          <ul class="pay-list">
+            <li class="pay-card">
+              <div class="pay-info">
+                <span class="pay-name">이지혜 <em>신부</em></span>
+                <span class="pay-acct">신한은행 110-500-110589</span>
+              </div>
+              <button class="pay-copy" type="button" data-copy="110-500-110589" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
+            </li>
+            <li class="pay-card">
+              <div class="pay-info">
+                <span class="pay-name">이성태 <em>아버지</em></span>
+                <span class="pay-acct">농협 737-0705-2082-631</span>
+              </div>
+              <button class="pay-copy" type="button" data-copy="73707052082631" data-copy-msg="계좌번호가 복사되었습니다">복사</button>
+            </li>
+          </ul>
         </div>
+
+        <p class="pay-foot">보내주신 사랑과 축복, 오래도록 기억하겠습니다 🤍</p>
       </div>
     </section>
 
-    <!-- ── Thanks / particle heart ─────────────────── -->
-    <section class="section thanks" id="thanks">
-      <canvas class="heart-canvas" id="heartCanvas" aria-hidden="true"></canvas>
-      <div class="thanks-inner">
-        <p class="thanks-script" data-anim="fade">Thank you</p>
-        <p class="thanks-copy" data-split="lines">
+    <!-- ── App: 뮤직 ─────────────────────────────── -->
+    <section class="app app--music" id="app-music" hidden>
+      <header class="app-bar app-bar--dark">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2>뮤직</h2>
+        <span class="app-bar-end"></span>
+      </header>
+      <div class="app-body music-body">
+        <div class="music-disc" id="musicDisc">
+          <img src="/images/profile/mochung-full.jpg" alt="">
+          <span class="music-disc-hole" aria-hidden="true"></span>
+        </div>
+        <p class="music-title">우리의 오르골</p>
+        <p class="music-artist">Y &amp; J — wedding os</p>
+        <div class="music-wave" id="musicWave" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <button class="music-play" id="musicPlay" type="button" aria-pressed="false" aria-label="재생">
+          <svg class="mp-icon-play" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
+          <svg class="mp-icon-pause" width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+        </button>
+        <p class="music-note">WebAudio로 실시간 합성되는 오르골 소리예요</p>
+      </div>
+    </section>
+
+    <!-- ── App: 축복 ─────────────────────────────── -->
+    <section class="app app--bless" id="app-bless" hidden>
+      <header class="app-bar">
+        <button class="app-back" data-close type="button">‹ 홈</button>
+        <h2>축복 보내기</h2>
+        <span class="app-bar-end"></span>
+      </header>
+      <div class="app-body bless-body">
+        <p class="bless-script">Thank you</p>
+        <p class="bless-copy">
           저희 두 사람의 시작을<br>
           함께 축복해 주셔서 감사합니다.
         </p>
-        <div class="thanks-actions" data-anim="fade">
-          <button class="bless-btn" id="blessBtn" type="button" data-magnet>
-            <span class="bless-heart" aria-hidden="true">♥</span>
-            <span>축복 보내기</span>
-            <span class="bless-count" id="blessCount">0</span>
-          </button>
-          <button class="share-btn" id="shareBtn" type="button" data-magnet>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            <span>청첩장 공유하기</span>
-          </button>
-        </div>
+        <button class="bless-heart-btn" id="blessBtn" type="button" aria-label="축복 보내기">
+          <span class="bless-heart-glyph" aria-hidden="true">♥</span>
+        </button>
+        <p class="bless-count-line">지금까지 <strong id="blessCount">0</strong>번의 축복이 쌓였어요</p>
+        <button class="bless-share" id="shareBtn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          청첩장 공유하기
+        </button>
       </div>
     </section>
 
-    <footer class="footer">
-      <p class="footer-mono" aria-hidden="true">Y &amp; J</p>
-      <p>2026. 10. 04 · 허영건 ♥ 이지혜</p>
-    </footer>
-  </main>
-
-  <!-- ── Bottom dock ─────────────────────────────── -->
-  <nav class="dock" aria-label="바로가기">
-    <a href="#hero" class="dock-item is-active" data-dock="hero" aria-label="처음으로">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/></svg>
-      <span>홈</span>
-    </a>
-    <a href="#gallery" class="dock-item" data-dock="gallery" aria-label="갤러리">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="9" cy="9" r="1.7"/><path d="m4.5 17 4.7-4.7a1.5 1.5 0 0 1 2.1 0l6.2 6.2"/></svg>
-      <span>갤러리</span>
-    </a>
-    <a href="#dday" class="dock-item" data-dock="dday" aria-label="일정">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M8 3v3.5M16 3v3.5M3.5 9.5h17"/></svg>
-      <span>일정</span>
-    </a>
-    <a href="#location" class="dock-item" data-dock="location" aria-label="오시는 길">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s-6.5-5.4-6.5-10.2A6.5 6.5 0 0 1 12 4.3a6.5 6.5 0 0 1 6.5 6.5C18.5 15.6 12 21 12 21Z"/><circle cx="12" cy="10.8" r="2.3"/></svg>
-      <span>위치</span>
-    </a>
-    <a href="#gift" class="dock-item" data-dock="gift" aria-label="마음 전하기">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="8" width="17" height="12.5" rx="2.5"/><path d="M3.5 12h17M12 8v12.5"/><path d="M12 8s-1-4.5-4-4.5A2.2 2.2 0 0 0 5.8 6C5.8 7.6 8 8 12 8Zm0 0s1-4.5 4-4.5A2.2 2.2 0 0 1 18.2 6C18.2 7.6 16 8 12 8Z"/></svg>
-      <span>마음</span>
-    </a>
-  </nav>
+    <!-- home indicator -->
+    <button class="homebar" id="homeBar" type="button" aria-label="홈으로"></button>
+  </div>
 
   <!-- ── Lightbox ────────────────────────────────── -->
   <div class="lightbox" id="lightbox" hidden>

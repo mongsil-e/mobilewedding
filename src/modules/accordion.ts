@@ -1,5 +1,4 @@
 import { $$, vibrate } from './dom';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export function initAccordions() {
   $$('[data-acc]').forEach((acc) => {
@@ -8,7 +7,6 @@ export function initAccordions() {
       const open = acc.classList.toggle('open');
       head.setAttribute('aria-expanded', String(open));
       vibrate(6);
-      setTimeout(() => ScrollTrigger.refresh(), 550);
     });
   });
 }
