@@ -12,6 +12,37 @@
     'photo-4': { src: 'images/stories/foever.jpg', caption: 'Forever ♾️' },
   };
 
+  // Intro cover
+  (function () {
+    const intro = document.getElementById('intro');
+    if (!intro) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.body.classList.add('intro-open');
+
+    let dismissed = false;
+    function dismiss() {
+      if (dismissed) return;
+      dismissed = true;
+      document.body.classList.remove('intro-open');
+      if (reduceMotion) {
+        intro.classList.add('done');
+        return;
+      }
+      intro.classList.add('leave');
+      const finish = () => intro.classList.add('done');
+      intro.addEventListener('transitionend', finish, { once: true });
+      setTimeout(finish, 900);
+    }
+
+    if (reduceMotion) {
+      dismiss();
+      return;
+    }
+    intro.addEventListener('click', dismiss);
+    setTimeout(dismiss, 2600);
+  })();
+
   // Scroll reveal
   document.querySelectorAll('[data-animate]').forEach((el) => {
     new IntersectionObserver(

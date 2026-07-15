@@ -95,7 +95,8 @@ body {
   justify-content: space-between;
   gap: 8px;
   overflow-x: auto;
-  padding: 0 12px;
+  /* 세로 4px 여유: 링 펄스(scale 1.05)로 커질 때 위아래가 잘리지 않도록 */
+  padding: 4px 12px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -1195,5 +1196,127 @@ body.story-open {
   .post {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ── Intro Cover ── */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ig-surface);
+  cursor: pointer;
+  transition: transform 0.65s cubic-bezier(0.65, 0, 0.35, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.intro.leave {
+  transform: translateY(-100%);
+}
+
+.intro.done {
+  display: none;
+}
+
+body.intro-open {
+  overflow: hidden;
+}
+
+.intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  transform: translateY(-4vh);
+}
+
+.intro-ring {
+  display: flex;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--ig-gradient);
+  opacity: 0;
+  animation: introPop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
+}
+
+.intro-thumb {
+  display: block;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--ig-surface);
+  background: #efefef;
+}
+
+.intro-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.intro-thumb.empty {
+  background: linear-gradient(135deg, #efefef, #dbdbdb);
+}
+
+.intro-logo {
+  font-family: var(--font-script);
+  font-size: 34px;
+  color: var(--ig-text);
+  opacity: 0;
+  animation: introRise 0.7s ease 0.55s forwards;
+}
+
+.intro-names {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  animation: introRise 0.7s ease 0.8s forwards;
+}
+
+.intro-amp {
+  color: var(--ig-like);
+}
+
+.intro-date {
+  font-size: 12px;
+  color: var(--ig-text-secondary);
+  letter-spacing: 0.14em;
+  opacity: 0;
+  animation: introRise 0.7s ease 1s forwards;
+}
+
+@keyframes introPop {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes introRise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Story Ring Pulse ── */
+@keyframes storyPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.stories-track .story:not(.viewed) .story-ring {
+  animation: storyPulse 2.6s ease-in-out infinite;
+}
+
+.stories-track .story:nth-child(2):not(.viewed) .story-ring { animation-delay: 0.3s; }
+.stories-track .story:nth-child(3):not(.viewed) .story-ring { animation-delay: 0.6s; }
+.stories-track .story:nth-child(4):not(.viewed) .story-ring { animation-delay: 0.9s; }
+.stories-track .story:nth-child(5):not(.viewed) .story-ring { animation-delay: 1.2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stories-track .story .story-ring {
+    animation: none;
   }
 }
