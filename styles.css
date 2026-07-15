@@ -92,9 +92,10 @@ body {
 
 .stories-track {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
+  gap: 8px;
   overflow-x: auto;
-  padding: 0 16px;
+  padding: 0 12px;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -111,8 +112,8 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  flex-shrink: 0;
-  width: 72px;
+  flex: 0 1 72px;
+  min-width: 0;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -137,9 +138,11 @@ body {
 }
 
 .story-thumb {
+  /* 5개 스토리가 화면 폭 안에 항상 들어가도록 크기를 화면에 맞춰 줄임 */
+  --story-size: min(62px, calc((min(100vw, 430px) - 24px - 32px - 25px) / 5));
   display: block;
-  width: 62px;
-  height: 62px;
+  width: var(--story-size);
+  height: var(--story-size);
   border-radius: 50%;
   overflow: hidden;
   border: 2.5px solid var(--ig-surface);
@@ -164,7 +167,7 @@ body {
 .story-label {
   font-size: 11px;
   color: var(--ig-text);
-  max-width: 72px;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
