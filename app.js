@@ -43,6 +43,44 @@
     setTimeout(dismiss, 2600);
   })();
 
+  // Background music
+  (function () {
+    const audio = document.getElementById('bgmAudio');
+    const btn = document.getElementById('musicToggleBtn');
+    if (!audio || !btn) return;
+
+    audio.volume = 0.5;
+    let userPaused = false;
+
+    function setState(playing) {
+      btn.classList.toggle('is-muted', !playing);
+      btn.setAttribute('aria-pressed', String(playing));
+      btn.setAttribute('aria-label', playing ? '배경음악 끄기' : '배경음악 켜기');
+    }
+
+    function tryPlay() {
+      if (userPaused) return;
+      audio.play().then(() => setState(true)).catch(() => setState(false));
+    }
+
+    btn.addEventListener('click', () => {
+      if (audio.paused) {
+        userPaused = false;
+        tryPlay();
+      } else {
+        audio.pause();
+        userPaused = true;
+        setState(false);
+      }
+    });
+
+    // Most mobile browsers block autoplay with sound until a real user
+    // gesture, so start playback on the visitor's first tap anywhere.
+    const unlock = () => tryPlay();
+    document.addEventListener('click', unlock, { once: true });
+    document.addEventListener('touchstart', unlock, { once: true, passive: true });
+  })();
+
   // Scroll reveal
   document.querySelectorAll('[data-animate]').forEach((el) => {
     new IntersectionObserver(
