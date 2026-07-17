@@ -1250,7 +1250,11 @@ body.intro-open {
   transform: translateY(-4vh);
 }
 
-.intro-ring {
+/* ── 인트로 크레스트: 언약의 두 반지 ──
+   기존 시퀀스와 조화: 0.15s 크레스트 팝 → 0.45s/0.62s 반지 드로잉(로고 0.55s와 겹침)
+   → 1.3s 위빙 → 1.35s 다이아 팝(날짜 1.0s 이후) → 1.55s~ 스파클. 약 2.1s에 완성. */
+
+.intro-crest {
   display: flex;
   padding: 4px;
   border-radius: 50%;
@@ -1259,24 +1263,113 @@ body.intro-open {
   animation: introPop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
 }
 
-.intro-thumb {
-  display: block;
+.intro-crest-disc {
+  display: flex;
   width: 128px;
   height: 128px;
   border-radius: 50%;
-  overflow: hidden;
   border: 4px solid var(--ig-surface);
-  background: #efefef;
+  background: #fff;
+  overflow: hidden;
 }
 
-.intro-thumb img {
+.intro-crest-art {
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
-.intro-thumb.empty {
-  background: linear-gradient(135deg, #efefef, #dbdbdb);
+/* 반지 라인 드로잉 (r=27, 둘레 약 169.6) */
+.crest-ring {
+  fill: none;
+  stroke: url(#crestGrad);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 170;
+  stroke-dashoffset: 170;
+}
+
+.crest-ring--l { animation: crestDraw 0.85s cubic-bezier(0.65, 0, 0.35, 1) 0.45s forwards; }
+.crest-ring--r { animation: crestDraw 0.85s cubic-bezier(0.65, 0, 0.35, 1) 0.62s forwards; }
+
+@keyframes crestDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* 반지가 엮이는 마무리 디테일 */
+.crest-weave {
+  opacity: 0;
+  animation: crestFadeIn 0.3s ease 1.3s forwards;
+}
+
+@keyframes crestFadeIn {
+  to { opacity: 1; }
+}
+
+/* 다이아몬드 팝 */
+.crest-gem {
+  opacity: 0;
+  transform: scale(0);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: crestGemPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.35s forwards;
+}
+
+@keyframes crestGemPop {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 스파클: 팝 후 은은한 트윙클(탭 전 대기 시간용) */
+.crest-spark {
+  opacity: 0;
+  transform: scale(0);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.crest-spark--1 {
+  animation:
+    crestSparkPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.55s forwards,
+    crestTwinkle 1.8s ease-in-out 2.4s infinite;
+}
+
+.crest-spark--2 {
+  animation:
+    crestSparkPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 1.68s forwards,
+    crestTwinkle 1.8s ease-in-out 2.7s infinite;
+}
+
+.crest-spark--3 {
+  animation:
+    crestSparkPop 0.4s ease 1.78s forwards,
+    crestTwinkle 1.8s ease-in-out 3s infinite;
+}
+
+@keyframes crestSparkPop {
+  from { opacity: 0; transform: scale(0) rotate(-30deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes crestTwinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* 모션 최소화 환경: 애니메이션 없이 완성된 상태로 표시 */
+@media (prefers-reduced-motion: reduce) {
+  .intro-crest,
+  .crest-ring--l,
+  .crest-ring--r,
+  .crest-weave,
+  .crest-gem,
+  .crest-spark {
+    animation: none;
+    opacity: 1;
+  }
+  .crest-ring { stroke-dashoffset: 0; }
+  .crest-gem,
+  .crest-spark { transform: none; }
 }
 
 .intro-logo {

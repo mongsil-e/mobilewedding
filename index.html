@@ -24,13 +24,59 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20">
+  <link rel="stylesheet" href="styles.css?v=21">
 </head>
 <body>
   <!-- Intro Cover -->
   <div class="intro" id="intro" role="button" aria-label="초대장 열기">
     <div class="intro-inner">
-      <span class="intro-ring"><span class="intro-thumb"><img src="images/profile/mochung-full.jpg" alt="" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
+      <span class="intro-crest" aria-hidden="true">
+        <span class="intro-crest-disc">
+          <svg class="intro-crest-art" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" focusable="false">
+            <defs>
+              <linearGradient id="crestGrad" gradientUnits="userSpaceOnUse" x1="10" y1="118" x2="118" y2="10">
+                <stop offset="0" stop-color="#f09433"/>
+                <stop offset="0.25" stop-color="#e6683c"/>
+                <stop offset="0.5" stop-color="#dc2743"/>
+                <stop offset="0.75" stop-color="#cc2366"/>
+                <stop offset="1" stop-color="#bc1888"/>
+              </linearGradient>
+              <radialGradient id="crestBlush" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0.6" stop-color="#ffffff"/>
+                <stop offset="1" stop-color="#fbeef3"/>
+              </radialGradient>
+            </defs>
+
+            <!-- 은은한 블러시 배경 -->
+            <circle cx="64" cy="64" r="62" fill="url(#crestBlush)"/>
+
+            <!-- 두 반지: 12시 방향에서부터 선이 그려짐 -->
+            <circle class="crest-ring crest-ring--l" cx="49" cy="66" r="27" transform="rotate(-90 49 66)"/>
+            <circle class="crest-ring crest-ring--r" cx="79" cy="66" r="27" transform="rotate(-90 79 66)"/>
+
+            <!-- 위빙(반지가 서로 엮인 오버/언더 표현): 흰 갭 + 왼쪽 반지 세그먼트 재도색 -->
+            <g class="crest-weave">
+              <path d="M60.7 41.7 A27 27 0 0 1 67 45.8" fill="none" stroke="#fff" stroke-width="7"/>
+              <path d="M59 40.9 A27 27 0 0 1 68.3 47.1" fill="none" stroke="url(#crestGrad)" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+
+            <!-- 오른쪽 반지에 얹힌 다이아몬드 -->
+            <g class="crest-gem">
+              <path d="M75 31 L83 31 L86 36 L79 45 L72 36 Z" fill="#fff" stroke="url(#crestGrad)" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M72 36 L86 36 M75 31 L79 36 L83 31" fill="none" stroke="url(#crestGrad)" stroke-width="1.4" stroke-linejoin="round"/>
+            </g>
+
+            <!-- 스파클 -->
+            <g transform="translate(33 33)">
+              <path class="crest-spark crest-spark--1" d="M0 -5.2 C0.9 -1.7 1.7 -0.9 5.2 0 C1.7 0.9 0.9 1.7 0 5.2 C-0.9 1.7 -1.7 0.9 -5.2 0 C-1.7 -0.9 -0.9 -1.7 0 -5.2 Z" fill="url(#crestGrad)"/>
+            </g>
+            <g transform="translate(102 41) scale(0.66)">
+              <path class="crest-spark crest-spark--2" d="M0 -5.2 C0.9 -1.7 1.7 -0.9 5.2 0 C1.7 0.9 0.9 1.7 0 5.2 C-0.9 1.7 -1.7 0.9 -5.2 0 C-1.7 -0.9 -0.9 -1.7 0 -5.2 Z" fill="#bc1888"/>
+            </g>
+            <circle class="crest-spark crest-spark--3" cx="92" cy="26" r="1.7" fill="#cc2366"/>
+          </svg>
+        </span>
+      </span>
       <div class="intro-logo">Wedding</div>
       <p class="intro-names">허영건 <span class="intro-amp">♥</span> 이지혜</p>
       <p class="intro-date">2026. 10. 04 SUN · AM 10:30</p>
