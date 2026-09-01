@@ -765,6 +765,27 @@
     });
   }
 
+  // Bus tabs toggle
+  const busTabs = document.querySelectorAll('.bus-tab');
+  const busPanels = document.querySelectorAll('.bus-panel');
+  if (busTabs.length && busPanels.length) {
+    busTabs.forEach((tab) => {
+      bindTap(tab, () => {
+        const targetId = tab.getAttribute('aria-controls');
+        busTabs.forEach((t) => {
+          const isActive = t === tab;
+          t.classList.toggle('is-active', isActive);
+          t.setAttribute('aria-selected', String(isActive));
+        });
+        busPanels.forEach((p) => {
+          const isTarget = p.id === targetId;
+          p.classList.toggle('is-active', isTarget);
+          p.hidden = !isTarget;
+        });
+      });
+    });
+  }
+
   buildCalendar();
   startDDayTimer();
   document.addEventListener('visibilitychange', () => {

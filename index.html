@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" id="viewportMeta" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="viewport" id="viewportMeta"
+    content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
@@ -24,8 +26,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="styles.css?v=22">
 </head>
+
 <body>
   <!-- Intro Cover -->
   <div class="intro" id="intro" role="button" aria-label="초대장 열기">
@@ -35,45 +38,52 @@
           <svg class="intro-crest-art" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" focusable="false">
             <defs>
               <linearGradient id="crestGrad" gradientUnits="userSpaceOnUse" x1="10" y1="118" x2="118" y2="10">
-                <stop offset="0" stop-color="#f09433"/>
-                <stop offset="0.25" stop-color="#e6683c"/>
-                <stop offset="0.5" stop-color="#dc2743"/>
-                <stop offset="0.75" stop-color="#cc2366"/>
-                <stop offset="1" stop-color="#bc1888"/>
+                <stop offset="0" stop-color="#f09433" />
+                <stop offset="0.25" stop-color="#e6683c" />
+                <stop offset="0.5" stop-color="#dc2743" />
+                <stop offset="0.75" stop-color="#cc2366" />
+                <stop offset="1" stop-color="#bc1888" />
               </linearGradient>
               <radialGradient id="crestBlush" cx="0.5" cy="0.5" r="0.5">
-                <stop offset="0.6" stop-color="#ffffff"/>
-                <stop offset="1" stop-color="#fbeef3"/>
+                <stop offset="0.6" stop-color="#ffffff" />
+                <stop offset="1" stop-color="#fbeef3" />
               </radialGradient>
             </defs>
 
             <!-- 은은한 블러시 배경 -->
-            <circle cx="64" cy="64" r="62" fill="url(#crestBlush)"/>
+            <circle cx="64" cy="64" r="62" fill="url(#crestBlush)" />
 
             <!-- 두 반지: 12시 방향에서부터 선이 그려짐 -->
-            <circle class="crest-ring crest-ring--l" cx="49" cy="66" r="27" transform="rotate(-90 49 66)"/>
-            <circle class="crest-ring crest-ring--r" cx="79" cy="66" r="27" transform="rotate(-90 79 66)"/>
+            <circle class="crest-ring crest-ring--l" cx="49" cy="66" r="27" transform="rotate(-90 49 66)" />
+            <circle class="crest-ring crest-ring--r" cx="79" cy="66" r="27" transform="rotate(-90 79 66)" />
 
             <!-- 위빙(반지가 서로 엮인 오버/언더 표현): 흰 갭 + 왼쪽 반지 세그먼트 재도색 -->
             <g class="crest-weave">
-              <path d="M60.7 41.7 A27 27 0 0 1 67 45.8" fill="none" stroke="#fff" stroke-width="7"/>
-              <path d="M59 40.9 A27 27 0 0 1 68.3 47.1" fill="none" stroke="url(#crestGrad)" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M60.7 41.7 A27 27 0 0 1 67 45.8" fill="none" stroke="#fff" stroke-width="7" />
+              <path d="M59 40.9 A27 27 0 0 1 68.3 47.1" fill="none" stroke="url(#crestGrad)" stroke-width="2.5"
+                stroke-linecap="round" />
             </g>
 
             <!-- 오른쪽 반지에 얹힌 다이아몬드 -->
             <g class="crest-gem">
-              <path d="M75 31 L83 31 L86 36 L79 45 L72 36 Z" fill="#fff" stroke="url(#crestGrad)" stroke-width="2" stroke-linejoin="round"/>
-              <path d="M72 36 L86 36 M75 31 L79 36 L83 31" fill="none" stroke="url(#crestGrad)" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M75 31 L83 31 L86 36 L79 45 L72 36 Z" fill="#fff" stroke="url(#crestGrad)" stroke-width="2"
+                stroke-linejoin="round" />
+              <path d="M72 36 L86 36 M75 31 L79 36 L83 31" fill="none" stroke="url(#crestGrad)" stroke-width="1.4"
+                stroke-linejoin="round" />
             </g>
 
             <!-- 스파클 -->
             <g transform="translate(33 33)">
-              <path class="crest-spark crest-spark--1" d="M0 -5.2 C0.9 -1.7 1.7 -0.9 5.2 0 C1.7 0.9 0.9 1.7 0 5.2 C-0.9 1.7 -1.7 0.9 -5.2 0 C-1.7 -0.9 -0.9 -1.7 0 -5.2 Z" fill="url(#crestGrad)"/>
+              <path class="crest-spark crest-spark--1"
+                d="M0 -5.2 C0.9 -1.7 1.7 -0.9 5.2 0 C1.7 0.9 0.9 1.7 0 5.2 C-0.9 1.7 -1.7 0.9 -5.2 0 C-1.7 -0.9 -0.9 -1.7 0 -5.2 Z"
+                fill="url(#crestGrad)" />
             </g>
             <g transform="translate(102 41) scale(0.66)">
-              <path class="crest-spark crest-spark--2" d="M0 -5.2 C0.9 -1.7 1.7 -0.9 5.2 0 C1.7 0.9 0.9 1.7 0 5.2 C-0.9 1.7 -1.7 0.9 -5.2 0 C-1.7 -0.9 -0.9 -1.7 0 -5.2 Z" fill="#bc1888"/>
+              <path class="crest-spark crest-spark--2"
+                d="M0 -5.2 C0.9 -1.7 1.7 -0.9 5.2 0 C1.7 0.9 0.9 1.7 0 5.2 C-0.9 1.7 -1.7 0.9 -5.2 0 C-1.7 -0.9 -0.9 -1.7 0 -5.2 Z"
+                fill="#bc1888" />
             </g>
-            <circle class="crest-spark crest-spark--3" cx="92" cy="26" r="1.7" fill="#cc2366"/>
+            <circle class="crest-spark crest-spark--3" cx="92" cy="26" r="1.7" fill="#cc2366" />
           </svg>
         </span>
       </span>
@@ -86,18 +96,27 @@
   <div class="app">
     <!-- Header -->
     <header class="ig-header">
-      <button class="ig-icon-btn music-toggle" id="musicToggleBtn" type="button" aria-pressed="false" aria-label="배경음악 켜기">
-        <svg class="icon-note-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+      <button class="ig-icon-btn music-toggle" id="musicToggleBtn" type="button" aria-pressed="false"
+        aria-label="배경음악 켜기">
+        <svg class="icon-note-on" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18V5l12-2v13" />
+          <circle cx="6" cy="18" r="3" />
+          <circle cx="18" cy="16" r="3" />
         </svg>
-        <svg class="icon-note-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="3" y1="3" x2="21" y2="21"/>
+        <svg class="icon-note-off" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18V5l12-2v13" />
+          <circle cx="6" cy="18" r="3" />
+          <circle cx="18" cy="16" r="3" />
+          <line x1="3" y1="3" x2="21" y2="21" />
         </svg>
       </button>
       <div class="ig-logo">Wedding</div>
       <button class="ig-icon-btn" id="shareHeaderBtn" aria-label="공유">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          <line x1="22" y1="2" x2="11" y2="13" />
+          <polygon points="22 2 15 22 11 13 2 9 22 2" />
         </svg>
       </button>
     </header>
@@ -107,23 +126,28 @@
     <section class="stories" aria-label="스토리">
       <div class="stories-track">
         <button class="story" data-story="hero">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/ourday.jpg" alt="" loading="eager" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
+          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/ourday.jpg" alt=""
+                loading="eager" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
           <span class="story-label">Our Day</span>
         </button>
         <button class="story" data-story="photo-1">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/moment.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
+          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/moment.jpg" alt=""
+                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
           <span class="story-label">Moment</span>
         </button>
         <button class="story" data-story="photo-2">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/together.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
+          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/together.jpg" alt=""
+                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
           <span class="story-label">Together</span>
         </button>
         <button class="story" data-story="photo-3">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/memory.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
+          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/memory.jpg" alt=""
+                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
           <span class="story-label">Memory</span>
         </button>
         <button class="story" data-story="photo-4">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/foever.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
+          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/foever.jpg" alt=""
+                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
           <span class="story-label">Forever</span>
         </button>
       </div>
@@ -135,7 +159,8 @@
         <div class="profile-avatar-wrap">
           <span class="story-ring story-ring--lg">
             <span class="story-thumb story-thumb--lg">
-              <img src="images/profile/mochung-full.jpg" alt="영건과 지혜" loading="eager" decoding="async" onerror="this.parentElement.classList.add('empty')">
+              <img src="images/profile/mochung-full.jpg" alt="영건과 지혜" loading="eager" decoding="async"
+                onerror="this.parentElement.classList.add('empty')">
             </span>
           </span>
         </div>
@@ -158,7 +183,7 @@
         <h1 class="profile-name">younggeon_x_jihye</h1>
         <p class="profile-bio">
           허영건 ♥ 이지혜<br>
-          2026. 10. 04 · 일요일 · AM 10:30<br>
+          2026. 10. 04 · 일요일 · 오전 10:30<br>
           비렌티웨딩홀 4층 매그넘홀 · 천안
         </p>
       </div>
@@ -173,7 +198,11 @@
         </a>
         <a href="#location" class="highlight">
           <span class="highlight-ring"><span class="highlight-icon">📍</span></span>
-          <span>장소</span>
+          <span>예식장소</span>
+        </a>
+        <a href="#bus" class="highlight">
+          <span class="highlight-ring"><span class="highlight-icon">🚌</span></span>
+          <span>전세버스</span>
         </a>
         <a href="#gift" class="highlight">
           <span class="highlight-ring"><span class="highlight-icon">💌</span></span>
@@ -186,14 +215,19 @@
     <article class="post" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt="" onerror="this.style.display='none'"></span>
+          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
+              onerror="this.style.display='none'"></span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">Wedding Invitation</span>
           </div>
         </div>
         <button class="ig-icon-btn" aria-label="더보기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
         </button>
       </header>
       <div class="post-media post-media--text">
@@ -213,17 +247,29 @@
       <div class="post-actions">
         <div class="post-actions-left">
           <button class="ig-action like-btn" aria-label="좋아요">
-            <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg>
           </button>
           <button class="ig-action" aria-label="댓글">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+            </svg>
           </button>
           <button class="ig-action" id="sharePostBtn" aria-label="공유">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
           </button>
         </div>
         <button class="ig-action" aria-label="저장">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+          </svg>
         </button>
       </div>
       <p class="post-likes"><strong class="like-count">1,026</strong> likes</p>
@@ -235,33 +281,59 @@
     <article class="post" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt="" onerror="this.style.display='none'"></span>
+          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
+              onerror="this.style.display='none'"></span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">Our Moments</span>
           </div>
         </div>
         <button class="ig-icon-btn" aria-label="더보기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
         </button>
       </header>
       <div class="profile-grid">
-        <figure class="grid-item"><img src="images/gallery/DSCF0614 복사.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF0668 복사.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF2591 복사.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF3804.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF3860 복사.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/7725.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></figure>
+        <figure class="grid-item"><img src="images/gallery/DSCF0614 복사.jpg" alt="" loading="lazy" decoding="async"
+            onerror="this.parentElement.classList.add('empty')"></figure>
+        <figure class="grid-item"><img src="images/gallery/DSCF0668 복사.jpg" alt="" loading="lazy" decoding="async"
+            onerror="this.parentElement.classList.add('empty')"></figure>
+        <figure class="grid-item"><img src="images/gallery/DSCF2591 복사.jpg" alt="" loading="lazy" decoding="async"
+            onerror="this.parentElement.classList.add('empty')"></figure>
+        <figure class="grid-item"><img src="images/gallery/DSCF3804.jpg" alt="" loading="lazy" decoding="async"
+            onerror="this.parentElement.classList.add('empty')"></figure>
+        <figure class="grid-item"><img src="images/gallery/DSCF3860 복사.jpg" alt="" loading="lazy" decoding="async"
+            onerror="this.parentElement.classList.add('empty')"></figure>
+        <figure class="grid-item"><img src="images/gallery/7725.jpg" alt="" loading="lazy" decoding="async"
+            onerror="this.parentElement.classList.add('empty')"></figure>
       </div>
       <div class="post-actions">
         <div class="post-actions-left">
           <button class="ig-action like-btn" aria-label="좋아요">
-            <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg>
           </button>
-          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></button>
-          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+            </svg></button>
+          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg></button>
         </div>
-        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>
+        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+          </svg></button>
       </div>
       <p class="post-likes"><strong class="like-count">892</strong> likes</p>
       <p class="post-caption"><strong>younggeon_x_jihye</strong> 함께한 순간들 ✨</p>
@@ -272,14 +344,19 @@
     <article class="post" id="calendar" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt="" onerror="this.style.display='none'"></span>
+          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
+              onerror="this.style.display='none'"></span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">Save the Date</span>
           </div>
         </div>
         <button class="ig-icon-btn" aria-label="더보기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
         </button>
       </header>
       <div class="post-media post-media--card">
@@ -294,12 +371,27 @@
       <div class="post-actions">
         <div class="post-actions-left">
           <button class="ig-action like-btn liked" aria-label="좋아요">
-            <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="#ed4956" stroke="#ed4956" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="#ed4956" stroke="#ed4956"
+              stroke-width="2">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg>
           </button>
-          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></button>
-          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+            </svg></button>
+          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg></button>
         </div>
-        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>
+        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+          </svg></button>
       </div>
       <p class="post-likes"><strong class="like-count">2,014</strong> likes</p>
       <p class="post-caption"><strong>younggeon_x_jihye</strong> 운명의 날 📅</p>
@@ -310,39 +402,51 @@
     <article class="post" id="location" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt="" onerror="this.style.display='none'"></span>
+          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
+              onerror="this.style.display='none'"></span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">비렌티웨딩홀 4층 매그넘홀</span>
           </div>
         </div>
         <button class="ig-icon-btn" aria-label="더보기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
         </button>
       </header>
       <div class="post-media post-media--map">
-        <img src="images/location/map_20230602_131012.jpg" alt="비렌티웨딩홀 약도" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty')">
+        <img src="images/location/map_20230602_131012.jpg" alt="비렌티웨딩홀 약도" loading="lazy" decoding="async"
+          onerror="this.parentElement.classList.add('is-empty')">
         <div class="map-empty">location/map_20230602_131012.jpg</div>
       </div>
       <div class="post-body">
         <p class="post-caption"><strong>younggeon_x_jihye</strong> 충남 천안시 서북구 천안대로 1198-30<br>비렌티웨딩홀 4층 매그넘홀</p>
         <div class="location-actions">
           <div class="link-row link-row--location">
-            <a href="https://map.naver.com/v5/search/%EB%B9%84%EB%A0%8C%ED%8B%B0%20%EC%9B%A8%EB%94%A9%ED%99%80%20%26%20%EB%B7%94%ED%8E%98" target="_blank" rel="noopener" class="link-chip link-chip--naver">
+            <a href="https://map.naver.com/v5/search/%EB%B9%84%EB%A0%8C%ED%8B%B0%20%EC%9B%A8%EB%94%A9%ED%99%80%20%26%20%EB%B7%94%ED%8E%98"
+              target="_blank" rel="noopener" class="link-chip link-chip--naver">
               <span class="map-icon" aria-hidden="true">
                 <img src="images/icons/navermap.png" alt="" width="18" height="18" decoding="async">
               </span>
               <span>네이버 지도</span>
             </a>
-            <a href="https://map.kakao.com/?q=%EC%B6%A9%EB%82%A8+%EC%B2%9C%EC%95%88%EC%8B%9C+%EC%84%9C%EB%B6%81%EA%B5%AC+%EC%B2%9C%EC%95%88%EB%8C%80%EB%A1%9C+1198-30+%EB%B9%84%EB%A0%8C%ED%8B%B0%EC%9B%A8%EB%94%A9%ED%99%80" target="_blank" rel="noopener" class="link-chip link-chip--kakao">
+            <a href="https://map.kakao.com/?q=%EC%B6%A9%EB%82%A8+%EC%B2%9C%EC%95%88%EC%8B%9C+%EC%84%9C%EB%B6%81%EA%B5%AC+%EC%B2%9C%EC%95%88%EB%8C%80%EB%A1%9C+1198-30+%EB%B9%84%EB%A0%8C%ED%8B%B0%EC%9B%A8%EB%94%A9%ED%99%80"
+              target="_blank" rel="noopener" class="link-chip link-chip--kakao">
               <span class="map-icon" aria-hidden="true">
                 <img src="images/icons/kakaomap.png" alt="" width="18" height="18" decoding="async">
               </span>
               <span>카카오맵</span>
             </a>
-            <button type="button" class="link-chip link-chip--transport" id="transportToggle" aria-expanded="false" aria-controls="transportPanel">
+            <button type="button" class="link-chip link-chip--transport" id="transportToggle" aria-expanded="false"
+              aria-controls="transportPanel">
               <span class="map-icon map-icon--transport" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="4" fill="#0095f6"/><path d="M5 12.5V8.2l1.4-2.4h5.2L13 8.2v4.3H5zm2-3.8h4l-.8-1.4H7.8L7 8.7z" fill="#fff"/></svg>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <rect width="18" height="18" rx="4" fill="#0095f6" />
+                  <path d="M5 12.5V8.2l1.4-2.4h5.2L13 8.2v4.3H5zm2-3.8h4l-.8-1.4H7.8L7 8.7z" fill="#fff" />
+                </svg>
               </span>
               <span>교통 안내</span>
             </button>
@@ -383,28 +487,184 @@
       </div>
       <div class="post-actions">
         <div class="post-actions-left">
-          <button class="ig-action like-btn" aria-label="좋아요"><svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></button>
-          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          <button class="ig-action like-btn" aria-label="좋아요"><svg class="icon-heart" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg></button>
+          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+            </svg></button>
+          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg></button>
         </div>
-        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>
+        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+          </svg></button>
       </div>
       <p class="post-likes"><strong class="like-count">567</strong> likes</p>
       <p class="post-time">LOCATION</p>
+    </article>
+
+    <!-- Post: Chartered Bus -->
+    <article class="post" id="bus" data-animate>
+      <header class="post-header">
+        <div class="post-user">
+          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
+              onerror="this.style.display='none'"></span>
+          <div>
+            <span class="post-username">younggeon_x_jihye</span>
+            <span class="post-location">전세버스 탑승 안내</span>
+          </div>
+        </div>
+        <button class="ig-icon-btn" aria-label="더보기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
+        </button>
+      </header>
+      <div class="post-media post-media--card post-media--bus">
+        <p class="bus-desc">원활한 이동을 위해 전주와 구미에서<br>전세버스를 운행합니다. 탑승 지역을 선택해 주세요.</p>
+
+        <div class="bus-tabs" role="tablist" aria-label="탑승 지역 선택">
+          <button type="button" class="bus-tab is-active" id="tabJeonju" role="tab" aria-selected="true"
+            aria-controls="panelJeonju">
+            전주 출발
+          </button>
+          <button type="button" class="bus-tab" id="tabGumi" role="tab" aria-selected="false" aria-controls="panelGumi">
+            구미 출발
+          </button>
+        </div>
+
+        <!-- 전주 패널 -->
+        <div class="bus-panel is-active" id="panelJeonju" role="tabpanel" aria-labelledby="tabJeonju">
+          <div class="bus-info-card">
+            <div class="bus-info-header">
+              <span class="bus-route-tag">전주 ↔ 천안 비렌티웨딩홀</span>
+            </div>
+            <div class="bus-details">
+              <div class="bus-detail-item">
+                <span class="bus-detail-label">📍 탑승 장소</span>
+                <span class="bus-detail-value">전주월드컵경기장 P9 주차장</span>
+              </div>
+              <div class="bus-detail-item">
+                <span class="bus-detail-label">⏰ 출발 시간</span>
+                <span class="bus-detail-value highlight-time">2026년 10월 04일 (일) 오전 08:00</span>
+              </div>
+            </div>
+
+            <div class="link-row link-row--bus">
+              <a href="https://map.naver.com/p/entry/place/1181685572?c=15.25,0,0,0,dh" target="_blank" rel="noopener"
+                class="link-chip link-chip--naver">
+                <span class="map-icon" aria-hidden="true">
+                  <img src="images/icons/navermap.png" alt="" width="18" height="18" decoding="async">
+                </span>
+                <span>네이버 지도</span>
+              </a>
+              <a href="https://map.kakao.com/?q=%EC%A0%84%EC%A3%BC%EC%9B%94%EB%93%9C%EC%BB%B5%EA%B2%BD%EA%B8%B0%EC%9E%A5+P9+%EC%A3%BC%EC%B0%A8%EC%9E%A5"
+                target="_blank" rel="noopener" class="link-chip link-chip--kakao">
+                <span class="map-icon" aria-hidden="true">
+                  <img src="images/icons/kakaomap.png" alt="" width="18" height="18" decoding="async">
+                </span>
+                <span>카카오맵</span>
+              </a>
+            </div>
+
+            <p class="bus-tip">※ 원활한 탑승을 위해 출발 10분 전까지 도착 부탁드립니다.</p>
+          </div>
+        </div>
+
+        <!-- 구미 패널 -->
+        <div class="bus-panel" id="panelGumi" role="tabpanel" aria-labelledby="tabGumi" hidden>
+          <div class="bus-info-card">
+            <div class="bus-info-header">
+              <span class="bus-route-tag">구미 ↔ 천안 비렌티웨딩홀</span>
+            </div>
+            <div class="bus-details">
+              <div class="bus-detail-item">
+                <span class="bus-detail-label">📍 탑승 장소</span>
+                <span class="bus-detail-value">CGV 구미</span>
+              </div>
+              <div class="bus-detail-item">
+                <span class="bus-detail-label">⏰ 출발 시간</span>
+                <span class="bus-detail-value highlight-time">2026년 10월 04일 (일) 오전 08:00</span>
+              </div>
+            </div>
+
+            <div class="link-row link-row--bus">
+              <a href="https://map.naver.com/p/search/CGV%20%EA%B5%AC%EB%AF%B8" target="_blank" rel="noopener"
+                class="link-chip link-chip--naver">
+                <span class="map-icon" aria-hidden="true">
+                  <img src="images/icons/navermap.png" alt="" width="18" height="18" decoding="async">
+                </span>
+                <span>네이버 지도</span>
+              </a>
+              <a href="https://map.kakao.com/?q=CGV+%EA%B5%AC%EB%AF%B8" target="_blank" rel="noopener"
+                class="link-chip link-chip--kakao">
+                <span class="map-icon" aria-hidden="true">
+                  <img src="images/icons/kakaomap.png" alt="" width="18" height="18" decoding="async">
+                </span>
+                <span>카카오맵</span>
+              </a>
+            </div>
+
+            <p class="bus-tip">※ 원활한 탑승을 위해 출발 10분 전까지 도착 부탁드립니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="post-actions">
+        <div class="post-actions-left">
+          <button class="ig-action like-btn" aria-label="좋아요"><svg class="icon-heart" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg></button>
+          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+            </svg></button>
+          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg></button>
+        </div>
+        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+          </svg></button>
+      </div>
+      <p class="post-likes"><strong class="like-count">428</strong> likes</p>
+      <p class="post-caption"><strong>younggeon_x_jihye</strong> 편안하고 안전하게 모시겠습니다 🚌</p>
+      <p class="post-time">CHARTER BUS</p>
     </article>
 
     <!-- Post: Gift -->
     <article class="post" id="gift" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt="" onerror="this.style.display='none'"></span>
+          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
+              onerror="this.style.display='none'"></span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">마음 전하기</span>
           </div>
         </div>
         <button class="ig-icon-btn" aria-label="더보기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
         </button>
       </header>
       <div class="post-media post-media--card post-media--gift">
@@ -416,8 +676,10 @@
                 <span class="account-toggle-label when-closed">신랑측 계좌번호 보기</span>
                 <span class="account-toggle-label when-open">신랑측 계좌번호 닫기</span>
               </span>
-              <svg class="account-toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg class="account-toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                aria-hidden="true">
+                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </summary>
             <div class="account-panel-body">
@@ -452,8 +714,10 @@
                 <span class="account-toggle-label when-closed">신부측 계좌번호 보기</span>
                 <span class="account-toggle-label when-open">신부측 계좌번호 닫기</span>
               </span>
-              <svg class="account-toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg class="account-toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                aria-hidden="true">
+                <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                  stroke-linejoin="round" />
               </svg>
             </summary>
             <div class="account-panel-body">
@@ -479,11 +743,26 @@
       </div>
       <div class="post-actions">
         <div class="post-actions-left">
-          <button class="ig-action like-btn" aria-label="좋아요"><svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button>
-          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></button>
-          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          <button class="ig-action like-btn" aria-label="좋아요"><svg class="icon-heart" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg></button>
+          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+            </svg></button>
+          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg></button>
         </div>
-        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>
+        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+          </svg></button>
       </div>
       <p class="post-likes"><strong class="like-count">341</strong> likes</p>
       <p class="post-caption"><strong>younggeon_x_jihye</strong> 보내주신 사랑과 축복에 깊이 감사드립니다 🤍</p>
@@ -498,19 +777,35 @@
     <!-- Bottom Tab Bar -->
     <nav class="tabbar" aria-label="하단 메뉴">
       <a href="#" class="tabbar-item active" aria-current="page">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M9.005 16.545a2.997 2.997 0 012.997-2.997h0A2.997 2.997 0 0115 16.545V22h7V11.543L12 2 2 11.543V22h7.005z"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M9.005 16.545a2.997 2.997 0 012.997-2.997h0A2.997 2.997 0 0115 16.545V22h7V11.543L12 2 2 11.543V22h7.005z" />
+        </svg>
       </a>
       <a href="#location" class="tabbar-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
       </a>
       <button class="tabbar-item tabbar-add" id="shareTabBtn" aria-label="공유">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <line x1="12" y1="8" x2="12" y2="16" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
       </button>
       <a href="#calendar" class="tabbar-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
       </a>
       <a href="#gift" class="tabbar-item">
-        <span class="tabbar-avatar"><img src="images/profile/mochung.jpg" alt="" onerror="this.style.display='none'"></span>
+        <span class="tabbar-avatar"><img src="images/profile/mochung.jpg" alt=""
+            onerror="this.style.display='none'"></span>
       </a>
     </nav>
   </div>
@@ -538,6 +833,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=13"></script>
+  <script src="app.js?v=14"></script>
 </body>
+
 </html>
