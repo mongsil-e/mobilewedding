@@ -117,7 +117,7 @@ body {
   justify-content: space-between;
   gap: 8px;
   overflow-x: auto;
-  /* 세로 4px 여유: 링 펄스(scale 1.05)로 커질 때 위아래가 잘리지 않도록 */
+  /* 세로 4px 여유: 링의 잔잔한 호흡 애니메이션이 잘리지 않도록 */
   padding: 4px 12px;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -1652,17 +1652,17 @@ body.intro-open {
 /* ── Story Ring Pulse ── */
 @keyframes storyPulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  50% { transform: scale(1.018); }
 }
 
 .stories-track .story:not(.viewed) .story-ring {
-  animation: storyPulse 2.6s ease-in-out infinite;
+  animation: storyPulse 5.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
-.stories-track .story:nth-child(2):not(.viewed) .story-ring { animation-delay: 0.3s; }
-.stories-track .story:nth-child(3):not(.viewed) .story-ring { animation-delay: 0.6s; }
-.stories-track .story:nth-child(4):not(.viewed) .story-ring { animation-delay: 0.9s; }
-.stories-track .story:nth-child(5):not(.viewed) .story-ring { animation-delay: 1.2s; }
+.stories-track .story:nth-child(2):not(.viewed) .story-ring { animation-delay: 0.6s; }
+.stories-track .story:nth-child(3):not(.viewed) .story-ring { animation-delay: 1.2s; }
+.stories-track .story:nth-child(4):not(.viewed) .story-ring { animation-delay: 1.8s; }
+.stories-track .story:nth-child(5):not(.viewed) .story-ring { animation-delay: 2.4s; }
 
 @media (prefers-reduced-motion: reduce) {
   .stories-track .story .story-ring {
