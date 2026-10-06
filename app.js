@@ -2,14 +2,18 @@
   'use strict';
 
   const WEDDING_DAY = new Date(2026, 9, 4);
-  const CEREMONY_AT = new Date(2026, 9, 4, 10, 30, 0);
-
-  const STORY_IMAGES = {
-    hero: { src: 'images/stories/ourday.jpg', caption: 'Our Wedding Day 💍' },
-    'photo-1': { src: 'images/stories/moment.jpg', caption: 'Our Moment ✨' },
-    'photo-2': { src: 'images/stories/together.jpg', caption: 'Together 🤍' },
-    'photo-3': { src: 'images/stories/memory.jpg', caption: 'Memory 📸' },
-    'photo-4': { src: 'images/stories/foever.jpg', caption: 'Forever ♾️' },
+  const WEDDING_DAY_UTC = Date.UTC(2026, 9, 4);
+  const STORY_CONTENT = {
+    thanks: {
+      icon: '♡',
+      title: '우리, 결혼했어요',
+      body: '함께해 주시고, 멀리서도 마음 보내주신\n모든 분들께 진심으로 감사드립니다.\n\n보내주신 축복을 오래 간직하며\n서로 아끼고 사랑하며 잘 살겠습니다.',
+    },
+    beginning: {
+      icon: '∞',
+      title: '이제, 우리의 매일',
+      body: '2026년 10월 4일,\n저희 두 사람은 부부가 되었습니다.\n\n함께 웃고, 서로의 곁을 지키며\n차곡차곡 행복을 쌓아가겠습니다.\n저희의 시작을 축복해 주셔서 감사합니다.',
+    },
   };
 
   // Intro cover
@@ -40,6 +44,12 @@
       return;
     }
     intro.addEventListener('click', dismiss);
+    intro.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        dismiss();
+      }
+    });
     setTimeout(dismiss, 2600);
   })();
 
@@ -113,80 +123,31 @@
     grid.innerHTML = html;
   }
 
-  function pad(n) {
-    return String(n).padStart(2, '0');
-  }
-
   let ddayTimerId = null;
-  let demoAnchor = null;
+  const koreanDate = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul', year: 'numeric', month: 'numeric', day: 'numeric',
+  });
 
-  function getNow() {
-    const demo = new URLSearchParams(location.search).get('demo');
-    if (demo === 'wedding-day') {
-      if (!demoAnchor) {
-        demoAnchor = {
-          real: Date.now(),
-          sim: new Date(2026, 9, 4, 8, 0, 15).getTime(),
-        };
-      }
-      return new Date(demoAnchor.sim + (Date.now() - demoAnchor.real));
-    }
-    return new Date();
-  }
-
-  function setCountdownText(text) {
-    const el = document.getElementById('ddayCountdown');
-    if (el) el.textContent = text;
-  }
-
-  function startOfDay(date) {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  }
-
-  // D-Day: 날짜는 00시 기준, 당일만 예식까지 시·분·초 카운트다운
+  // Count calendar days in Korea, including for guests reading from abroad.
   function updateDDay() {
+    const parts = Object.fromEntries(koreanDate.formatToParts(new Date())
+      .filter((part) => part.type !== 'literal')
+      .map((part) => [part.type, Number(part.value)]));
+    const todayUTC = Date.UTC(parts.year, parts.month - 1, parts.day);
+    const daysPast = Math.max(0, Math.round((todayUTC - WEDDING_DAY_UTC) / 86400000));
     const countEl = document.getElementById('ddayCount');
-    const now = getNow();
-    const today = startOfDay(now);
-    const weddingDay = startOfDay(WEDDING_DAY);
-    const dayDiff = Math.round((weddingDay - today) / 86400000);
-
-    if (dayDiff > 0) {
-      const untilCeremony = CEREMONY_AT - now;
-      const days = Math.floor(untilCeremony / 86400000);
-      const hours = Math.floor((untilCeremony % 86400000) / 3600000);
-      const mins = Math.floor((untilCeremony % 3600000) / 60000);
-      const secs = Math.floor((untilCeremony % 60000) / 1000);
-
-      if (countEl) countEl.textContent = `D-${dayDiff}`;
-      setCountdownText(`${days}일 ${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`);
-      return;
-    }
-
-    if (dayDiff === 0) {
-      const untilCeremony = CEREMONY_AT - now;
-
-      if (countEl) countEl.textContent = 'D-Day';
-      if (untilCeremony > 0) {
-        const hours = Math.floor(untilCeremony / 3600000);
-        const mins = Math.floor((untilCeremony % 3600000) / 60000);
-        const secs = Math.floor((untilCeremony % 60000) / 1000);
-        setCountdownText(`${pad(hours)}시간 ${pad(mins)}분 ${pad(secs)}초`);
-      } else {
-        setCountdownText('오늘은 결혼식 날입니다 💍');
-      }
-      return;
-    }
-
-    const daysPast = Math.abs(dayDiff);
     if (countEl) countEl.textContent = `D+${daysPast}`;
-    setCountdownText(`결혼식 후 ${daysPast}일`);
+    const text = daysPast === 0 ? '오늘, 부부가 되었습니다 🤍' : `부부가 된 지 ${daysPast}일`;
+    ['marriedDays', 'ddayCountdown'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    });
   }
 
   function startDDayTimer() {
     if (ddayTimerId) clearInterval(ddayTimerId);
     updateDDay();
-    ddayTimerId = setInterval(updateDDay, 1000);
+    ddayTimerId = setInterval(updateDDay, 60000);
   }
 
   // Toast
@@ -201,10 +162,10 @@
   }
 
   // Share
-  async function shareInvitation() {
+  async function shareThanks() {
     const data = {
-      title: '영건 ♥ 지혜 결혼식에 초대합니다',
-      text: '2026년 10월 4일, 저희 결혼식에 초대합니다.',
+      title: '영건 ♥ 지혜 · 저희 결혼했어요',
+      text: '2026년 10월 4일, 부부가 되었습니다. 보내주신 사랑과 축복에 감사드립니다.',
       url: location.origin + location.pathname,
     };
     if (navigator.share) {
@@ -225,7 +186,7 @@
 
   ['shareHeaderBtn', 'sharePostBtn', 'shareTabBtn'].forEach((id) => {
     const btn = document.getElementById(id);
-    if (btn) btn.addEventListener('click', shareInvitation);
+    if (btn) btn.addEventListener('click', shareThanks);
   });
 
   // Like buttons
@@ -260,499 +221,233 @@
     });
   });
 
-  // Story viewer
-  const STORY_ORDER = ['hero', 'photo-1', 'photo-2', 'photo-3', 'photo-4'];
-  const STORY_DURATION = 5000;
+  // Text stories keep the familiar ring and swipe interaction without photos.
+  const STORY_ORDER = Object.keys(STORY_CONTENT);
+  const STORY_DURATION = 10000;
   const SWIPE_CLOSE_THRESHOLD = 80;
-
-  function markStoryViewed(key) {
-    const story = document.querySelector(`.story[data-story="${key}"]`);
-    const ring = story?.querySelector('.story-ring');
-    if (!story || !ring) return;
-    story.classList.add('viewed');
-    ring.classList.add('viewed');
-    void ring.offsetWidth;
-  }
-
-  function markProfileViewed() {
-    const wrap = document.querySelector('.profile-avatar-wrap');
-    const ring = wrap?.querySelector('.story-ring');
-    if (!wrap || !ring) return;
-    wrap.classList.add('viewed');
-    ring.classList.add('viewed');
-    void ring.offsetWidth;
-  }
-
-  function bindTap(el, handler) {
-    el.addEventListener('pointerup', (e) => {
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
-      handler(e);
-    });
-  }
-
-  const viewportMeta = document.getElementById('viewportMeta');
-  const DEFAULT_VIEWPORT = viewportMeta?.content || '';
-  let zoomLockCount = 0;
-  let storyBarFills = [];
-
-  function onPinchTouchMove(e) {
-    if (e.touches.length > 1) e.preventDefault();
-  }
-
-  function onGesture(e) {
-    e.preventDefault();
-  }
-
-  function enableZoomLock() {
-    zoomLockCount += 1;
-    if (zoomLockCount > 1) return;
-    if (viewportMeta) {
-      viewportMeta.content = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no';
-    }
-    document.addEventListener('touchmove', onPinchTouchMove, { passive: false });
-    document.addEventListener('gesturestart', onGesture, { passive: false });
-    document.addEventListener('gesturechange', onGesture, { passive: false });
-    document.addEventListener('gestureend', onGesture, { passive: false });
-  }
-
-  function disableZoomLock() {
-    zoomLockCount = Math.max(0, zoomLockCount - 1);
-    if (zoomLockCount > 0) return;
-    if (viewportMeta) viewportMeta.content = DEFAULT_VIEWPORT;
-    document.removeEventListener('touchmove', onPinchTouchMove);
-    document.removeEventListener('gesturestart', onGesture);
-    document.removeEventListener('gesturechange', onGesture);
-    document.removeEventListener('gestureend', onGesture);
-  }
-
   const viewer = document.getElementById('storyViewer');
   const storyBars = document.getElementById('storyBars');
-  const storyImg = document.getElementById('storyImage');
-  const storyCaption = document.getElementById('storyCaption');
   const storyClose = document.getElementById('storyClose');
-
+  const storyPause = document.getElementById('storyPause');
+  const storyPrev = document.getElementById('storyPrev');
+  const storyNext = document.getElementById('storyNext');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let storyBarFills = [];
   let currentStoryIndex = 0;
   let progressAnimId = null;
-  let touchStartY = 0;
+  let elapsed = 0;
+  let lastStamp = null;
+  let paused = false;
+  let returnFocus = null;
+  let previousOverflow = '';
   let touchStartX = 0;
+  let touchStartY = 0;
+  let touchingStory = false;
   let isDragging = false;
   let suppressStoryClick = false;
 
-  function handleStoryNavigation(clientX) {
-    const ratio = clientX / window.innerWidth;
-    if (ratio < 0.5) {
-      if (currentStoryIndex > 0) showStoryAt(currentStoryIndex - 1);
-      return;
-    }
-    if (currentStoryIndex < STORY_ORDER.length - 1) showStoryAt(currentStoryIndex + 1);
+  function bindTap(el, handler) {
+    el.addEventListener('click', handler);
+  }
+
+  function markStoryViewed(key) {
+    document.querySelectorAll(`[data-story="${key}"]`).forEach((button) => {
+      button.classList.add('viewed');
+      button.querySelector('.story-ring')?.classList.add('viewed');
+    });
   }
 
   function buildStoryBars() {
-    if (!storyBars) return;
     storyBars.innerHTML = STORY_ORDER.map(
       () => '<div class="story-bar"><span class="story-bar-fill"></span></div>'
     ).join('');
     storyBarFills = [...storyBars.querySelectorAll('.story-bar-fill')];
   }
 
-  function updateStoryBars(index, progress) {
-    const pct = `${Math.max(0, Math.min(progress, 1)) * 100}%`;
+  function updateStoryBars() {
     storyBarFills.forEach((fill, i) => {
-      if (i < index) fill.style.width = '100%';
-      else if (i === index) fill.style.width = pct;
-      else fill.style.width = '0%';
+      const progress = i < currentStoryIndex ? 1 : i === currentStoryIndex ? elapsed / STORY_DURATION : 0;
+      fill.style.width = `${Math.min(progress, 1) * 100}%`;
     });
-  }
-
-  function loadStoryImage(src) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.decoding = 'async';
-      img.onload = () => resolve(src);
-      img.onerror = reject;
-      img.src = src;
-    });
-  }
-
-  function clearStoryImage() {
-    if (!storyImg) return;
-    storyImg.style.display = 'none';
-    storyImg.style.backgroundImage = '';
-  }
-
-  function setStoryImage(src) {
-    if (!storyImg) return;
-    storyImg.style.backgroundImage = `url("${src}")`;
-    storyImg.style.display = 'block';
   }
 
   function cancelStoryProgress() {
-    if (progressAnimId) {
-      cancelAnimationFrame(progressAnimId);
-      progressAnimId = null;
-    }
+    if (progressAnimId !== null) cancelAnimationFrame(progressAnimId);
+    progressAnimId = null;
+    lastStamp = null;
   }
 
   function resetViewerTransform() {
-    if (!viewer) return;
     viewer.style.transform = '';
     viewer.style.opacity = '';
   }
 
   function closeStoryViewer() {
+    if (viewer.hidden) return;
     cancelStoryProgress();
-    if (!viewer) return;
     viewer.hidden = true;
-    document.body.style.overflow = '';
+    document.body.style.overflow = previousOverflow;
     document.body.classList.remove('story-open');
-    disableZoomLock();
     resetViewerTransform();
-    clearStoryImage();
+    returnFocus?.focus({ preventScroll: true });
   }
 
   function startStoryProgress() {
     cancelStoryProgress();
-    const start = performance.now();
-
+    if (paused || viewer.hidden || document.hidden) return;
     function tick(now) {
-      const progress = Math.min((now - start) / STORY_DURATION, 1);
-      updateStoryBars(currentStoryIndex, progress);
-      if (progress < 1) {
+      if (lastStamp !== null) elapsed += now - lastStamp;
+      lastStamp = now;
+      updateStoryBars();
+      if (elapsed >= STORY_DURATION) {
+        showStoryAt(currentStoryIndex + 1);
+      } else {
         progressAnimId = requestAnimationFrame(tick);
-        return;
       }
-      showStoryAt(currentStoryIndex + 1);
     }
-
     progressAnimId = requestAnimationFrame(tick);
   }
 
+  function updatePauseButton() {
+    storyPause.textContent = paused ? '▶' : 'Ⅱ';
+    storyPause.setAttribute('aria-label', paused ? '스토리 재생' : '스토리 일시정지');
+    storyPause.setAttribute('aria-pressed', String(paused));
+  }
+
   function showStoryAt(index) {
+    if (index < 0) return;
     if (index >= STORY_ORDER.length) {
       closeStoryViewer();
       return;
     }
-
-    currentStoryIndex = index;
-    const key = STORY_ORDER[index];
-    const data = STORY_IMAGES[key];
-    if (!data || !viewer) return;
-
-    markStoryViewed(key);
     cancelStoryProgress();
-    updateStoryBars(index, 0);
-    storyCaption.textContent = data.caption;
-    clearStoryImage();
-
-    loadStoryImage(data.src)
-      .then((src) => {
-        if (currentStoryIndex !== index || viewer.hidden) return;
-        setStoryImage(src);
-        startStoryProgress();
-      })
-      .catch(() => {
-        if (currentStoryIndex !== index || viewer.hidden) return;
-        clearStoryImage();
-        storyCaption.textContent = `${data.caption} (사진을 추가해 주세요)`;
-        startStoryProgress();
-      });
+    currentStoryIndex = index;
+    elapsed = 0;
+    const key = STORY_ORDER[index];
+    const data = STORY_CONTENT[key];
+    document.getElementById('storyIcon').textContent = data.icon;
+    document.getElementById('storyTitle').textContent = data.title;
+    document.getElementById('storyBody').textContent = data.body;
+    storyPrev.disabled = index === 0;
+    storyNext.setAttribute('aria-label', index === STORY_ORDER.length - 1 ? '스토리 마치기' : '다음 스토리');
+    markStoryViewed(key);
+    updateStoryBars();
+    startStoryProgress();
   }
 
-  function openStoryViewer(startKey) {
-    if (!viewer) return;
+  function openStoryViewer(key) {
+    returnFocus = document.activeElement;
+    previousOverflow = document.body.style.overflow;
     buildStoryBars();
-    currentStoryIndex = Math.max(0, STORY_ORDER.indexOf(startKey));
     viewer.hidden = false;
     document.body.style.overflow = 'hidden';
     document.body.classList.add('story-open');
-    enableZoomLock();
+    paused = reducedMotion;
+    updatePauseButton();
     resetViewerTransform();
-    showStoryAt(currentStoryIndex);
+    showStoryAt(Math.max(0, STORY_ORDER.indexOf(key)));
+    storyClose.focus({ preventScroll: true });
   }
 
-  function openStoryFromButton(storyEl) {
-    const key = storyEl.dataset.story;
-    if (!key) return;
-    markStoryViewed(key);
-    openStoryViewer(key);
-  }
-
-  document.querySelectorAll('.story').forEach((story) => {
-    bindTap(story, () => openStoryFromButton(story));
+  document.querySelectorAll('[data-story]').forEach((button) => {
+    bindTap(button, () => openStoryViewer(button.dataset.story));
+  });
+  storyClose.addEventListener('click', closeStoryViewer);
+  storyPrev.addEventListener('click', () => showStoryAt(currentStoryIndex - 1));
+  storyNext.addEventListener('click', () => showStoryAt(currentStoryIndex + 1));
+  storyPause.addEventListener('click', () => {
+    paused = !paused;
+    updatePauseButton();
+    if (paused) cancelStoryProgress();
+    else startStoryProgress();
   });
 
-  storyClose?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    closeStoryViewer();
+  viewer.addEventListener('click', (e) => {
+    if (suppressStoryClick || e.target.closest('button')) return;
+    const midpoint = viewer.getBoundingClientRect().width / 2;
+    showStoryAt(currentStoryIndex + (e.clientX < midpoint ? -1 : 1));
   });
-
-  viewer?.addEventListener('click', (e) => {
-    if (viewer.hidden || suppressStoryClick || isDragging) return;
-    if (e.target.closest('#storyClose')) return;
-    handleStoryNavigation(e.clientX);
-  });
-
-  viewer?.addEventListener('touchstart', (e) => {
-    if (viewer.hidden) return;
-    touchStartY = e.touches[0].clientY;
+  viewer.addEventListener('touchstart', (e) => {
+    touchingStory = !e.target.closest('button');
+    if (!touchingStory) return;
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
     isDragging = false;
   }, { passive: true });
-
-  viewer?.addEventListener('touchmove', (e) => {
-    if (viewer.hidden) return;
+  viewer.addEventListener('touchmove', (e) => {
+    if (!touchingStory) return;
     const dy = e.touches[0].clientY - touchStartY;
     const dx = e.touches[0].clientX - touchStartX;
-    if (!isDragging && Math.abs(dy) > Math.abs(dx) && dy > 8) {
+    if (dy > 8 && Math.abs(dy) > Math.abs(dx)) {
       isDragging = true;
       cancelStoryProgress();
+      viewer.style.transform = `translateY(${dy}px)`;
+      viewer.style.opacity = String(Math.max(0.35, 1 - dy / 280));
     }
-    if (!isDragging || dy <= 0) return;
-    viewer.style.transform = `translateY(${dy}px)`;
-    viewer.style.opacity = String(Math.max(0.35, 1 - dy / 280));
   }, { passive: true });
-
-  viewer?.addEventListener('touchend', (e) => {
-    if (viewer.hidden) return;
+  viewer.addEventListener('touchend', (e) => {
+    if (!touchingStory) return;
+    touchingStory = false;
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
-
+    if (isDragging || Math.abs(dx) >= 12 || Math.abs(dy) >= 12) {
+      suppressStoryClick = true;
+      setTimeout(() => { suppressStoryClick = false; }, 400);
+    }
     if (isDragging && dy >= SWIPE_CLOSE_THRESHOLD) {
       closeStoryViewer();
-      isDragging = false;
-      return;
+    } else {
+      resetViewerTransform();
+      if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) {
+        showStoryAt(currentStoryIndex + (dx < 0 ? 1 : -1));
+      } else if (isDragging) {
+        startStoryProgress();
+      }
     }
-
-    if (!isDragging && Math.abs(dx) < 12 && Math.abs(dy) < 12) {
-      suppressStoryClick = true;
-      handleStoryNavigation(e.changedTouches[0].clientX);
-      setTimeout(() => { suppressStoryClick = false; }, 400);
-      isDragging = false;
-      return;
-    }
-
-    resetViewerTransform();
-    if (isDragging) startStoryProgress();
     isDragging = false;
   }, { passive: true });
-
-  viewer?.addEventListener('wheel', (e) => {
-    if (viewer.hidden || e.deltaY <= 0) return;
-    closeStoryViewer();
-  }, { passive: true });
-
-  // Gallery viewer
-  const galleryViewer = document.getElementById('galleryViewer');
-  const galleryTrack = document.getElementById('galleryTrack');
-  const galleryStage = document.getElementById('galleryStage');
-  const galleryCounter = document.getElementById('galleryCounter');
-  const galleryClose = document.getElementById('galleryClose');
-
-  const galleryImages = [...document.querySelectorAll('.profile-grid .grid-item:not(.empty) img')]
-    .map((img) => img.getAttribute('src'))
-    .filter(Boolean);
-
-  let activeGalleryImages = galleryImages;
-
-  let galleryIndex = 0;
-  let galleryDragOffset = 0;
-  let galleryTouchStartX = 0;
-  let galleryTouchStartY = 0;
-  let galleryGesture = null;
-  let galleryBlockClick = false;
-
-  function buildGalleryTrack(images) {
-    if (!galleryTrack) return;
-    galleryTrack.innerHTML = images.map(
-      (src) => `<div class="gallery-slide"><img src="${src}" alt="" draggable="false" loading="lazy" decoding="async"></div>`
-    ).join('');
-  }
-
-  function clampGalleryIndex(index) {
-    return Math.max(0, Math.min(index, activeGalleryImages.length - 1));
-  }
-
-  function setGalleryTransform(animate) {
-    if (!galleryTrack) return;
-    galleryTrack.classList.toggle('is-dragging', !animate);
-    galleryTrack.style.transform = `translateX(calc(-${galleryIndex * 100}% + ${galleryDragOffset}px))`;
-    if (galleryCounter) {
-      galleryCounter.textContent = `${galleryIndex + 1} / ${activeGalleryImages.length}`;
-    }
-  }
-
-  function resetGalleryTransform() {
-    if (!galleryViewer) return;
-    galleryViewer.style.transform = '';
-    galleryViewer.style.opacity = '';
-  }
-
-  function closeGalleryViewer() {
-    if (!galleryViewer) return;
-    galleryViewer.hidden = true;
-    document.body.style.overflow = '';
-    document.body.classList.remove('gallery-open');
-    disableZoomLock();
-    resetGalleryTransform();
-    galleryDragOffset = 0;
-    galleryGesture = null;
-  }
-
-  function showGalleryAt(index, animate = true) {
-    galleryIndex = clampGalleryIndex(index);
-    galleryDragOffset = 0;
-    setGalleryTransform(animate);
-  }
-
-  function openGalleryViewer(index, images = galleryImages) {
-    if (!galleryViewer || !images.length) return;
-    activeGalleryImages = images;
-    buildGalleryTrack(activeGalleryImages);
-    galleryViewer.hidden = false;
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('gallery-open');
-    enableZoomLock();
-    resetGalleryTransform();
-    showGalleryAt(index, false);
-    requestAnimationFrame(() => setGalleryTransform(true));
-  }
-
-  function shiftGallery(step) {
-    if (activeGalleryImages.length <= 1) return;
-    showGalleryAt(galleryIndex + step);
-  }
-
-  document.querySelectorAll('.profile-grid .grid-item:not(.empty)').forEach((item, index) => {
-    item.setAttribute('role', 'button');
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('aria-label', `사진 ${index + 1} 보기`);
-    item.addEventListener('click', () => openGalleryViewer(index));
-    item.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openGalleryViewer(index);
-      }
-    });
-  });
-
-  const locationMapMedia = document.querySelector('.post-media--map:not(.is-empty)');
-  const locationMapImg = locationMapMedia?.querySelector('img');
-  if (locationMapMedia && locationMapImg?.getAttribute('src')) {
-    locationMapMedia.classList.add('post-media--clickable');
-    locationMapMedia.setAttribute('role', 'button');
-    locationMapMedia.setAttribute('tabindex', '0');
-    locationMapMedia.setAttribute('aria-label', '약도 크게 보기');
-    const openLocationMap = () => openGalleryViewer(0, [locationMapImg.getAttribute('src')]);
-    locationMapMedia.addEventListener('click', openLocationMap);
-    locationMapMedia.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openLocationMap();
-      }
-    });
-  }
-
-  const profileAvatarWrap = document.querySelector('.profile-avatar-wrap');
-  const profileImg = profileAvatarWrap?.querySelector('img');
-  if (profileAvatarWrap && profileImg?.getAttribute('src')) {
-    profileAvatarWrap.classList.add('profile-avatar-wrap--clickable');
-    profileAvatarWrap.setAttribute('role', 'button');
-    profileAvatarWrap.setAttribute('tabindex', '0');
-    profileAvatarWrap.setAttribute('aria-label', '프로필 사진 크게 보기');
-    const openProfilePhoto = () => {
-      markProfileViewed();
-      openGalleryViewer(0, [profileImg.getAttribute('src')]);
-    };
-    bindTap(profileAvatarWrap, openProfilePhoto);
-    profileAvatarWrap.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openProfilePhoto();
-      }
-    });
-  }
-
-  galleryClose?.addEventListener('click', closeGalleryViewer);
-
-  galleryStage?.addEventListener('click', (e) => {
-    if (galleryViewer.hidden || galleryBlockClick || activeGalleryImages.length <= 1) return;
-    const ratio = e.clientX / window.innerWidth;
-    if (ratio < 0.35) shiftGallery(-1);
-    else if (ratio > 0.65) shiftGallery(1);
-  });
-
-  galleryViewer?.addEventListener('touchstart', (e) => {
-    if (galleryViewer.hidden) return;
-    galleryTouchStartX = e.touches[0].clientX;
-    galleryTouchStartY = e.touches[0].clientY;
-    galleryGesture = null;
-    galleryDragOffset = 0;
-  }, { passive: true });
-
-  galleryViewer?.addEventListener('touchmove', (e) => {
-    if (galleryViewer.hidden) return;
-    const dx = e.touches[0].clientX - galleryTouchStartX;
-    const dy = e.touches[0].clientY - galleryTouchStartY;
-
-    if (!galleryGesture) {
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) galleryGesture = 'horizontal';
-      else if (dy > 8 && Math.abs(dy) > Math.abs(dx)) galleryGesture = 'vertical';
-    }
-
-    if (galleryGesture === 'horizontal') {
-      const atStart = galleryIndex === 0 && dx > 0;
-      const atEnd = galleryIndex === activeGalleryImages.length - 1 && dx < 0;
-      galleryDragOffset = atStart || atEnd ? dx * 0.35 : dx;
-      setGalleryTransform(false);
-      return;
-    }
-
-    if (galleryGesture === 'vertical' && dy > 0) {
-      galleryViewer.style.transform = `translateY(${dy}px)`;
-      galleryViewer.style.opacity = String(Math.max(0.35, 1 - dy / 280));
-    }
-  }, { passive: true });
-
-  galleryViewer?.addEventListener('touchend', (e) => {
-    if (galleryViewer.hidden) return;
-    const dx = e.changedTouches[0].clientX - galleryTouchStartX;
-    const dy = e.changedTouches[0].clientY - galleryTouchStartY;
-
-    if (galleryGesture === 'horizontal') {
-      if (dx <= -60) shiftGallery(1);
-      else if (dx >= 60) shiftGallery(-1);
-      else showGalleryAt(galleryIndex);
-      galleryBlockClick = true;
-      setTimeout(() => { galleryBlockClick = false; }, 300);
-      galleryGesture = null;
-      return;
-    }
-
-    if (galleryGesture === 'vertical' && dy >= SWIPE_CLOSE_THRESHOLD) {
-      closeGalleryViewer();
-      return;
-    }
-
-    resetGalleryTransform();
-    galleryGesture = null;
-  }, { passive: true });
-
-  galleryViewer?.addEventListener('wheel', (e) => {
-    if (galleryViewer.hidden) return;
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      if (e.deltaX > 0) shiftGallery(1);
-      else shiftGallery(-1);
-      return;
-    }
-    if (e.deltaY > 0) closeGalleryViewer();
+  viewer.addEventListener('touchcancel', () => {
+    touchingStory = false;
+    isDragging = false;
+    resetViewerTransform();
+    startStoryProgress();
   }, { passive: true });
 
   document.addEventListener('keydown', (e) => {
-    if (galleryViewer?.hidden) return;
-    if (e.key === 'Escape') closeGalleryViewer();
-    if (e.key === 'ArrowLeft') shiftGallery(-1);
-    if (e.key === 'ArrowRight') shiftGallery(1);
+    if (viewer.hidden) return;
+    if (e.key === 'Escape') closeStoryViewer();
+    if (e.key === 'ArrowLeft') showStoryAt(currentStoryIndex - 1);
+    if (e.key === 'ArrowRight') showStoryAt(currentStoryIndex + 1);
+    if (e.key === 'Tab') {
+      const buttons = [...viewer.querySelectorAll('button:not(:disabled)')];
+      const first = buttons[0];
+      const last = buttons[buttons.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelStoryProgress();
+    else startStoryProgress();
+  });
+
+  // Existing deep links still open the archived invitation when necessary.
+  function revealArchiveForHash(hash = location.hash) {
+    if (!hash || hash === '#') return;
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    const archive = target?.closest('.invitation-archive');
+    if (archive) archive.open = true;
+  }
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => revealArchiveForHash(link.getAttribute('href')));
+  });
+  window.addEventListener('hashchange', () => revealArchiveForHash());
+  revealArchiveForHash();
 
   const transportToggle = document.getElementById('transportToggle');
   const transportPanel = document.getElementById('transportPanel');

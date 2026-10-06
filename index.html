@@ -4,34 +4,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" id="viewportMeta"
-    content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+    content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#ffffff">
-  <title>영건 ♥ 지혜 · Wedding Invitation</title>
-  <meta name="description" content="허영건 ♥ 이지혜 결혼식에 초대합니다. 2026. 10. 04 (일) AM 10:30 · 비렌티웨딩홀 4층 매그넘홀 · 천안">
+  <title>영건 ♥ 지혜 · 저희 결혼했어요</title>
+  <meta name="description" content="2026년 10월 4일, 저희 결혼했어요. 함께해 주시고 마음 보내주신 모든 분들께 감사드립니다.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="영건 ♥ 지혜 Wedding">
-  <meta property="og:title" content="영건 ♥ 지혜 · Wedding Invitation">
-  <meta property="og:description" content="2026. 10. 04 (일) AM 10:30 · 비렌티웨딩홀 4층 매그넘홀 · 천안">
+  <meta property="og:title" content="영건 ♥ 지혜 · 저희 결혼했어요">
+  <meta property="og:description" content="2026년 10월 4일, 부부가 되었습니다. 보내주신 사랑과 축복에 감사드립니다.">
   <meta property="og:url" content="https://ohmywedding.love/">
-  <meta property="og:image" content="https://ohmywedding.love/images/profile/mochung-full.jpg">
-  <meta property="og:image:width" content="1448">
-  <meta property="og:image:height" content="1448">
+  <meta property="og:image" content="https://ohmywedding.love/images/just-married-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="우리, 결혼했어요. 영건과 지혜의 감사 인사">
   <meta property="og:locale" content="ko_KR">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="영건 ♥ 지혜 · Wedding Invitation">
-  <meta name="twitter:description" content="2026. 10. 04 (일) AM 10:30 · 비렌티웨딩홀 4층 매그넘홀 · 천안">
-  <meta name="twitter:image" content="https://ohmywedding.love/images/profile/mochung-full.jpg">
+  <meta name="twitter:title" content="영건 ♥ 지혜 · 저희 결혼했어요">
+  <meta name="twitter:description" content="2026년 10월 4일, 부부가 되었습니다. 보내주신 사랑과 축복에 감사드립니다.">
+  <meta name="twitter:image" content="https://ohmywedding.love/images/just-married-card.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+KR:wght@300;400;500;600&family=Pacifico&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=24">
+  <link rel="stylesheet" href="styles.css?v=25">
 </head>
 
 <body>
   <!-- Intro Cover -->
-  <div class="intro" id="intro" role="button" aria-label="초대장 열기">
+  <div class="intro" id="intro" role="button" tabindex="0" aria-label="감사 페이지 열기">
     <div class="intro-inner">
       <span class="intro-crest" aria-hidden="true">
         <span class="intro-crest-disc">
@@ -87,13 +88,14 @@
           </svg>
         </span>
       </span>
-      <div class="intro-logo">Wedding</div>
+      <div class="intro-logo">Just Married</div>
       <p class="intro-names">허영건 <span class="intro-amp">♥</span> 이지혜</p>
-      <p class="intro-date">2026. 10. 04 SUN · AM 10:30</p>
+      <p class="intro-date">2026. 10. 04 · 부부가 되었습니다</p>
+      <p class="intro-thanks">함께해 주셔서 감사합니다 🤍</p>
     </div>
   </div>
 
-  <div class="app">
+  <div class="app" id="top">
     <!-- Header -->
     <header class="ig-header">
       <button class="ig-icon-btn music-toggle" id="musicToggleBtn" type="button" aria-pressed="false"
@@ -112,7 +114,7 @@
           <line x1="3" y1="3" x2="21" y2="21" />
         </svg>
       </button>
-      <div class="ig-logo">Wedding</div>
+      <div class="ig-logo">Just Married</div>
       <button class="ig-icon-btn" id="shareHeaderBtn" aria-label="공유">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <line x1="22" y1="2" x2="11" y2="13" />
@@ -122,104 +124,63 @@
     </header>
     <audio id="bgmAudio" src="audio/Ravel - la manière de Borodine, M. 63_1.mp3" loop preload="none"></audio>
 
-    <!-- Stories -->
-    <section class="stories" aria-label="스토리">
+    <!-- Stories: letters instead of photos -->
+    <section class="stories" aria-label="우리의 글 스토리">
       <div class="stories-track">
-        <button class="story" data-story="hero">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/ourday.jpg" alt=""
-                loading="eager" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
-          <span class="story-label">Our Day</span>
+        <button class="story" type="button" data-story="thanks" aria-label="감사 인사 스토리 보기">
+          <span class="story-ring"><span class="story-thumb story-thumb--icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg></span></span>
+          <span class="story-label">감사 인사</span>
         </button>
-        <button class="story" data-story="photo-1">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/moment.jpg" alt=""
-                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
-          <span class="story-label">Moment</span>
-        </button>
-        <button class="story" data-story="photo-2">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/together.jpg" alt=""
-                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
-          <span class="story-label">Together</span>
-        </button>
-        <button class="story" data-story="photo-3">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/memory.jpg" alt=""
-                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
-          <span class="story-label">Memory</span>
-        </button>
-        <button class="story" data-story="photo-4">
-          <span class="story-ring"><span class="story-thumb"><img src="images/stories/thumbs/foever.jpg" alt=""
-                loading="lazy" decoding="async" onerror="this.parentElement.classList.add('empty')"></span></span>
-          <span class="story-label">Forever</span>
+        <button class="story" type="button" data-story="beginning" aria-label="우리의 시작 스토리 보기">
+          <span class="story-ring"><span class="story-thumb story-thumb--icon"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+              <circle cx="12" cy="18" r="8" /><circle cx="22" cy="18" r="8" />
+              <path d="M19 6h6l2 3-5 5-5-5zM17 9h10" stroke-linejoin="round" />
+            </svg></span></span>
+          <span class="story-label">우리의 시작</span>
         </button>
       </div>
     </section>
 
     <!-- Profile -->
-    <section class="profile">
+    <section class="profile" aria-label="영건과 지혜">
       <div class="profile-top">
-        <div class="profile-avatar-wrap">
+        <button class="profile-avatar-wrap" type="button" data-story="thanks" aria-label="영건과 지혜의 감사 인사 보기">
           <span class="story-ring story-ring--lg">
-            <span class="story-thumb story-thumb--lg">
-              <img src="images/profile/mochung-full.jpg" alt="영건과 지혜" loading="eager" decoding="async"
-                onerror="this.parentElement.classList.add('empty')">
-            </span>
+            <span class="story-thumb story-thumb--lg story-thumb--icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+            </svg></span>
           </span>
-        </div>
+        </button>
         <div class="profile-stats">
-          <div class="stat">
-            <strong id="ddayCount">--</strong>
-            <span>D-Day</span>
-          </div>
-          <div class="stat">
-            <strong>6</strong>
-            <span>photos</span>
-          </div>
-          <div class="stat">
-            <strong>∞</strong>
-            <span>love</span>
-          </div>
+          <div class="stat"><strong id="ddayCount">D+2</strong><span>함께한 날</span></div>
+          <div class="stat"><strong>10.04</strong><span>시작한 날</span></div>
+          <div class="stat"><strong>∞</strong><span>love</span></div>
         </div>
       </div>
       <div class="profile-info">
         <h1 class="profile-name">younggeon_x_jihye</h1>
         <p class="profile-bio">
-          허영건 ♥ 이지혜<br>
-          2026. 10. 04 · 일요일 · 오전 10:30<br>
-          비렌티웨딩홀 4층 매그넘홀 · 천안
+          허영건 ♥ 이지혜 · Just Married 💍<br>
+          <span id="marriedDays">2026. 10. 04 · 부부가 되었습니다</span><br>
+          함께해 주신 모든 마음에 감사드립니다.
         </p>
       </div>
       <div class="profile-actions">
-        <a href="#calendar" class="btn-follow">일정 보기</a>
-        <a href="#location" class="btn-message">오시는 길</a>
-      </div>
-      <div class="profile-highlights">
-        <a href="#calendar" class="highlight">
-          <span class="highlight-ring"><span class="highlight-icon">📅</span></span>
-          <span>일정</span>
-        </a>
-        <a href="#location" class="highlight">
-          <span class="highlight-ring"><span class="highlight-icon">📍</span></span>
-          <span>예식장소</span>
-        </a>
-        <a href="#bus" class="highlight">
-          <span class="highlight-ring"><span class="highlight-icon">🚌</span></span>
-          <span>전세버스</span>
-        </a>
-        <a href="#gift" class="highlight">
-          <span class="highlight-ring"><span class="highlight-icon">💌</span></span>
-          <span>마음</span>
-        </a>
+        <a href="#thanks" class="btn-follow">감사 인사</a>
+        <a href="#beginning" class="btn-message">우리의 시작</a>
       </div>
     </section>
 
-    <!-- Post: Invitation -->
-    <article class="post" data-animate>
+    <!-- Post: Thank you -->
+    <article class="post" id="thanks" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
-              onerror="this.style.display='none'"></span>
+          <span class="post-avatar post-avatar--letter" aria-hidden="true">♡</span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
-            <span class="post-location">Wedding Invitation</span>
+            <span class="post-location">With gratitude · 감사 인사</span>
           </div>
         </div>
         <button class="ig-icon-btn" aria-label="더보기">
@@ -230,19 +191,18 @@
           </svg>
         </button>
       </header>
-      <div class="post-media post-media--text">
-        <p>
-          서로 다른 두 길을 걸어온<br>
-          저희 두 사람, 이제 하나의 길을<br>
-          함께 걸어가려 합니다.<br><br>
-          소중한 분들을 모시고<br>
-          저희의 첫 시작을 축복해 주시면<br>
-          더없이 행복하겠습니다.
+      <div class="post-media post-media--text gratitude-letter">
+        <p class="letter-eyebrow">WITH LOVE &amp; GRATITUDE</p>
+        <span class="letter-heart" aria-hidden="true">♡</span>
+        <h2 class="letter-title">우리, 결혼했어요</h2>
+        <p class="letter-date">2026. 10. 04</p>
+        <p class="letter-body">
+          함께해 주시고, 멀리서도 마음 보내주신<br>
+          모든 분들께 진심으로 감사드립니다.<br><br>
+          보내주신 축복을 오래 간직하며<br>
+          서로 아끼고 사랑하며 잘 살겠습니다.
         </p>
-        <div class="post-signature">
-          <span>허연석 · 신혜연의 아들 <strong>허영건</strong></span>
-          <span>이성태의 딸 <strong>이지혜</strong></span>
-        </div>
+        <p class="letter-signature">영건 &amp; 지혜 드림</p>
       </div>
       <div class="post-actions">
         <div class="post-actions-left">
@@ -273,82 +233,18 @@
         </button>
       </div>
       <p class="post-likes"><strong class="like-count">1,026</strong> likes</p>
-      <p class="post-caption"><strong>younggeon_x_jihye</strong> 결혼식에 초대합니다 💍</p>
+      <p class="post-caption"><strong>younggeon_x_jihye</strong> 덕분에 행복한 시작을 함께했습니다 🤍</p>
       <p class="post-time">OCTOBER 4, 2026</p>
     </article>
 
-    <!-- Post: Gallery Grid -->
-    <article class="post" data-animate>
-      <header class="post-header">
-        <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
-              onerror="this.style.display='none'"></span>
-          <div>
-            <span class="post-username">younggeon_x_jihye</span>
-            <span class="post-location">Our Moments</span>
-          </div>
-        </div>
-        <button class="ig-icon-btn" aria-label="더보기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#262626">
-            <circle cx="12" cy="5" r="1.5" />
-            <circle cx="12" cy="12" r="1.5" />
-            <circle cx="12" cy="19" r="1.5" />
-          </svg>
-        </button>
-      </header>
-      <div class="profile-grid">
-        <figure class="grid-item"><img src="images/gallery/DSCF0614 복사.jpg" alt="" loading="lazy" decoding="async"
-            onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF0668 복사.jpg" alt="" loading="lazy" decoding="async"
-            onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF2591 복사.jpg" alt="" loading="lazy" decoding="async"
-            onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF3804.jpg" alt="" loading="lazy" decoding="async"
-            onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/DSCF3860 복사.jpg" alt="" loading="lazy" decoding="async"
-            onerror="this.parentElement.classList.add('empty')"></figure>
-        <figure class="grid-item"><img src="images/gallery/7725.jpg" alt="" loading="lazy" decoding="async"
-            onerror="this.parentElement.classList.add('empty')"></figure>
-      </div>
-      <div class="post-actions">
-        <div class="post-actions-left">
-          <button class="ig-action like-btn" aria-label="좋아요">
-            <svg class="icon-heart" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2">
-              <path
-                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
-            </svg>
-          </button>
-          <button class="ig-action" aria-label="댓글"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2">
-              <path
-                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-            </svg></button>
-          <button class="ig-action" aria-label="공유"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2">
-              <line x1="22" y1="2" x2="11" y2="13" />
-              <polygon points="22 2 15 22 11 13 2 9 22 2" />
-            </svg></button>
-        </div>
-        <button class="ig-action" aria-label="저장"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
-            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
-          </svg></button>
-      </div>
-      <p class="post-likes"><strong class="like-count">892</strong> likes</p>
-      <p class="post-caption"><strong>younggeon_x_jihye</strong> 함께한 순간들 ✨</p>
-      <p class="post-time">2 DAYS AGO</p>
-    </article>
-
     <!-- Post: Calendar -->
-    <article class="post" id="calendar" data-animate>
+    <article class="post" id="beginning" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
-              onerror="this.style.display='none'"></span>
+          <span class="post-avatar post-avatar--letter" aria-hidden="true">♡</span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
-            <span class="post-location">Save the Date</span>
+            <span class="post-location">Our Beginning · 우리의 시작</span>
           </div>
         </div>
         <button class="ig-icon-btn" aria-label="더보기">
@@ -365,7 +261,7 @@
           <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
         </div>
         <div class="calendar-grid" id="calendarGrid"></div>
-        <p class="card-footer">2026년 10월 4일 (일) · AM 10:30</p>
+        <p class="card-footer">2026년 10월 4일 · 부부가 된 날</p>
         <p class="card-countdown" id="ddayCountdown" aria-live="polite">--</p>
       </div>
       <div class="post-actions">
@@ -394,16 +290,24 @@
           </svg></button>
       </div>
       <p class="post-likes"><strong class="like-count">2,014</strong> likes</p>
-      <p class="post-caption"><strong>younggeon_x_jihye</strong> 운명의 날 📅</p>
+      <p class="post-caption"><strong>younggeon_x_jihye</strong> 함께 시작한 날 🤍</p>
       <p class="post-time">OCTOBER 4, 2026</p>
     </article>
+
+    <!-- Past invitation, collapsed by default -->
+    <details class="invitation-archive" id="archive">
+      <summary>
+        <span>지난 청첩장 보기<small>2026. 10. 04 · 예식 안내 기록</small></span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+      </summary>
+      <div class="archive-content">
+        <p class="archive-note">결혼식은 잘 마쳤습니다. 아래는 지난 예식 안내입니다.</p>
 
     <!-- Post: Location -->
     <article class="post" id="location" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
-              onerror="this.style.display='none'"></span>
+          <span class="post-avatar post-avatar--letter" aria-hidden="true">♡</span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">비렌티웨딩홀 4층 매그넘홀</span>
@@ -417,11 +321,6 @@
           </svg>
         </button>
       </header>
-      <div class="post-media post-media--map">
-        <img src="images/location/map_20230602_131012.jpg" alt="비렌티웨딩홀 약도" loading="lazy" decoding="async"
-          onerror="this.parentElement.classList.add('is-empty')">
-        <div class="map-empty">location/map_20230602_131012.jpg</div>
-      </div>
       <div class="post-body">
         <p class="post-caption"><strong>younggeon_x_jihye</strong> 충남 천안시 서북구 천안대로 1198-30<br>비렌티웨딩홀 4층 매그넘홀</p>
         <div class="location-actions">
@@ -516,8 +415,7 @@
     <article class="post" id="bus" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
-              onerror="this.style.display='none'"></span>
+          <span class="post-avatar post-avatar--letter" aria-hidden="true">♡</span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">전세버스 탑승 안내</span>
@@ -652,8 +550,7 @@
     <article class="post" id="gift" data-animate>
       <header class="post-header">
         <div class="post-user">
-          <span class="post-avatar"><img src="images/profile/mochung.jpg" alt=""
-              onerror="this.style.display='none'"></span>
+          <span class="post-avatar post-avatar--letter" aria-hidden="true">♡</span>
           <div>
             <span class="post-username">younggeon_x_jihye</span>
             <span class="post-location">마음 전하기</span>
@@ -769,71 +666,61 @@
       <p class="post-time">GIFT</p>
     </article>
 
+      </div>
+    </details>
+
     <!-- Footer -->
     <footer class="ig-footer">
-      <p>younggeon_x_jihye · 2026. 10. 04</p>
+      <p>영건 ♥ 지혜 · 2026. 10. 04</p>
+      <p>보내주신 사랑, 오래 간직하겠습니다.</p>
     </footer>
 
     <!-- Bottom Tab Bar -->
     <nav class="tabbar" aria-label="하단 메뉴">
-      <a href="#" class="tabbar-item active" aria-current="page">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M9.005 16.545a2.997 2.997 0 012.997-2.997h0A2.997 2.997 0 0115 16.545V22h7V11.543L12 2 2 11.543V22h7.005z" />
-        </svg>
+      <a href="#top" class="tabbar-item active" aria-current="page" aria-label="맨 위로">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.005 16.545a2.997 2.997 0 015.995 0V22h7V11.543L12 2 2 11.543V22h7.005z" /></svg>
       </a>
-      <a href="#location" class="tabbar-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
+      <a href="#thanks" class="tabbar-item" aria-label="감사 인사">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z" /></svg>
       </a>
-      <button class="tabbar-item tabbar-add" id="shareTabBtn" aria-label="공유">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <line x1="12" y1="8" x2="12" y2="16" />
-          <line x1="8" y1="12" x2="16" y2="12" />
-        </svg>
+      <button class="tabbar-item" id="shareTabBtn" type="button" aria-label="감사 페이지 공유">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
       </button>
-      <a href="#calendar" class="tabbar-item">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2" />
-          <line x1="16" y1="2" x2="16" y2="6" />
-          <line x1="8" y1="2" x2="8" y2="6" />
-          <line x1="3" y1="10" x2="21" y2="10" />
-        </svg>
-      </a>
-      <a href="#gift" class="tabbar-item">
-        <span class="tabbar-avatar"><img src="images/profile/mochung.jpg" alt=""
-            onerror="this.style.display='none'"></span>
+      <a href="#archive" class="tabbar-item" aria-label="지난 청첩장 보기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></svg>
       </a>
     </nav>
   </div>
 
-  <!-- Gallery Viewer -->
-  <div class="gallery-viewer" id="galleryViewer" hidden>
-    <div class="gallery-header">
-      <span class="gallery-counter" id="galleryCounter">1 / 6</span>
-      <button class="gallery-close" id="galleryClose" aria-label="닫기">✕</button>
-    </div>
-    <div class="gallery-stage" id="galleryStage">
-      <div class="gallery-track" id="galleryTrack"></div>
-    </div>
-  </div>
-
-  <!-- Story Viewer -->
-  <div class="story-viewer" id="storyViewer" hidden>
+  <!-- Letter Story Viewer -->
+  <div class="story-viewer" id="storyViewer" role="dialog" aria-modal="true" aria-labelledby="storyTitle" tabindex="-1" hidden>
     <div class="story-viewer-bars" id="storyBars" aria-hidden="true"></div>
-    <button class="story-close" id="storyClose" aria-label="닫기">✕</button>
+    <div class="story-viewer-header">
+      <span>younggeon_x_jihye</span>
+      <div class="story-viewer-controls">
+        <button class="story-pause" id="storyPause" type="button" aria-label="스토리 일시정지" aria-pressed="false">Ⅱ</button>
+        <button class="story-close" id="storyClose" type="button" aria-label="스토리 닫기">✕</button>
+      </div>
+    </div>
     <div class="story-viewer-content" id="storyViewerContent">
-      <div id="storyImage" class="story-image" role="img" aria-hidden="true"></div>
-      <p id="storyCaption"></p>
+      <div class="story-letter">
+        <span class="story-letter-icon" id="storyIcon" aria-hidden="true">♡</span>
+        <h2 id="storyTitle"></h2>
+        <p class="story-letter-date">2026. 10. 04</p>
+        <p id="storyBody"></p>
+        <p class="story-letter-signature">영건 &amp; 지혜 드림</p>
+      </div>
+    </div>
+    <div class="story-navigation">
+      <button id="storyPrev" type="button" aria-label="이전 스토리">←</button>
+      <span>함께해 주셔서 감사합니다 🤍</span>
+      <button id="storyNext" type="button" aria-label="다음 스토리">→</button>
     </div>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=14"></script>
+  <script src="app.js?v=15"></script>
 </body>
 
 </html>

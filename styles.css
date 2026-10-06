@@ -1,4 +1,4 @@
-/* Instagram-style Mobile Wedding Invitation */
+/* Instagram-style Mobile Wedding Thank You */
 
 :root {
   --ig-bg: #fafafa;
@@ -449,22 +449,18 @@ body {
 }
 
 .post-media--text {
-  aspect-ratio: 1;
-  padding: 36px 26px;
-  background-color: #262626;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-    url('images/background/invitation.jpg');
-  background-size: cover;
-  background-position: center;
-  color: #fff;
+  aspect-ratio: auto;
+  min-height: 420px;
+  padding: 36px 20px;
+  background: #f8f4ef;
+  color: #57453e;
   text-align: center;
   font-family: var(--font-serif-kr);
   font-size: 15.5px;
   line-height: 2.15;
   letter-spacing: -0.2px;
   font-weight: 400;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+  text-shadow: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1667,5 +1663,287 @@ body.intro-open {
 @media (prefers-reduced-motion: reduce) {
   .stories-track .story .story-ring {
     animation: none;
+  }
+}
+
+/* ── Just Married: letters and illustrated story covers ── */
+.stories-track {
+  justify-content: flex-start;
+  gap: 16px;
+  padding-inline: 16px;
+}
+
+.story-thumb--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f4ef;
+  color: #a17465;
+}
+
+.story-thumb--icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.story-thumb--lg svg {
+  width: 38px;
+  height: 38px;
+}
+
+.profile-avatar-wrap {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  touch-action: manipulation;
+}
+
+.post-avatar--letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f4ef;
+  color: #a17465;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.letter-eyebrow {
+  font-family: var(--font);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #94786b;
+}
+
+.letter-heart {
+  margin-top: 12px;
+  font-family: var(--font);
+  font-size: 32px;
+  line-height: 1.2;
+  color: #aa7d6d;
+}
+
+.letter-title {
+  margin-top: 12px;
+  font-size: clamp(23px, 6.5vw, 28px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 1.5;
+}
+
+.letter-date {
+  margin-top: 8px;
+  font-family: var(--font);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #94786b;
+}
+
+.letter-body {
+  margin-top: 26px;
+  font-size: clamp(13px, 3.65vw, 15px);
+  line-height: 2;
+}
+
+.letter-signature {
+  margin-top: 26px;
+  font-size: 13px;
+}
+
+.intro-thanks {
+  font-size: 13px;
+  color: var(--ig-text-secondary);
+}
+
+#thanks, #beginning, #archive {
+  scroll-margin-top: calc(var(--header-h) + var(--safe-top) + 12px);
+}
+
+.invitation-archive {
+  margin: 12px 0;
+  background: var(--ig-surface);
+  border-block: 1px solid var(--ig-border);
+}
+
+.invitation-archive > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 16px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.invitation-archive > summary::-webkit-details-marker {
+  display: none;
+}
+
+.invitation-archive > summary small {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ig-text-secondary);
+}
+
+.invitation-archive[open] > summary svg {
+  transform: rotate(180deg);
+}
+
+.archive-note {
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--ig-text-secondary);
+  background: #f8f4ef;
+}
+
+.archive-content .post {
+  margin-bottom: 0;
+}
+
+.ig-footer p + p {
+  margin-top: 6px;
+}
+
+.story-viewer {
+  background: #f8f4ef;
+  color: #57453e;
+}
+
+.story-bar {
+  background: #e6d9cf;
+}
+
+.story-bar-fill {
+  background: #a17465;
+}
+
+.story-viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.story-viewer-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.story-close, .story-pause {
+  position: static;
+  width: 44px;
+  height: 44px;
+  padding: 8px;
+  background: none;
+  border: 0;
+  color: #57453e;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.story-viewer-content {
+  align-items: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.story-letter {
+  width: 100%;
+  max-width: 430px;
+  padding: 24px 0;
+  text-align: center;
+  font-family: var(--font-serif-kr);
+}
+
+.story-letter-icon {
+  display: block;
+  margin-bottom: 22px;
+  font-family: var(--font);
+  font-size: 52px;
+  line-height: 1;
+  color: #a17465;
+}
+
+.story-letter h2 {
+  font-size: clamp(23px, 6.5vw, 30px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+}
+
+.story-letter p {
+  color: inherit;
+  padding: 0;
+}
+
+.story-letter .story-letter-date {
+  margin-top: 14px;
+  font-family: var(--font);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #94786b;
+}
+
+.story-letter #storyBody {
+  margin-top: 32px;
+  font-size: clamp(13px, 3.65vw, 15px);
+  line-height: 2.1;
+  white-space: pre-line;
+}
+
+.story-letter .story-letter-signature {
+  margin-top: 32px;
+  font-size: 13px;
+}
+
+.story-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px calc(16px + var(--safe-bottom));
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #94786b;
+}
+
+.story-navigation button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e6d9cf;
+  border-radius: 50%;
+  background: transparent;
+  color: #57453e;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.story-navigation button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+button:focus-visible, a:focus-visible, summary:focus-visible {
+  outline: 2px solid #a17465;
+  outline-offset: 4px;
+}
+
+@media (max-height: 600px) {
+  .story-letter {
+    padding: 8px 0;
+  }
+  .story-letter-icon {
+    margin-bottom: 12px;
+    font-size: 36px;
+  }
+  .story-letter #storyBody, .story-letter .story-letter-signature {
+    margin-top: 16px;
   }
 }
